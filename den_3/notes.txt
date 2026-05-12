@@ -1,0 +1,20 @@
+Den 3 - Seznamy
+
+Dnes jsem se naučil:
+- vytvoření seznamu []
+- přístup přes index numbers[0], numbers[-1]
+- změna hodnoty numbers[0] = 99
+- append() - přidání na konec
+- remove() - odebrání podle hodnoty
+- len() - počet prvků
+- sort() - seřazení
+- sum(), min(), max()
+- count() - počet výskytů hodnoty
+- procházení seznamu přes for
+- prázdný seznam [] + plnění přes append()
+- while True + break pro opakované zadávání
+- ochrana před dělením nulou: if len() > 0
+
+1. Správně. remove("Anna") odstraní hodnotu "Anna" ze seznamu. Ale nedopsal jsi druhou část otázky — jaký je rozdíl oproti mazání přes index? Například del names[0] maže podle pozice, remove() maže podle hodnoty. To je důležitý rozdíl.
+2. Špatně. len(student_grades) > 0 neznamená "seřaď ho". len() vrací počet prvků v seznamu. Tento řádek říká: "pokud je v seznamu alespoň jeden prvek, teprve pak počítej průměr." Bez toho by program zkusil dělit nulou, protože prázdný seznam má len() = 0.
+3. Správně, ale nepřesně. while True znamená "opakuj donekonečna", protože podmínka True je vždy pravdivá. Cyklus sám od sebe nikdy neskoční. Proto musíme použít break, který cyklus ukončí ručně.

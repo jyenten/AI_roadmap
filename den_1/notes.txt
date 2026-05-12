@@ -1,0 +1,17 @@
+Den 1 - Python základy
+
+Dnes jsem se naučil:
+- print()
+- input()
+- proměnné
+- int()
+- f-string
+- if / elif / else
+- or
+- try / except
+- základní ošetření chyb
+
+Mini projekt:
+Age Category Program
+
+input() vždy vrací text. Pokud chci s hodnotou počítat jako s číslem, použiju int().

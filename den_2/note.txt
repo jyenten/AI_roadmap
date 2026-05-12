@@ -1,0 +1,22 @@
+Den 2 - Cykly
+
+Dnes jsem se naučil:
+- for cyklus
+- range()
+- range(start, stop)
+- range(start, stop, step)
+- průběžný součet
+- total += i
+- modulo %
+- počítání sudých a lichých čísel
+- while cyklus
+- omezení počtu pokusů
+- rozdíl mezi for a while
+
+Důležité poznámky:
+- range(1, 6) vypíše 1 až 5, protože horní hranice není zahrnutá.
+- for používám, když znám rozsah nebo počet opakování.
+- while používám, když chci opakovat podle podmínky.
+- attempts += 1 znamená attempts = attempts + 1.
+- i % 2 == 0 znamená, že číslo je sudé.
+- Odsazení v Pythonu určuje, co patří do cyklu nebo podmínky.
