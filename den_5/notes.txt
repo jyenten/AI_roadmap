@@ -1,0 +1,18 @@
+Den 5 - Funkce
+
+Dnes jsem se naučil:
+- def název_funkce(): - definice funkce
+- parametry funkce
+- return - vrácení hodnoty
+- rozdíl mezi print() uvnitř funkce a return
+- boolean funkce - vrací True/False
+- výchozí hodnoty parametrů
+- funkce volající jiné funkce
+- None - prázdná návratová hodnota
+- is None - kontrola prázdné hodnoty
+
+Důležité:
+- funkce definuješ jednou, voláš kolikrát chceš
+- return ukončí funkci a vrátí hodnotu
+- bez return funkce vrátí None automaticky
+- malé funkce které spolupracují = čistý kód

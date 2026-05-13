@@ -1,0 +1,14 @@
+Den 4 - Slovníky
+
+Dnes jsem se naučil:
+- vytvoření slovníku {"key": "value"}
+- přístup přes klíč student["name"]
+- změna hodnoty a přidání klíče
+- pop() - odebrání klíče
+- "key" in dict - kontrola existence klíče
+- for key in dict - průchod klíči
+- for key, value in dict.items() - průchod páry
+- seznam slovníků - základní datový pattern
+- hledání nejlepší hodnoty v seznamu slovníků
+- filtrování podle podmínky
+- sort() s lambda pro řazení slovníků
