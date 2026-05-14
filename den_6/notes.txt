@@ -1,0 +1,16 @@
+Den 6 - OOP
+
+Dnes jsem se naučil:
+- class - definice třídy
+- __init__ - konstruktor, spustí se při vytvoření objektu
+- self - odkaz na konkrétní objekt
+- metody - funkce uvnitř třídy
+- objekty - instance třídy
+- seznam objektů
+- třídy které pracují s jinými třídami
+- __str__ - jak se objekt vypíše přes print()
+
+Důležité:
+- slovník uchovává data, třída uchovává data + funkce
+- self musí být první parametr každé metody
+- všechny metody musí být odsazené uvnitř třídy
