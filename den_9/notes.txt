@@ -1,0 +1,27 @@
+Den 9 - Pandas
+
+Dnes jsem se naučil:
+- import pandas as pd
+- pd.DataFrame() - vytvoření tabulky ze slovníku
+- df.shape - rozměry tabulky
+- df.dtypes - datové typy sloupců
+- df.head() - prvních 5 řádků
+- df.describe() - základní statistiky
+- df.info() - souhrn o DataFrame
+- df["sloupec"] - výběr sloupce
+- .mean(), .min(), .max(), .sum(), .value_counts()
+- filtrování: df[df["grade"] <= 2]
+- více podmínek: & pro AND, | pro OR
+- přidání sloupce: df["nový"] = ...
+- apply() - aplikace funkce na sloupec
+- sort_values() - řazení
+- groupby() - statistiky podle skupiny
+- to_csv() - uložení do souboru
+- read_csv() - načtení ze souboru
+- isnull().sum() - počet chybějících hodnot
+- fillna() - nahrazení chybějících hodnot
+
+Důležité:
+- DataFrame = tabulka s názvy sloupců a indexem
+- isnull().sum() je první věc při analýze nových dat
+- fillna() před trénováním modelu - model neumí pracovat s NaN

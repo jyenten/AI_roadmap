@@ -1,0 +1,25 @@
+Den 8 - NumPy
+
+Dnes jsem se naučil:
+- import numpy as np
+- np.array() - vytvoření array
+- broadcasting - operace nad celým array najednou
+- .sum(), .mean(), .min(), .max(), .std()
+- 2D array - matice
+- .shape - rozměry array
+- .T - transpozice matice
+- np.dot() - maticové násobení
+- np.zeros(), np.ones(), np.random.rand()
+- .reshape() - změna tvaru array
+- slicing - výběr části array
+
+Spojení s lineární algebrou:
+- np.array = vektor nebo matice
+- np.dot = maticové násobení
+- .T = transpozice
+- .reshape = změna tvaru vektoru/matice
+
+Důležité:
+- shape říká rozměry dat - používáš ho pořád
+- broadcasting = operace bez cyklu
+- slicing matrix[:, 1] = výběr celého sloupce
