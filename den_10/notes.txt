@@ -1,0 +1,23 @@
+Den 10 - Titanic analýza
+
+Dnes jsem se naučil:
+- načtení reálného datasetu přes read_csv()
+- df.columns.tolist() - názvy sloupců
+- df.describe() - statistiky datasetu
+- isnull().sum() - kontrola chybějících hodnot
+- groupby() s více sloupci: groupby(["Sex", "Pclass"])
+- fillna(mean()) - nahrazení chybějících hodnot průměrem
+- apply() s vlastní funkcí pro nový sloupec
+- filtrování a statistika na jednom řádku
+- uvnitř f-stringu používám jednoduché uvozovky
+
+Insighty z Titaniku:
+- přežilo pouze 38% pasažérů
+- ženy přežívaly výrazně častěji než muži
+- pasažéři 1. třídy přežívali častěji než 3. třídy
+- děti měly vyšší survival rate než dospělí
+
+Důležité:
+- reálná data vždy obsahují chybějící hodnoty
+- fillna() před analýzou nebo trénováním modelu
+- groupby() je základ pro hledání patterns v datech
