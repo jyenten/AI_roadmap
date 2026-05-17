@@ -1,0 +1,26 @@
+Den 11 - Matplotlib
+
+Dnes jsem se naučil:
+- import matplotlib.pyplot as plt
+- plt.bar() - sloupcový graf
+- plt.plot() - čárový graf
+- plt.hist() - histogram
+- plt.scatter() - bodový graf
+- plt.title(), plt.xlabel(), plt.ylabel()
+- plt.ylim() - rozsah osy Y
+- plt.grid() - mřížka
+- plt.show() - zobrazení grafu
+- plt.subplots() - více grafů najednou
+- axes[0,0].set_title() - nadpis u subplots
+- plt.tight_layout() - automatické mezery
+
+Kdy použít který graf:
+- bar = kategorie, porovnání skupin
+- plot = vývoj v čase
+- hist = rozložení hodnot
+- scatter = vztah mezi dvěma proměnnými
+
+Důležité:
+- plt.show() musí být vždy na konci
+- u subplots používáš set_title() ne plt.title()
+- survival_by_sex.values pro předání hodnot do grafu
