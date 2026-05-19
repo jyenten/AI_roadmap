@@ -1,0 +1,30 @@
+Co je overfitting:
+Představ si studenta který se před zkouškou naučil nazpaměť všechny odpovědi ze starých testů. Na starých testech by měl 100%, ale na novém testu by selhal protože se nenaučil pochopit látku.
+Model který overfituje udělá totéž — nazpaměť si zapamatuje trénovací data ale na nových datech selže.
+Dnes uvidíš overfitting v praxi a naučíš se jak ho detekovat a řešit.
+
+
+Den 14 - Overfitting a Cross-validation
+
+Dnes jsem se naučil:
+- overfitting - model si zapamatuje trénovací data
+- DecisionTreeClassifier - rozhodovací strom
+- max_depth - složitost stromu
+- vizualizace overfittingu - train vs test accuracy
+- cross_val_score - křížová validace
+- cv=5 - 5 různých rozdělení dat
+- cv_scores.mean() - průměrné skóre
+- cv_scores.std() - konzistence modelu
+- porovnání více modelů pomocí slovníku
+
+Důležité pojmy:
+- overfitting = model funguje na train datech ale ne na nových
+- underfitting = model je příliš jednoduchý, nenaučil se nic
+- cross-validation = spolehlivější odhad výkonu než jedno rozdělení
+- std blízko 0 = konzistentní model
+- optimální model = nejlepší test accuracy ne train accuracy
+
+Jak poznat overfitting:
+- train accuracy >> test accuracy
+- v grafu test accuracy klesá zatímco train roste
+- vysoké std v cross-validation
