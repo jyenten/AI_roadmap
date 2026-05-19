@@ -1,0 +1,26 @@
+Den 13 - Klasifikace
+
+Dnes jsem se naučil:
+- rozdíl mezi regresí a klasifikací
+- LogisticRegression - klasifikační model
+- df["Sex"].map() - převod textu na čísla
+- features - vstupní příznaky modelu
+- accuracy_score - přesnost modelu
+- classification_report - precision, recall, f1-score
+- model.predict_proba() - pravděpodobnost předpovědi
+- plt.barh() - horizontální sloupcový graf
+- plt.axvline() - svislá čára v grafu
+- model.coef_ - důležitost příznaků
+
+Důležité pojmy:
+- features = vstupní sloupce pro model
+- accuracy = procento správných předpovědí
+- precision = z předpovězených pozitivních kolik bylo správně
+- recall = z reálných pozitivních kolik model našel
+- f1-score = kombinace precision a recall
+- predict_proba() vrací pravděpodobnost ne jen 0/1
+
+Insighty z Titaniku:
+- Sex byl nejdůležitější příznak
+- Pclass měl záporný vliv na přežití
+- bohaté ženy přežívaly výrazně častěji
