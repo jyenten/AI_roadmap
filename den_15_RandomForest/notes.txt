@@ -1,0 +1,25 @@
+Den 15 - Random Forest
+
+Dnes jsem se naučil:
+- RandomForestClassifier - ensemble model
+- n_estimators - počet stromů v lese
+- feature_importances_ - důležitost příznaků
+- marker="o" - kroužky na datových bodech v grafu
+- porovnání modelů pomocí slovníku a cross-validation
+
+Jak funguje Random Forest:
+- vytvoří n stromů, každý na jiných datech a příznacích
+- výsledek = hlasování všech stromů
+- více stromů = stabilnější model
+- po určitém počtu stromů se přesnost stabilizuje
+
+Výhody Random Forest oproti Decision Tree:
+- vyšší přesnost
+- nižší std = stabilnější
+- automatická důležitost příznaků
+- odolnější proti overfittingu
+
+Důležité pojmy:
+- ensemble = více modelů dohromady
+- feature_importances_ = hodnoty 0-1, součet = 1
+- stabilní model = nízké std v cross-validation
