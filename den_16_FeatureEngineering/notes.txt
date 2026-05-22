@@ -1,0 +1,23 @@
+Den 16 - Feature Engineering
+
+Dnes jsem se naučil:
+- baseline model - výchozí bod pro porovnání
+- FamilySize = SibSp + Parch + 1
+- IsAlone = (FamilySize == 1).astype(int)
+- str.extract() - vytažení textu pomocí regulárního výrazu
+- map() pro převod textu na čísla
+- fillna("Other") pro neznámé kategorie
+- porovnání baseline vs nové příznaky
+
+Důležité principy:
+- vždy začínáš s baseline
+- ne každý nový příznak zlepší model
+- feature engineering může zlepšit model více než složitější algoritmus
+- model pracuje jen s čísly - text musíš převést
+- groupby() před trénováním ověří jestli příznak dává smysl
+
+Typy feature engineering:
+- kombinování sloupců: FamilySize
+- odvozené příznaky: IsAlone
+- extrakce z textu: Title
+- encoding kategorií: map()
