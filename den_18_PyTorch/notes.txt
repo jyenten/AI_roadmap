@@ -1,0 +1,31 @@
+Den 18 - Neuronové sítě s PyTorch
+
+Dnes jsem se naučil:
+- torch.tensor() - vytvoření tensoru
+- tensor.shape, tensor.dtype
+- torch.dot() - skalární součin
+- nn.Module - základ každé sítě
+- nn.Linear(vstup, výstup) - plně propojená vrstva
+- nn.ReLU() - aktivační funkce
+- def forward() - jak data prochází sítí
+- nn.MSELoss() - funkce chyby
+- torch.optim.Adam() - optimizer
+- optimizer.zero_grad() - vynulování gradientů
+- loss.backward() - backpropagation
+- optimizer.step() - aktualizace vah
+- model.eval() - evaluační mód
+- torch.no_grad() - vypnutí gradientů
+- tensor.numpy() - převod na NumPy array
+
+Trénovací cyklus:
+1. zero_grad()
+2. forward pass: y_pred = model(X)
+3. loss = criterion(y_pred, y)
+4. loss.backward()
+5. optimizer.step()
+
+Důležité:
+- epoch = jedno průchod přes všechna data
+- loss klesá = síť se učí
+- view(-1, 1) = reshape tensoru
+- model.eval() + no_grad() při předpovědi
