@@ -1,0 +1,22 @@
+Den 19 - Klasifikace s neuronovou sítí
+
+Dnes jsem se naučil:
+- StandardScaler - normalizace dat
+- fit_transform na train, transform na test
+- nn.Sigmoid() - aktivační funkce pro klasifikaci
+- nn.BCELoss() - funkce chyby pro binární klasifikaci
+- threshold 0.5 - převod pravděpodobnosti na 0/1
+- (y_pred >= 0.5).float() - převod na predikci
+- histogram pravděpodobností
+
+Rozdíl regrese vs klasifikace v PyTorch:
+- regrese: žádná aktivace na výstupu, MSELoss
+- klasifikace: Sigmoid na výstupu, BCELoss
+
+Důležité:
+- trénovací cyklus je vždy stejný
+- StandardScaler fit pouze na train datech
+- neuronové sítě vs Random Forest:
+  - malá tabulková data = Random Forest vyhrává
+  - obrázky, text, zvuk = neuronové sítě vyhrávají
+- data leakage = použití test dat při fit_transform

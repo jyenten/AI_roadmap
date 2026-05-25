@@ -1,0 +1,35 @@
+Den 20 - CNN Image Classification
+
+Dnes jsem se naučil:
+- nn.Conv2d(in, out, kernel_size, padding) - konvoluční vrstva
+- nn.MaxPool2d(2, 2) - pooling vrstva
+- nn.Dropout(0.25) - regularizace proti overfittingu
+- DataLoader(dataset, batch_size, shuffle) - načítání dat po dávkách
+- transforms.Compose() - řetězec transformací
+- transforms.ToTensor() - převod obrázku na tensor
+- transforms.Normalize() - normalizace pixelů
+- outputs.argmax(dim=1) - předpovězená třída
+- model.eval() + torch.no_grad() - evaluace
+- images[i][0].cpu().numpy() - tensor na NumPy pro Matplotlib
+- device = cuda - trénování na GPU
+
+Architektura CNN:
+- Conv2d → ReLU → MaxPool2d
+- Conv2d → ReLU → MaxPool2d
+- Flatten (view)
+- Linear → ReLU → Dropout
+- Linear (výstup)
+
+Důležité:
+- batch_size = kolik obrázků najednou
+- shuffle=True na train, False na test
+- CrossEntropyLoss pro více tříd
+- argmax = index největší hodnoty = předpovězená třída
+- RTX 3060 - 60°C je normální teplota
+- MNIST dosáhl 99.15% přesnosti
+
+Jak CNN funguje:
+- konvoluční vrstva hledá vzory v obrázku
+- pooling zmenší obrázek ale zachová vzory
+- flatten převede 2D mapu na 1D vektor
+- linear vrstvy rozhodnou o výsledné třídě

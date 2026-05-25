@@ -109,7 +109,7 @@ with torch.no_grad():
 plt.hist(y_pred_proba[y_test == 0], bins=20, alpha=0.5, label="Did not survive")
 plt.hist(y_pred_proba[y_test == 1], bins=20, alpha=0.5, label="Survived")
 plt.title("Predicted Probabilities")
-plt.xlabel("Probabilitz of Survival")
+plt.xlabel("Probability of Survival")
 plt.ylabel("Count")
 plt.legend()
 
