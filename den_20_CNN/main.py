@@ -175,8 +175,8 @@ with torch.no_grad():
 plt.figure(figsize=(12, 4))
 for i in range(10):
     plt.subplot(2, 5, i + 1)
-    plt.imshow(images[i][0].cpu(),numpy(), cmap="gray")
-    color = "green" if predicted[i] == lables[i] else "red"
+    plt.imshow(images[i][0].cpu().numpy(), cmap="gray")
+    color = "green" if predicted[i] == labels[i] else "red"
     plt.title(f"P: {predicted[i].item()} A: {labels[i].item()}", color=color)
     plt.axis("off")
 
