@@ -1,0 +1,29 @@
+Den 21 - Transfer Learning
+
+Dnes jsem se naučil:
+- models.resnet18(weights=DEFAULT) - předtrénovaný model
+- param.requires_grad = False - zmrazení vah
+- model.fc = nn.Linear() - nahrazení poslední vrstvy
+- transforms.Resize(224) - resize pro ResNet
+- transforms.RandomHorizontalFlip() - data augmentation
+- Normalize(ImageNet hodnoty) - normalizace pro předtrénovaný model
+
+Transfer Learning workflow:
+1. načti předtrénovaný model
+2. zmraz všechny váhy
+3. nahraď poslední vrstvu
+4. trénuj pouze poslední vrstvu
+
+Důležité:
+- ResNet18 má 11M parametrů celkem
+- trénovali jsme jen 5,130 parametrů
+- dosáhli jsme 80% přesnosti na CIFAR-10
+- ImageNet normalizace: (0.485, 0.456, 0.406), (0.229, 0.224, 0.225)
+- Python 3.11 je standard pro AI/ML
+- Python 3.14 nepodporují AI knihovny
+
+Proč transfer learning:
+- trénování od nuly trvá týdny
+- předtrénovaný model už umí rozpoznávat vzory
+- stačí dotrénovat poslední vrstvu
+- funguje i s malým datasetem
