@@ -4,3 +4,9 @@ __pychache__/
 **/data/
 *.tar.gz
 *.gz
+
+**/test_set/
+**/training_set/
+*.jpg
+*.jpeg
+

@@ -1,0 +1,32 @@
+Den 22 - Klasifikátor s vlastními daty
+
+Dnes jsem se naučil:
+- datasets.ImageFolder() - načtení obrázků ze složek
+- struktura složek definuje třídy automaticky
+- nn.Sequential() - řetězení vrstev bez vlastní třídy
+- torch.save(model.state_dict()) - uložení modelu
+- torch.load() - načtení modelu
+- loaded_model.load_state_dict() - načtení vah
+- map_location=device - načtení na správné zařízení
+- transforms.RandomRotation() - data augmentation
+
+Výsledky:
+- 97.97% přesnost na cats vs dogs
+- trénovali jsme jen 131,842 parametrů
+- ResNet18 má celkem 11M parametrů
+
+Workflow pro vlastní data:
+1. připrav složky: train/třída1, train/třída2
+2. použij ImageFolder
+3. načti ResNet18
+4. zmraz váhy
+5. nahraď poslední vrstvu
+6. trénuj
+7. ulož model
+8. načti model pro předpovědi
+
+Důležité:
+- .pth je standard pro PyTorch modely
+- state_dict() = slovník vah
+- map_location zajistí načtení na GPU nebo CPU
+- ImageFolder automaticky přiřadí třídy podle názvů složek
