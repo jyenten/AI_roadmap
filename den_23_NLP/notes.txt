@@ -1,0 +1,22 @@
+DEN 23 - NLP a sentiment analýza
+
+CO JSEM SE NAUČIL:
+- tokenizace = rozsekání textu na slova (.split())
+- slovník = mapování slovo -> číslo (dict), +speciální tokeny <pad>=0, <unk>=1
+- věty -> sekvence čísel + PADDING (sjednocení délek vycpáním nulami)
+- vlastní Dataset/DataLoader pro text (stejný princip jako Den 22)
+- nn.Embedding = každé slovo -> učený vektor (význam), ne jen číslo
+- model: embedding -> průměr vektorů věty -> Linear -> skóre
+- BCEWithLogitsLoss pro binární klasifikaci (2 třídy, float labely)
+- inference: model.eval() + torch.no_grad() + torch.sigmoid()
+
+OMEZENÍ TOHOTO MODELU (důležité pro Den 24!):
+1. NECHÁPE pořadí slov: "love and terrible" = "terrible and love" (stejné skóre 0.87)
+2. jen PRŮMĚRUJE nálady: víc pozitivních slov = jistější (love love = 0.99)
+3. zná jen slova ze slovníku: neznámé slovo -> <unk> ("and" = "nad" = stejné!)
+-> tohle všechno řeší Transformers/BERT (attention, pořadí, velký slovník)
+
+KLÍČOVÉ POJMY:
+- embedding_dim = délka vektoru na slovo
+- padding_idx=0 = padding má nulový vektor, neučí se
+- logits = syrové skóre před sigmoidem
