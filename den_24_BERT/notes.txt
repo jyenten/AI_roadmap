@@ -1,0 +1,27 @@
+DEN 24 - Transformers a BERT
+
+TEORIE - ATTENTION:
+- attention = každé slovo se "rozhlédne" po ostatních a rozhodne, kterým věnovat pozornost
+- Query (co hledám) / Key (co nabízím) / Value (jakou nesu informaci)
+- místo tupého průměru (Den 23) = vážený součet podle relevance
+- positional encoding = informace o pořadí slov
+- BERT = bidirectional (vidí slova před i za), 12 vrstev attention
+
+PRAXE - HUGGING FACE:
+- AutoTokenizer = BERT tokenizer, slovník ~30 000, subwords (## kousky)
+  -> neznámé slovo se rozseká na části, NIKDY <unk> (řeší omezení 3 z Dne 23)
+- [CLS] token = shrnutí celé věty (ID 101), [SEP] = konec (ID 102)
+- AutoModel = jádro BERTa, vrací embeddingy [batch, tokeny, 768]
+- AutoModelForSequenceClassification = BERT + klasifikační hlava (num_labels=2)
+- transfer learning: jádro předtrénované, hlava nová (MISSING report = OK!)
+- model(**vstup, labels=...) si loss spočítá SÁM
+- AdamW + malý lr=5e-5 (jen doladit, ne rozbít) vs lr=0.01 na Dni 23
+
+SOUBOJ BERT vs Den 23 (DŮKAZ ATTENTION):
+- "love and terrible": Den 23 = POZITIVNÍ 0.87, BERT = NEGATIVNÍ 0.98
+- "this movie is not bad": BERT = POZITIVNÍ 1.00 (pochopil NEGACI!)
+  -> bag-of-words by spadl na slově "bad", BERT chápe "not bad" = dobré
+
+POZNÁMKA:
+- doladěno jen na 4 větách = princip, ne produkční přesnost
+- UNEXPECTED = zahozené úkolové vrstvy (OK), MISSING = nová hlava k trénování (OK)
