@@ -16,7 +16,6 @@ PRAXE - HUGGING FACE:
 - transfer learning: jádro předtrénované, hlava nová (MISSING report = OK!)
 - model(**vstup, labels=...) si loss spočítá SÁM
 - AdamW + malý lr=5e-5 (jen doladit, ne rozbít) vs lr=0.01 na Dni 23
-
 SOUBOJ BERT vs Den 23 (DŮKAZ ATTENTION):
 - "love and terrible": Den 23 = POZITIVNÍ 0.87, BERT = NEGATIVNÍ 0.98
 - "this movie is not bad": BERT = POZITIVNÍ 1.00 (pochopil NEGACI!)

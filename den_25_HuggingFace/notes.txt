@@ -1,0 +1,29 @@
+DEN 25 - Hugging Face pipeline
+
+PIPELINE = nejvyšší abstrakce HF (tokenizer + model + zpracování v 1 řádku):
+- pipeline("sentiment-analysis") -> vrací [{"label":..., "score":...}]
+- pipeline("zero-shot-classification") -> klasifikuje do tříd, které urči TY
+  (model je nikdy neviděl při tréninku, candidate_labels=[...])
+- výstupy pipeline jsou DICTY -> čteš přes v["label"], v["score"]
+
+POZOR - VERZE KNIHOVEN (důležitá reálná lekce!):
+- moje transformers 5.9.0 ZRUŠILA jednoduché názvy pipeline:
+  "summarization" -> Unknown task
+  "text2text-generation" -> Unknown task
+  "question-answering" -> Unknown task (potvrzeno: odstraněno od verze 5.3)
+- KDYŽ pipeline název nefunguje (KeyError: Unknown task):
+  1) podívej se do vypsaného seznamu "available tasks"
+  2) NEBO obejdi pipeline a volej model napřímo přes AutoModelForXxx
+
+QUESTION ANSWERING napřímo (funguje nezávisle na verzi):
+- AutoModelForQuestionAnswering + model "distilbert-base-cased-distilled-squad"
+- tokenizer(otazka, kontext) -> model vrací start_logits a end_logits
+- argmax(start) a argmax(end) = začátek a konec odpovědi v textu
+- tokenizer.decode(tokeny[start:end]) = odpověď jako text
+- EXTRACTIVE QA: vytáhne odpověď DOSLOVA z kontextu, nevymýšlí
+
+MOST NA DEN 26 (RAG):
+- dnes: dal jsem kontext ručně -> model odpověděl z něj (2. půlka RAG)
+- problém: co když mám 10 000 dokumentů a nevím, kde odpověď je?
+- RAG = Retrieval (najdi správný text) + Augmented Generation (odpověz z něj)
+- zítra přidáme tu 1. půlku: vyhledávání přes embeddings/podobnost
