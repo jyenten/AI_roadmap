@@ -1,0 +1,32 @@
+DEN 26 - RAG systém (NEJDŮLEŽITĚJŠÍ DEN)
+
+CO JE RAG = Retrieval-Augmented Generation:
+- R (Retrieval): z velké sbírky najdi nejrelevantnější dokumenty
+- A (Augmented): nalezený text přidej jako kontext
+- G (Generation): model odpoví z toho kontextu
+- řeší problém: nemůžu modelu nacpat 10 000 dokumentů najednou
+
+RETRIEVAL přes embeddingy (jádro RAG):
+- sentence-transformers, model "all-MiniLM-L6-v2" -> vektory 384 čísel
+- embedder.encode(texty) = text -> vektor významu
+- PODOBNÉ VÝZNAMY = BLÍZKÉ VEKTORY (i bez společných slov!)
+  "cat sleeps on sofa" vs "kitten resting on couch" = 0.697 (vysoká!)
+  "cat..." vs "Python..." = 0.017 (nízká)
+- kosinová podobnost: np.dot(a,b) / (norm(a)*norm(b)), rozsah -1..1
+
+QA z kontextu (z Dne 25):
+- AutoModelForQuestionAnswering, "distilbert-base-cased-distilled-squad"
+- start_logits/end_logits -> argmax -> tokeny[start:end] -> decode
+
+KOMPLETNÍ RAG tok:
+- otázka -> encode -> najdi nejbližší dokument (argmax podobnosti)
+- nalezený dokument -> kontext pro QA -> odpověď
+
+CHYBY, KTERÉ JSEM ŘEŠIL:
+1. chybějící čárka v seznamu řetězců -> Python je TIŠE slepí dohromady
+2. záměna písmene 'i' za číslici '1' v list comprehension
+   -> index byl pořád 1 -> pořád stejný dokument
+   -> ŘEŠENÍ: np.argmax(skore) místo ručního párování (index, podobnost)
+   -> poučení: výpočet OK ale výběr špatný = hledej chybu v INDEXECH
+
+RAG spojil celou roadmapu: embeddingy (D23/24), argmax (D22), QA (D25), NumPy, OOP
