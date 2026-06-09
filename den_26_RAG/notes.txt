@@ -29,4 +29,4 @@ CHYBY, KTERÉ JSEM ŘEŠIL:
    -> ŘEŠENÍ: np.argmax(skore) místo ručního párování (index, podobnost)
    -> poučení: výpočet OK ale výběr špatný = hledej chybu v INDEXECH
 
-RAG spojil celou roadmapu: embeddingy (D23/24), argmax (D22), QA (D25), NumPy, OOP
+RAG spojil celou roadmapu: embeddingy (D23/24), argmax (D22), QA (D25), NumPy, OO
