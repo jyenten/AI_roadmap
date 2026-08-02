@@ -107,7 +107,13 @@ def score_line(question: str, line: str) -> int:
 
     if "ospf" in question_lower:
         if "used for" in question_lower or "what is ospf" in question_lower:
+            if "ospf is an interior gateway protocol" in line_lower:
+                score += 50
             if "interior gateway protocol" in line_lower:
+                score += 30
+            if "designed expressly for ip networks" in line_lower:
+                score += 30
+            if "link-state routing protocol" in line_lower:
                 score += 25
             if "routing protocol" in line_lower:
                 score += 15
@@ -115,10 +121,17 @@ def score_line(question: str, line: str) -> int:
                 score += 15
             if "shortest path first" in line_lower:
                 score += 10
-            if "customer edge" in line_lower:
-                score -= 10
-            if "pe and ce" in line_lower:
-                score -= 10
+
+            if "management information" in line_lower:
+                score -= 20
+            if "protocol-independent" in line_lower:
+                score -= 20
+            if "time to live" in line_lower or "ttl security" in line_lower:
+                score -= 20
+            if "fast hello" in line_lower:
+                score -= 15
+            if "on-demand circuit" in line_lower:
+                score -= 15
 
     return score
 

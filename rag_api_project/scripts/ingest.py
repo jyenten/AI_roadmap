@@ -1,3 +1,5 @@
+import re
+import textwrap
 from pathlib import Path
 
 import chromadb
@@ -5,6 +7,35 @@ from chromadb.utils import embedding_functions
 from pypdf import PdfReader
 
 from app.config import get_settings
+
+def clean_pdf_text(text: str) -> str:
+    replacements = {
+        "\u00a0": " ",
+        "\u00e2\u20ac\u015b": '"',
+        "\u00e2\u20ac\u0165": '"',
+        "â€¢": "•",
+        "â€˜": "•",
+        "â€™": "'",
+        "â€œ": '"',
+        "â€": '"',
+        "â€“": "-",
+        "â€”": "-",
+    }
+
+    for old, new in replacements.items():
+        text = text.replace(old, new)
+
+    text = re.sub(r"(?<=[a-z])(?=Step\s+\d+\b)", " ", text)
+    text = re.sub(r"(?<=[a-z])(?=Example:)", " ", text)
+    text = re.sub(r"(?<=[a-z])(?=Router[#>(])", " ", text)
+    text = re.sub(r"(?<=[a-z])(?=Device[#>(])", " ", text)
+    text = re.sub(r"(?<=[.!?])(?=\S)", " ", text)
+
+    text = re.sub(r"[\t]+", " ", text)
+    text = re.sub(r"\n{3,}", "n\n", text)
+
+    return text.strip()
+
 
 def read_pdf_text(pdf_path: Path) -> str:
     reader = PdfReader(str(pdf_path))
@@ -14,24 +45,51 @@ def read_pdf_text(pdf_path: Path) -> str:
         text = page.extract_text() or ""
         pages.append(text)
 
-    return "\n".join(pages)
+    raw_text = "\n".join(pages)
+    return clean_pdf_text(raw_text)
 
 def split_text(text: str, chunk_size: int = 1000, overlap: int = 150) -> list[str]:
+    units = [
+        unit.strip()
+        for unit in re.split(r"\n[ \t]*\n|(?<=[.!?])\s+", text)
+        if unit.strip()
+    ]
+
     chunks: list[str] = []
-    start = 0
+    current = ""
 
-    while start < len(text):
-        end = start + len(text)
-        chunk = text[start:end].strip()
-        
-        chunk = text[start:end].strip()
+    for unit in units:
+        if len(unit) > chunk_size:
+            if current:
+                chunks.append(current)
+                current = ""
 
-        if chunk:
-         chunks.append(chunk)
+            chunks.extend(
+                textwrap.wrap(
+                    unit,
+                    width=chunk_size,
+                    break_long_words=False,
+                    break_on_hyphens=False,
+                )
+            )
+            continue
 
-        start += chunk_size - overlap
+        candidate = f"{current}\n\n{unit}".strip()
+
+        if len(candidate) <= chunk_size:
+            current = candidate
+
+        else:
+            if current:
+                chunks.append(current)
+
+            current = unit
+
+    if current:
+        chunks.append(current)
 
     return chunks
+
 
 def main() -> None:
     settings = get_settings()
@@ -50,7 +108,15 @@ def main() -> None:
         path=str(settings.chroma_dir)
     )
 
-    collection = client.get_or_create_collection(
+    collection_names = [
+        collection.name if hasattr(collection, "name") else collection
+        for collection in client.list_collections()
+    ]
+
+    if settings.collection_name in collection_names:
+        client.delete_collection(name=settings.collection_name)
+
+    collection = client.create_collection(
         name=settings.collection_name,
         embedding_function=embedding_function,
     )

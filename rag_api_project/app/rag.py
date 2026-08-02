@@ -14,11 +14,17 @@ def answer_from_rules(question: str, context: str) -> str | None:
             "the loopback IP address as the router ID."
         )
     if "enable" in question_lower and "ospf" in question_lower:
-        if "router ospf process-id" in context_lower:
+        if (
+
+            "router ospf process-id" in context_lower
+            or "enables ospf routing" in context_lower
+        ):
+            
             return(
                 "Use the command `router ospf <process-id>` in global "
                 "configuration mode. Example: `router ospf 109`."
             )
+        
     if "nssa" in question_lower and "nssa" in context_lower:
         return(
             "An OSPF NSSA is a Not-So-Stubby Area. It allows OSPF to extend "
@@ -27,8 +33,15 @@ def answer_from_rules(question: str, context: str) -> str | None:
         )
     if "ospf" in question_lower:
         if "used for" in question_lower or "what is ospf" in question_lower:
-            if "link-state routing protocol" in context_lower:
-                return(
+            if (
+                "link-state routing protocol" in context_lower
+                or "interior gateway protocol" in context_lower
+                or "ip routing protocol" in context_lower
+                or "routing protocol" in context_lower
+                or "designed expressly for ip networks" in context_lower
+            ):
+                
+                return (
                     "OSPF is used as a link-state routing protocol for routing "
                     "IP packets within a network. It helps routers exchange routing "
                     "information and calculate the best paths through an IP network."
