@@ -266,4 +266,4 @@ class Retriever:
                 documents,
                 self.settings.max_context_lines
             )
-        return context, documents, distances
+        return context, selected_lines, documents, distances

@@ -72,7 +72,7 @@ class RAGService:
 
 
     def answer(self, question: str) -> AnswerResponse:
-        context, documents, distances = self.retriever.build_context(question)
+        context, context_line,  documents, distances = self.retriever.build_context(question)
 
         rule_answer = answer_from_rules(question, context)
         if rule_answer is not None:
@@ -84,13 +84,13 @@ class RAGService:
 
         sources = [
             SourceChunk(
-                text=format_source_preview(document, self.settings.source_preview_chars),
-                distance=distance,
+                text=line,
+                distance=None,
             )
-            for document, distance in source_pairs
+            for line in context_line[: self.settings.returned_sources]
         ]
 
-  
+
         
 
         return AnswerResponse(
