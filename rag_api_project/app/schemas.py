@@ -7,6 +7,11 @@ class QuestionRequest(BaseModel):
 class SourceChunk(BaseModel):
     text: str
     distance: float | None = None
+    source: str | None = None
+    chunk_index: int | None = None
+    page: int | None = None
+
+
 
 class AnswerResponse(BaseModel):
     question: str

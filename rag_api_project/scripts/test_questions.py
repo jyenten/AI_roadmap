@@ -17,6 +17,7 @@ class EvalCase:
     answer_contains: list[str]
     context_contains: list[str]
     expect_sources: bool = True
+    expect_source_metadata: bool = True
     expect_generator: bool = False
 
 EVAL_CASES = [
@@ -75,6 +76,17 @@ def check_case(service: RAGService, case: EvalCase) -> bool:
 
     if case.expect_sources and not response.sources:
         failures.append("sources are empty")
+
+    if case.expect_source_metadata:
+        for index, source in enumerate(response.sources, start=1):
+            if source.source is None:
+                failures.append(f"source {index} missing source filename")
+
+            if source.chunk_index is None:
+                failures.append(f"source {index} missing chunk index")
+
+            if source.page is None:
+                failures.append(f"source {index} missing page")
 
     combined_text = "".join(
         [

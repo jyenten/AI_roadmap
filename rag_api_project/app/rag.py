@@ -57,6 +57,32 @@ def format_source_preview(text: str, max_chars: int) -> str:
     
     return preview[:max_chars].rstrip() + "..."
 
+def get_metadata_str(
+    metadata: dict[str, object],
+    key: str,
+) -> str | None:
+    value = metadata.get(key)
+
+    if isinstance(value, str):
+        return value
+
+    return None
+
+def get_metadata_int(
+    metadata: dict[str, object],
+    key: str,
+) -> int | None:
+    value = metadata.get(key)
+
+    if isinstance(value, bool):
+        return None
+
+    if isinstance(value, int):
+        return value
+
+    return None
+
+
 class RAGService:
     def __init__(self, settings: Settings):        
         self.settings = settings
@@ -72,7 +98,18 @@ class RAGService:
 
 
     def answer(self, question: str) -> AnswerResponse:
-        context, context_line,  documents, distances = self.retriever.build_context(question)
+        (
+            context, 
+            selected_lines,
+            _documents,
+            _distances, 
+            _metadatas,
+        ) = self.retriever.build_context(question)
+
+        context_lines = [
+            line.text
+            for line in selected_lines
+        ]
 
         rule_answer = answer_from_rules(question, context)
         if rule_answer is not None:
@@ -80,14 +117,16 @@ class RAGService:
         else:
             answer = self.generator.generate(question, context)
 
-        source_pairs = list(zip(documents, distances))[: self.settings.returned_sources]
-
         sources = [
             SourceChunk(
-                text=line,
+                text=line.text,
                 distance=None,
+                source=get_metadata_str(line.metadata, "source"),
+                chunk_index=get_metadata_int(line.metadata, "chunk_index"),
+                page=get_metadata_int(line.metadata, "page"),
             )
-            for line in context_line[: self.settings.returned_sources]
+            for line in selected_lines[: self.settings.returned_sources]
+
         ]
 
 
@@ -97,7 +136,7 @@ class RAGService:
             question=question,
             answer=answer,
             context=context,
-            context_lines=context.splitlines(),
+            context_lines=context_lines,
             sources=sources,
         )
-    
+

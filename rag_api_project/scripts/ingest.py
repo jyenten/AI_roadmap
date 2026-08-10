@@ -48,6 +48,19 @@ def read_pdf_text(pdf_path: Path) -> str:
     raw_text = "\n".join(pages)
     return clean_pdf_text(raw_text)
 
+def read_pdf_pages(pdf_path: Path) -> list[tuple [int, str]]:
+    reader = PdfReader(str(pdf_path))
+    pages: list[tuple[int, str]] = []
+
+    for page_number, page in enumerate(reader.pages, start=1):
+        text = page.extract_text() or ""
+        text = clean_pdf_text(text)
+
+        if text:
+            pages.append((page_number, text))
+
+    return pages
+
 def split_text(text: str, chunk_size: int = 1000, overlap: int = 150) -> list[str]:
     units = [
         unit.strip()
@@ -123,23 +136,36 @@ def main() -> None:
 
     all_chunks: list[str] = []
     all_ids: list[str] = []
-    all_metadata: list[dict[str, str]] = []
+    all_metadata: list[dict[str, str | int]] = []
 
     for pdf_path in pdf_files:
-        text = read_pdf_text(pdf_path)
-        chunks = split_text(text)
+        pages = read_pdf_pages(pdf_path)
+        global_chunk_index = 0
 
-        for index, chunk in enumerate(chunks):
-            chunk_id = f"{pdf_path.stem}-{index}"
-            all_chunks.append(chunk)
+        for page_number, page_text in pages:
+            chunks = split_text(page_text)
 
-            all_ids.append(chunk_id)
-            all_metadata.append(
-                {
-                    "source": pdf_path.name,
-                    "chunk_index": str(index),
-                }
-            )
+
+            for page_chunk_index, chunk in enumerate(chunks):
+                chunk_id = (
+                    f"{pdf_path.stem}"
+                    f"page-{page_number}"
+                    f"chunk-{page_chunk_index}"
+                )   
+
+                all_chunks.append(chunk)
+                all_ids.append(chunk_id)
+                all_metadata.append(
+                    {
+                        "source": pdf_path.name,
+                        "chunk_index": global_chunk_index,
+                        "page": page_number,
+                    }
+                )
+
+                global_chunk_index += 1
+
+
     if not all_chunks:
         raise ValueError("No text chunks were created from the PDF files")
     

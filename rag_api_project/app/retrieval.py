@@ -1,8 +1,17 @@
 import re
 import chromadb
+
+from dataclasses import dataclass
 from chromadb.utils import embedding_functions
 from sentence_transformers import CrossEncoder
 from app.config import Settings
+
+Metadata = dict[str, str | int | float | bool | None]
+
+@dataclass
+class RetrievedLine:
+    text: str
+    metadata: Metadata
 
 STOPWORDS = {
     "how", "do", "you", "the", "is", "an", "a",
@@ -18,13 +27,34 @@ def extract_keywords(question: str) -> list[str]:
 def expand_question_for_search(question: str) -> str:
     question_lower = question.lower()
 
+    if "ospf" in question_lower and "router id" in question_lower:
+        return(
+            question
+            + " largest IP address configured interfaces "
+            + "loopback interface router ID"
+        )
+    
+    if "enable" in question_lower and "ospf" in question_lower:
+        return(
+            question
+            + " router ospf process-id eneables OSPF routing "
+            + "enters router configuration mode"
+        )
+    if "nssa" in question_lower:
+        return(
+            question
+            + " Not-So-Stubby Area Type 7 LSA Type 5 LSA "
+            + "redistributed routes"
+        )
+
     if "ospf" in question_lower:
         if "used for" in question_lower or "what is ospf" in question_lower:
-            return(
+            return (
                 question
-                + "Open Shortest Path First Interior Gateway Protocol"
+                + " Open Shortest Path First Interior Gateway Protocol "
                 + "IP networks routing protocol link-state"
             )
+    
     return question
 
 
@@ -135,29 +165,46 @@ def score_line(question: str, line: str) -> int:
 
     return score
 
-def collect_candidate_lines(question: str, documents: list[str]) -> list[str]:
-    text = "\n".join(documents)
-    candidates = re.split(r"\n+|(?<=[.!?])\s+", text)
-    scored_lines: list[tuple[int, str]] = []
+def collect_candidate_lines(
+    question: str, 
+    documents: list[str],
+    metadatas: list[Metadata],
+) -> list[RetrievedLine]:
+    scored_lines: list[tuple[int, RetrievedLine]] = []
     seen: set[str] = set()
 
-    for candidate in candidates:
-        line = candidate.strip()
+    for document, metadata in zip(documents, metadatas):
+        candidates = re.split(r"\n+|(?<=[.!?])\s+", document)
 
-        if len(line) < 20 or line in seen:
-            continue
+        for candidate in candidates:
+            line = candidate.strip()
 
-        score = score_line(question, line)
+            if len(line) < 20 or line in seen:
+                continue
 
-        if score > 0:
-            scored_lines.append((score, line))
-            seen.add(line)
-    
+            score = score_line(question, line)
+
+            if score > 0:
+                scored_lines.append(
+                    (
+                        score,
+                        RetrievedLine(
+                            text=line,
+                            metadata=metadata,
+                        ),
+                    )
+                )
+                seen.add(line)
+
     scored_lines.sort(key=lambda item: item[0], reverse=True)
-    return [
-        line for score,
-        line in scored_lines
+
+    return[
+        retrieved_line
+        for score, retrieved_line in scored_lines
     ]
+
+ 
+    
 
 def select_relevant_lines(
     question: str,
@@ -209,31 +256,42 @@ class Retriever:
             embedding_function=self.embedding_function,
         )
     
-    def search(self, question: str) -> tuple[list[str], list[float]]:
+    def search(self, 
+               question: str
+               ) -> tuple[list[str], list[float], list[Metadata]]:
         search_question = expand_question_for_search(question)
 
 
         results = self.collection.query(
-            query_texts=[question],
+            query_texts=[search_question],
             n_results=self.settings.retrieval_results,
-            include=["documents", "distances"],
+            include=["documents", "distances", "metadatas"],
         )
+
         documents = results["documents"][0]
         distances = results["distances"][0]
+        metadatas = results["metadatas"][0]
 
-        return documents, distances
+        return documents, distances, metadatas
     
-    def rerank_lines(self, question: str, lines: list[str]) -> list[str]:
+    def rerank_lines(self, 
+        question: str, 
+        lines: list[RetrievedLine]
+        ) -> list[RetrievedLine]:
         if not lines:
             return[]
         
-        pairs = [(question, line) for line in lines]
+        pairs = [(question, line.text)
+                  for line in lines
+            ]
+
+        
         scores = self.reranker.predict(pairs)
 
         ranked = []
 
         for model_score, line in zip(scores, lines):
-            heuristic_score = score_line(question, line)
+            heuristic_score = score_line(question, line.text)
             combined_score = float(model_score) + heuristic_score
             ranked.append((combined_score, line))
 
@@ -251,14 +309,22 @@ class Retriever:
     
 
 
-    def build_context(self, question: str) -> tuple[str, list[str], list[float]]:
-        documents, distances = self.search(question)
+    def build_context(
+        self,
+        question: str,
+    ) -> tuple[str, list[RetrievedLine], list[str], list[float], 
+        list[Metadata]]:
+        documents, distances, metadatas = self.search(question)
 
-        candidate_lines = collect_candidate_lines(question, documents)
+        candidate_lines = collect_candidate_lines(
+            question, 
+            documents,
+            metadatas,
+        )
         candidate_lines = candidate_lines[: self.settings.reranker_candidate_lines]
 
         selected_lines = self.rerank_lines(question, candidate_lines)
-        context = "\n".join(selected_lines)
+        context = "\n".join(line.text for line in selected_lines)
 
         if not context:
             context = select_relevant_lines(
@@ -266,4 +332,12 @@ class Retriever:
                 documents,
                 self.settings.max_context_lines
             )
-        return context, selected_lines, documents, distances
+            fallback_metadata = metadatas[0] if metadatas else {}
+            selected_lines = [
+                RetrievedLine(
+                    text=line,
+                    metadata=fallback_metadata,
+                )
+                for line in context.splitlines()
+            ]
+        return context, selected_lines, documents, distances, metadatas
