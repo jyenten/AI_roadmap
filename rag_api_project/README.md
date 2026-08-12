@@ -215,6 +215,19 @@ The API can also be built and run with Docker.
 
 The Docker image contains the application code and Python dependencies. Runtime data such as the ChromaDB database, PDF files, `.env`, and Hugging Face model cache are kept outside the image and mounted as volumes.
 
+### Run with Docker Compose
+
+Instead of running the long `docker run` command manually, the API can also be started with Docker Compose:
+
+```bash
+docker compose up --build
+
+CTRL+C
+
+docker compose down
+
+
+
 ### Build the image
 
 ```bash
