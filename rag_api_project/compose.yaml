@@ -1,0 +1,10 @@
+services:
+  api:
+    build: .
+    image: rag-api
+    container_name: rag-api-container
+    ports:
+      - "8001:8000"
+    volumes:
+      - ./chroma_db:/app/chroma_db
+      - ./.cache/huggingface:/app/.cache/huggingface
