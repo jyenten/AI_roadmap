@@ -207,3 +207,80 @@ Planned next steps:
 This project is currently a working educational prototype.
 
 The main RAG API pipeline is functional, including retrieval, reranking, context selection, rule-based answers, lazy-loaded fallback generation, and a basic regression test script.
+
+
+## Docker
+
+The API can also be built and run with Docker.
+
+The Docker image contains the application code and Python dependencies. Runtime data such as the ChromaDB database, PDF files, `.env`, and Hugging Face model cache are kept outside the image and mounted as volumes.
+
+### Build the image
+
+```bash
+docker build -t rag-api .
+```
+
+### Run the API
+
+On Windows Command Prompt:
+
+```cmd
+docker run --rm -p 8001:8000 -v "%cd%\chroma_db:/app/chroma_db" -v "%cd%\.cache\huggingface:/app/.cache/huggingface" --name rag-api-container rag-api
+```
+
+The API will be available at:
+
+```text
+http://127.0.0.1:8001
+```
+
+The container exposes port `8000` internally, while the host machine uses port `8001`.
+
+### Test the Docker container
+
+Health check:
+
+```bash
+curl http://127.0.0.1:8001/health
+```
+
+Stats endpoint:
+
+```bash
+curl http://127.0.0.1:8001/stats
+```
+
+Ask endpoint:
+
+```bash
+curl -X POST http://127.0.0.1:8001/ask -H "Content-Type: application/json" -d "{\"question\":\"How do you enable OSPF routing?\"}"
+```
+
+The `/stats` endpoint should show a non-zero chunk count if the local `chroma_db` volume is mounted correctly.
+
+Example:
+
+```json
+{
+  "app_name": "RAG API",
+  "environment": "development",
+  "collection_name": "ospf",
+  "chunks": 1136,
+  "retrieval_results": 8,
+  "returned_sources": 3
+}
+```
+
+### Runtime data
+
+The following paths are intentionally not copied into the Docker image:
+
+```text
+data/
+chroma_db/
+.env
+.cache/
+```
+
+They are ignored because they are local runtime data, not application source code.
