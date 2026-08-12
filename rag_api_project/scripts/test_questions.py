@@ -1,7 +1,9 @@
 from dataclasses import dataclass
+from pydantic import ValidationError
 
 from app.config import get_settings
 from app.rag import RAGService
+from app.schemas import QuestionRequest
 
 DIRTY_TEXT_MARKERS = {
     "process-idStep",
@@ -127,14 +129,44 @@ def check_case(service: RAGService, case: EvalCase) -> bool:
     print(f"PASS: {case.question}")
     return True
 
+def check_question_validation() -> bool:
+    failures: list[str] = []
+
+    try:
+        QuestionRequest(question="      ")
+        failures.append("blank question was accepted")
+    except ValidationError:
+        pass
+
+    request = QuestionRequest(
+        question= "    How do you enable OSPF routing?  "
+    )
+
+    if request.question != "How do you enable OSPF routing?":
+        failures.append("question whitespace was not stripped")
+
+    if failures:
+        print("FAIL: QuestionRequest validation")
+        for failure in failures:
+            print(f"-{failure}")
+        print()
+        return False
+
+    print("PASS: QuestionRequest validation")
+    return True
+
 def main() -> None:
     settings = get_settings()
     service = RAGService(settings)
 
     results = [
+        check_question_validation()
+    ]
+
+    results.extend(
         check_case(service, case)
         for case in EVAL_CASES
-    ]
+    )
 
     passed = sum(results)
     total = len(results)
