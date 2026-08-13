@@ -47,6 +47,16 @@ def health() -> dict[str, str]:
         "environment": settings.environment,
     }
 
+@app.get("/ready")
+def ready() -> dict[str, str | int]:
+    rag_service = require_rag_service()
+
+    return{
+        "status": "ready",
+        "collection_name": settings.collection_name,
+        "chunks": rag_service.retriever.collection.count(),
+    }
+
 @app.get("/stats")
 def stats() -> dict[str, str | int]:
     rag_service = require_rag_service()
