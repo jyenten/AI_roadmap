@@ -297,3 +297,21 @@ chroma_db/
 ```
 
 They are ignored because they are local runtime data, not application source code.
+
+## Testing
+
+The project includes two lightweight test scripts:
+
+- `scripts/test_questions.py`
+- `scripts/test_api.py`
+
+### RAG evaluation
+
+Run: `python -m scripts.test_questions`
+
+### API smoke tests
+
+Run: `python -m scripts.test_api`
+
+Expected result for both scripts: `RESULT: 5/5 passed`
+
