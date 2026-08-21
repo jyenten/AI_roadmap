@@ -7,3 +7,4 @@ torch
 pypdf
 python-dotenv
 pydantic-settings
+pytest
