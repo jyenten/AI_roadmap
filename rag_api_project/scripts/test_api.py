@@ -12,7 +12,7 @@ def check_health() -> bool:
 
     if response.status_code != 200:
         print("FAIL: /health")
-        print(f" - expected status 200, got {response.statud_code}")
+        print(f" - expected status 200, got {response.status_code}")
         print(response.text)
         print()
         return False
@@ -108,7 +108,7 @@ def check_stats() -> bool:
     if failures:
         print("FAIL: /stats")
         for failure in failures:
-            print(f" - {failures}")
+            print(f" - {failure}")
         print()
         return False
 
@@ -125,7 +125,7 @@ def check_ask() -> bool:
 
     if response.status_code != 200:
         print("FAIL: /ask")
-        print(f" - expected status 200, got{response.status_code} ")
+        print(f" - expected status 200, got {response.status_code}")
         print(response.text)
         print()
         return False
@@ -140,7 +140,7 @@ def check_ask() -> bool:
         failures.append("answer does not mention router ospf")
 
     if "global configuration mode" not in answer.lower():
-        failures.append("answer does not mention global cofiguration mode")
+        failures.append("answer does not mention global configuration mode")
 
     context_lines = data.get("context_lines")
     if not isinstance(context_lines, list) or not context_lines:
@@ -161,15 +161,15 @@ def check_ask() -> bool:
         if first_source.get("page") is None:
             failures.append("first source missing page")
 
-        if failures:
-            print("FAIL: /ask")
-            for failure in failures:
-                print(f" - {failure}")
-            print()
-            return False
+    if failures:
+        print("FAIL: /ask")
+        for failure in failures:
+            print(f" - {failure}")
+        print()
+        return False
 
-        print("PASS: /ask")
-        return True
+    print("PASS: /ask")
+    return True
 
 def check_blank_question() -> bool:
     response = client.post(
