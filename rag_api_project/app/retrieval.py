@@ -24,6 +24,24 @@ def extract_keywords(question: str) -> list[str]:
         word for word in words
         if word not in STOPWORDS
     ]
+
+def lexical_overlap_score(
+        question: str,
+        line: str,
+
+) -> int:
+    question_words = set(extract_keywords(question))
+
+    line_words = set(
+        re.findall(
+            r"\b[a-zA-Z0-9]+\b",
+            line.lower(),
+        )
+    )
+
+    return len(question_words & line_words)
+
+
 def expand_question_for_search(question: str) -> str:
     question_lower = question.lower()
 
@@ -106,7 +124,10 @@ def score_line(question: str, line: str) -> int:
     score = 0
 
     for keyword in keywords:
-        if keyword in line_lower:
+        if re.search(
+            rf"\b{re.escape(keyword)}\b",
+            line_lower,
+        ):
             score += 1
     if "router id" in question_lower:
         if "ospf uses the largest ip address" in line_lower:
@@ -127,7 +148,10 @@ def score_line(question: str, line: str) -> int:
     if "enable" in question_lower and "ospf" in question_lower:
         if "router ospf process-id" in line_lower:
             score +=25
-        if "device(config)# router ospf" in line_lower:
+        if re.search(
+            r"device\(config\)#\s+router\s+ospf(?:\s|$)",
+            line_lower,
+        ):
             score += 20
         if "enables ospf routing" in line_lower:
             score += 15
