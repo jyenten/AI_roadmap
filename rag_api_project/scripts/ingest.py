@@ -1,5 +1,4 @@
 import re
-import textwrap
 from pathlib import Path
 
 import chromadb
@@ -8,7 +7,41 @@ from pypdf import PdfReader
 
 from app.config import get_settings
 
+def protect_urls(
+    text: str,
+) -> tuple[str, dict[str, str]]:
+    replacements: dict[str, str] = {}
+
+    def replace_url(match: re.Match[str]) -> str:
+        placeholder = f"__URL_{len(replacements)}__"
+        replacements[placeholder] = match.group(0)
+
+        return placeholder
+
+    protected_text = re.sub(
+        r"https?://[^\s]+",
+        replace_url,
+        text,
+    )
+
+    return protected_text, replacements
+
+
+def restore_technical_tokens(
+    text: str,
+    replacements: dict[str, str],
+) -> str:
+    for placeholder, original in replacements.items():
+        text = text.replace(
+            placeholder,
+            original,
+        )
+
+    return text
+
+
 def clean_pdf_text(text: str) -> str:
+    text, protected_tokens = protect_urls(text)
     replacements = {
         "\u00a0": " ",
         "\u00e2\u20ac\u015b": '"',
@@ -25,14 +58,52 @@ def clean_pdf_text(text: str) -> str:
     for old, new in replacements.items():
         text = text.replace(old, new)
 
-    text = re.sub(r"(?<=[a-z])(?=Step\s+\d+\b)", " ", text)
-    text = re.sub(r"(?<=[a-z])(?=Example:)", " ", text)
-    text = re.sub(r"(?<=[a-z])(?=Router[#>(])", " ", text)
-    text = re.sub(r"(?<=[a-z])(?=Device[#>(])", " ", text)
-    text = re.sub(r"(?<=[.!?])(?=\S)", " ", text)
+    text = re.sub(
+        r"(?<=[a-z])(?=Step\s+\d+\b)",
+        " ",
+        text,
+    )
+    text = re.sub(
+        r"(?<=[a-z])(?=Example:)",
+        " ",
+        text,
+    )
+    text = re.sub(
+        r"(?<=[a-z])(?=Router[#>(])",
+        " ",
+        text,
+    )
+    text = re.sub(
+        r"(?<=[a-z])(?=Device[#>(])",
+        " ",
+        text,
+    )
+    text = re.sub(
+        r"(?<=[a-z])\.(?=[A-Z][a-z])",
+        ". ",
+        text,
+    )
+    text = re.sub(
+        r"(?<=[!?])(?=[A-Z][a-z]+(?:\s|$))",
+        " ",
+        text,
+    )
+    text = re.sub(
+        r"[\t]+",
+        " ",
+        text,
+    )
+    text = re.sub(
+        r"\n{3,}", "\n\n",
+        text,
+    )
 
-    text = re.sub(r"[\t]+", " ", text)
-    text = re.sub(r"\n{3,}", "n\n", text)
+
+    text = restore_technical_tokens(
+        text,
+        protected_tokens,
+    )
+
 
     return text.strip()
 
@@ -61,7 +132,127 @@ def read_pdf_pages(pdf_path: Path) -> list[tuple [int, str]]:
 
     return pages
 
-def split_text(text: str, chunk_size: int = 1000, overlap: int = 150) -> list[str]:
+def get_overlap_text(
+    text: str,
+    overlap: int,
+) -> str:
+    if overlap <= 0 or not text:
+        return ""
+
+    if len(text) <= overlap:
+        return text
+
+    overlap_text = text[-overlap:]
+
+    first_space = overlap_text.find(" ")
+
+    if first_space != -1:
+        overlap_text = overlap_text[first_space + 1:]
+
+    return overlap_text.strip()
+
+
+def validate_chunk_params(
+    chunk_size: int,
+    overlap: int,
+) -> None:
+    if chunk_size <= 0:
+        raise ValueError(
+            "chunk_size must be greater than 0"
+        )
+
+    if overlap < 0:
+        raise ValueError(
+            "overlap must not be negative"
+        )
+
+    if overlap >= chunk_size:
+        raise ValueError(
+            "overlap must be smaller than chunk_size"
+        )
+
+
+def split_long_text(
+    text: str,
+    chunk_size: int,
+    overlap: int,
+) -> list[str]:
+    validate_chunk_params(
+        chunk_size,
+        overlap,
+    )
+    words = text.split()
+
+    if not words:
+        return []
+
+    chunks: list[str] = []
+    start = 0
+
+    while start < len(words):
+        end = start
+        current_words: list[str] = []
+        current_length = 0
+
+        while end < len(words):
+            word = words[end]
+
+            separator_length = (
+                1 if current_words else 0
+            )
+
+            next_length = (
+                current_length
+                + separator_length
+                + len(word)
+            )
+
+            if next_length > chunk_size:
+                break
+
+            current_words.append(word)
+            current_length = next_length
+            end += 1
+
+        if not current_words:
+            chunks.append(words[start])
+            start += 1
+            continue
+
+        chunk = " ".join(current_words)
+        chunks.append(chunk)
+
+        if end >= len(words):
+            break
+
+        overlap_text = get_overlap_text(
+            chunk,
+            overlap,
+        )
+
+        overlap_word_count = len(
+            overlap_text.split()
+        )
+
+        new_start = end - overlap_word_count
+
+        if new_start <= start:
+            new_start = start + 1
+
+        start = new_start
+
+    return chunks
+
+
+def split_text(
+    text: str,
+    chunk_size: int = 1000,
+    overlap: int = 150,
+) -> list[str]:
+    validate_chunk_params(
+        chunk_size,
+        overlap,
+    )
     units = [
         unit.strip()
         for unit in re.split(r"\n[ \t]*\n|(?<=[.!?])\s+", text)
@@ -78,11 +269,10 @@ def split_text(text: str, chunk_size: int = 1000, overlap: int = 150) -> list[st
                 current = ""
 
             chunks.extend(
-                textwrap.wrap(
+                split_long_text(
                     unit,
-                    width=chunk_size,
-                    break_long_words=False,
-                    break_on_hyphens=False,
+                    chunk_size,
+                    overlap,
                 )
             )
             continue
@@ -96,7 +286,19 @@ def split_text(text: str, chunk_size: int = 1000, overlap: int = 150) -> list[st
             if current:
                 chunks.append(current)
 
-            current = unit
+                overlap_text = get_overlap_text(
+                    current,
+                    overlap,
+                )
+
+                candidate = f"{overlap_text}\n\n{unit}".strip()
+
+                if len(candidate) <= chunk_size:
+                    current = candidate
+                else:
+                    current = unit
+            else:
+                current = unit
 
     if current:
         chunks.append(current)
@@ -183,4 +385,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
