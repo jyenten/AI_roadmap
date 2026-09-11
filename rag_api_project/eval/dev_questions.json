@@ -1,0 +1,63 @@
+[
+  {
+    "id": "ospf_dev_001",
+    "topic": "flooding-reduction",
+    "question": "What happens to LSAs when OSPF flooding reduction is enabled?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_OSPF_Configuration_Guide_2026.pdf",
+        "pages": [36],
+        "contains_any": [
+          "devices set the DoNotAge (DNA) bit in their LSAs",
+          "LSAs marked with the DNA bit do not age out"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ospf_dev_002",
+    "topic": "passive-interface",
+    "question": "What command is used to configure a passive interface in OSPF?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_OSPF_Configuration_Guide_2026.pdf",
+        "pages": [28],
+        "contains_any": [
+          "passive-interface type number",
+          "Device(config)# passive-interface gigabitethernet 1/0/6"
+        ]
+      },
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [447, 448],
+        "contains_any": [
+          "passive-interface router configuration command",
+          "passive-interface interface-id"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ospf_dev_003",
+    "topic": "virtual-link",
+    "question": "What is the purpose of an OSPF virtual link?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_OSPF_Configuration_Guide_2026.pdf",
+        "pages": [26],
+        "contains_any": [
+          "Maintains backbone continuity in OSPF",
+          "This establishes a logical connection between two ABRs through a non-backbone"
+        ]
+      },
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [149],
+        "contains_any": [
+          "all areas must be connected to a backbone area",
+          "You can establish a virtual link in case of a backbone-continuity break"
+        ]
+      }
+    ]
+  }
+]

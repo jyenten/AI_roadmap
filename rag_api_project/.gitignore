@@ -30,3 +30,6 @@ data/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Evaluation runtime results
+eval/results/
