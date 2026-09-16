@@ -59,5 +59,20 @@
         ]
       }
     ]
+  },
+  {
+    "id": "ospf_dev_004",
+    "topic": "cost-calculation",
+    "question": "How does OSPF calculate the cost of an interface?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_OSPF_Configuration_Guide_2026.pdf",
+        "pages": [26],
+        "contains_any": [
+          "OSPF calculates the cost of an interface based on its bandwidth using the formula",
+          "cost = reference_bandwidth / interface_bandwidth"
+        ]
+      }
+    ]
   }
 ]
