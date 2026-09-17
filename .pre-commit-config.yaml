@@ -1,0 +1,9 @@
+repos:
+  - repo: local
+    hooks:
+      - id: project-git-check
+        name: Project git check
+        entry: python rag_api_project/scripts/git_check.py
+        language: system
+        pass_filenames: false
+        stages: [pre-push]

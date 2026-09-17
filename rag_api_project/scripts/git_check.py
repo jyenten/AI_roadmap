@@ -1,55 +1,49 @@
+from pathlib import Path
 import subprocess
 import sys
 
-def run_command(
-    command: list[str],
-    description: str,
-) -> bool:
-    print()
-    print("=" * 80)
-    print(description)
-    print("=" * 80)
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+
+def run(command: list[str]) -> None:
     result = subprocess.run(
         command,
-        text=True
+        cwd=PROJECT_ROOT,
     )
 
-    return result.returncode == 0
+    if result.returncode != 0:
+        raise SystemExit(result.returncode)
+
 
 def main() -> None:
-    checks = [
-        (
-            [
-                "git",
-                "diff",
-                "--cached",
-                "--check",
-            ],
-            "Checking staged diff...",
-        ),
-        (
-            [
-                sys.executable,
-                "-m",
-                "pytest",
-                "tests",
-                "-q",
-            ],
-            "Running tests...",
-        ),
-    ]
+    print("=" * 80)
+    print("CHECKING STAGED DIFF")
+    print("=" * 80)
 
-    for command, description in checks:
-        success = run_command(
-            command,
-            description,
-        )
+    run(
+        [
+            "git",
+            "diff",
+            "--cached",
+            "--check",
+        ]
+    )
 
-        if not success:
-            print()
-            print("COMMIT CHECK FAILED")
-            sys.exit(1)
+    print()
+    print("=" * 80)
+    print("RUNNING TESTS")
+    print("=" * 80)
+
+    run(
+        [
+            sys.executable,
+            "-m",
+            "pytest",
+            "tests",
+            "-q",
+        ]
+    )
 
     print()
     print("=" * 80)
