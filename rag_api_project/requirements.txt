@@ -8,3 +8,4 @@ pypdf
 python-dotenv
 pydantic-settings
 pytest
+rank-bm25
