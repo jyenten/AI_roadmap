@@ -135,6 +135,12 @@ def _parse_run(
                 )
                 for question in raw_questions
             ),
+            sample_seed=raw_run.get(
+                "sample_seed"
+            ),
+            sample_size=raw_run.get(
+                "sample_size"
+            ),
         )
     except (
         KeyError,

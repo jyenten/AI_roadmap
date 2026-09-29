@@ -49,3 +49,18 @@ class EvaluationRun:
     retrieval_config: RetrievalConfig
     metrics: EvaluationMetrics
     questions: tuple[QuestionResult, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class EvaluationRun:
+    timestamp: str
+    git_commit: str
+    git_dirty: bool
+    dataset_hash: str
+    dataset: str
+    question_count: int
+    retrieval_config: RetrievalConfig
+    metrics: EvaluationMetrics
+    questions: tuple[QuestionResult, ...]
+    sample_seed: int | None = None
+    sample_size: int | None = None

@@ -17,6 +17,9 @@ from evaluation.models import (
 
 def build_run(
     timestamp: str,
+    *,
+    sample_seed: int | None = None,
+    sample_size: int | None = None,
 ) -> EvaluationRun:
     return EvaluationRun(
         timestamp=timestamp,
@@ -44,6 +47,8 @@ def build_run(
                 reciprocal_rank=1.0,
             ),
         ),
+        sample_seed=sample_seed,
+        sample_size=sample_size,
     )
 
 
@@ -126,3 +131,25 @@ def test_load_history_rejects_invalid_json(
         match="line 2",
     ):
         load_history(path)
+
+
+def test_history_preserves_random_metadata(
+    tmp_path,
+) -> None:
+    path = tmp_path / "random_runs.jsonl"
+
+    run = build_run(
+        "2026-09-29T18:00:00+02:00",
+        sample_seed=42,
+        sample_size=5,
+    )
+
+    save_history(
+        path,
+        (run,),
+    )
+
+    loaded = load_history(path)
+
+    assert loaded[0].sample_seed == 42
+    assert loaded[0].sample_size == 5

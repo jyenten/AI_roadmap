@@ -82,6 +82,8 @@ def evaluate_dataset(
     git_commit: str,
     git_dirty: bool,
     timestamp: str | None = None,
+    sample_seed: int | None = None,
+    sample_size: int | None = None,
 ) -> EvaluationRun:
     question_results = tuple(
         evaluate_question(
@@ -111,6 +113,8 @@ def evaluate_dataset(
         retrieval_config=retrieval_config,
         metrics=metrics,
         questions=question_results,
+        sample_seed=sample_seed,
+        sample_size=sample_size,
     )
 
 
