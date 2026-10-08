@@ -1,0 +1,82 @@
+[
+  {
+    "id": "ipv6_random_003",
+    "topic": "ipv6-dns-aaaa",
+    "question": "Which DNS resource record type supports IPv6 addresses and is equivalent to an IPv4 A record?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          20
+        ],
+        "contains_any": [
+          "The DNS AAAA resource record types support IPv6 addresses and are equivalent to an A\naddress record in IPv4."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "glbp_random_001",
+    "topic": "glbp-md5-hash-mismatch",
+    "question": "What does GLBP MD5 authentication do with an incoming packet whose hash does not match the locally generated hash?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          95
+        ],
+        "contains_any": [
+          "A keyed hash of an incoming packet is generated and, if the hash within the\nincoming packet does not match the generated hash, the packet is ignored."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bgp_random_003",
+    "topic": "bgp-peer-group-purpose",
+    "question": "Why group BGP neighbors with the same update policies into a peer group?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          285
+        ],
+        "contains_any": [
+          "Neighbors with the same update policies can be\ngrouped into peer groups to simplify configuration and to make updating more efficient."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "eigrp_random_002",
+    "topic": "eigrp-nsf-restart-signaling",
+    "question": "Which EIGRP packet-header bit does a newly active switch use to signal an NSF restart and prevent neighbors from resetting the adjacency?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          233
+        ],
+        "contains_any": [
+          "To prevent an adjacency reset by the neighbors, the new active switch uses a new Restart (RS) bit in the\nEIGRP packet header to show the restart."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ospf_random_001",
+    "topic": "ospf-link-local-signaling-packets",
+    "question": "Which OSPF packet types carry additional data in a dedicated link-local signaling TLV block?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_OSPF_Configuration_Guide_2026.pdf",
+        "pages": [
+          74
+        ],
+        "contains_any": [
+          "Link-local signaling provides a mechanism to append additional data to OSPF hello and database description\npackets by using a dedicated link-local signaling data block (a TLV structure)."
+        ]
+      }
+    ]
+  }
+]

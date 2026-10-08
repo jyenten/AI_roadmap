@@ -1,0 +1,82 @@
+[
+  {
+    "id": "bfd_random_001",
+    "topic": "bfd-failure-detection-routing-response",
+    "question": "After BFD detects a forwarding-path failure, which component must act to bypass the failed peer?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          9
+        ],
+        "contains_any": [
+          "BFD is a forwarding path failure detection protocol. BFD detects a failure, but the routing protocol must\nact to bypass a failed peer."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "msdp_random_001",
+    "topic": "msdp-source-active-message-contents",
+    "question": "What information does an MSDP source-active (SA) message identify?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          58
+        ],
+        "contains_any": [
+          "The SA message identifies the source,\nthe group the source is sending to, and the address of the RP or the originator ID (the IP address of the interface\nused as the RP address), if configured."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hsrp_random_001",
+    "topic": "hsrp-active-router-failover",
+    "question": "What happens to control of an HSRP group's MAC and IP addresses when the designated active router fails?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          112
+        ],
+        "contains_any": [
+          "HSRP detects when the designated active router fails, and a selected standby router assumes control of the\nHot Standby group's MAC and IP addresses."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "wccp_random_001",
+    "topic": "wccp-content-engine-cache-miss",
+    "question": "What does a WCCP content engine do when requested information is absent from its local cache?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          181
+        ],
+        "contains_any": [
+          "If the requested information\nis not present, the content engine issues its own request to the originally targeted server to get the required\ninformation."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tracking_random_001",
+    "topic": "object-tracking-interface-ip-routing-state",
+    "question": "Which three conditions must be met for a tracked interface IP routing state to be up?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          202
+        ],
+        "contains_any": [
+          "When you track the IP\nrouting state, these three conditions are required for the object to be up:\n• IP routing must be enabled and active on the interface.\n• The interface line-protocol state must be up.\n• The interface IP address must be known."
+        ]
+      }
+    ]
+  }
+]

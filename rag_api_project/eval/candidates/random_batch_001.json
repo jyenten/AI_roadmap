@@ -1,0 +1,82 @@
+[
+  {
+    "id": "rip_random_001",
+    "topic": "rip-split-horizon",
+    "question": "On which interfaces does RIP split horizon prevent a router from advertising learned route information?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          136
+        ],
+        "contains_any": [
+          "Split horizon blocks information about\nroutes from being advertised by a router on any interface from which that information originated."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "eigrp_random_001",
+    "topic": "eigrp-stub-query-suppression",
+    "question": "How does an EIGRP neighbor handle route queries to a device after learning that the device is a stub?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          234
+        ],
+        "contains_any": [
+          "Any neighbor that receives a packet informing it of the stub status will not query the stub device for any routes,\nand a device that has a stub peer will not query that peer."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bgp_random_002",
+    "topic": "bgp-dampening-reuse-limit",
+    "question": "When is a suppressed BGP route that is up advertised again under route dampening?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          286
+        ],
+        "contains_any": [
+          "If the penalty is less than the reuse limit, a suppressed route that is up is advertised again."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ipv6_random_002",
+    "topic": "ipv6-link-local-forwarding",
+    "question": "Do IPv6 routers forward packets with link-local source or destination addresses to other links?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          20
+        ],
+        "contains_any": [
+          "IPv6 routers do not forward packets with link-local source or destination addresses to other links."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dhcp_random_002",
+    "topic": "dhcp-snooping-binding-file-checksum",
+    "question": "What does the switch use to verify entries when it reads the DHCP snooping binding file?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          50
+        ],
+        "contains_any": [
+          "Each entry in the file is tagged with a checksum value that the switch uses to verify the entries when it reads\nthe file."
+        ]
+      }
+    ]
+  }
+]

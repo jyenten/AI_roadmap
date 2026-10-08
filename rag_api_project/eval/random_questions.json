@@ -1,0 +1,402 @@
+[
+  {
+    "id": "bgp_random_001",
+    "topic": "bgp-med",
+    "question": "When BGP compares routes from the same neighboring AS, which MED value is preferred?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          283
+        ],
+        "contains_any": [
+          "Prefer the route with the lowest multi-exit discriminator (MED) metric attribute if the neighboring AS is the same for all routes considered"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dhcp_random_001",
+    "topic": "dhcp-address-binding",
+    "question": "What does an address binding represent in the Cisco IOS DHCP server database?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          49
+        ],
+        "contains_any": [
+          "An address binding is a mapping between an IP address and a MAC address of a host in the Cisco IOS DHCP server database"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ipv6_random_001",
+    "topic": "ipv6-ra-guard",
+    "question": "What does IPv6 RA Guard do with unwanted or rogue Router Advertisement packets from clients?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          27
+        ],
+        "contains_any": [
+          "RA guard increases the security of the IPv6 network by dropping the unwanted or rogue RA packets that come from clients"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nat_random_001",
+    "topic": "dynamic-nat",
+    "question": "How does dynamic NAT obtain global addresses for translating unregistered IP addresses?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          142
+        ],
+        "contains_any": [
+          "Dynamic address translation (dynamic NAT)—Maps unregistered IP addresses to registered IP addresses from a pool of registered IP addresses"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "routing_random_001",
+    "topic": "route-redistribution",
+    "question": "What does route redistribution do between routing protocols?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          442
+        ],
+        "contains_any": [
+          "Redistributes routes from one routing protocol to another routing protocol"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rip_random_001",
+    "topic": "rip-split-horizon",
+    "question": "On which interfaces does RIP split horizon prevent a router from advertising learned route information?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          136
+        ],
+        "contains_any": [
+          "Split horizon blocks information about\nroutes from being advertised by a router on any interface from which that information originated."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "eigrp_random_001",
+    "topic": "eigrp-stub-query-suppression",
+    "question": "How does an EIGRP neighbor handle route queries to a device after learning that the device is a stub?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          234
+        ],
+        "contains_any": [
+          "Any neighbor that receives a packet informing it of the stub status will not query the stub device for any routes,\nand a device that has a stub peer will not query that peer."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bgp_random_002",
+    "topic": "bgp-dampening-reuse-limit",
+    "question": "When is a suppressed BGP route that is up advertised again under route dampening?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          286
+        ],
+        "contains_any": [
+          "If the penalty is less than the reuse limit, a suppressed route that is up is advertised again."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ipv6_random_002",
+    "topic": "ipv6-link-local-forwarding",
+    "question": "Do IPv6 routers forward packets with link-local source or destination addresses to other links?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          20
+        ],
+        "contains_any": [
+          "IPv6 routers do not forward packets with link-local source or destination addresses to other links."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dhcp_random_002",
+    "topic": "dhcp-snooping-binding-file-checksum",
+    "question": "What does the switch use to verify entries when it reads the DHCP snooping binding file?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          50
+        ],
+        "contains_any": [
+          "Each entry in the file is tagged with a checksum value that the switch uses to verify the entries when it reads\nthe file."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ipv6_random_003",
+    "topic": "ipv6-dns-aaaa",
+    "question": "Which DNS resource record type supports IPv6 addresses and is equivalent to an IPv4 A record?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          20
+        ],
+        "contains_any": [
+          "The DNS AAAA resource record types support IPv6 addresses and are equivalent to an A\naddress record in IPv4."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "glbp_random_001",
+    "topic": "glbp-md5-hash-mismatch",
+    "question": "What does GLBP MD5 authentication do with an incoming packet whose hash does not match the locally generated hash?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          95
+        ],
+        "contains_any": [
+          "A keyed hash of an incoming packet is generated and, if the hash within the\nincoming packet does not match the generated hash, the packet is ignored."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bgp_random_003",
+    "topic": "bgp-peer-group-purpose",
+    "question": "Why group BGP neighbors with the same update policies into a peer group?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          285
+        ],
+        "contains_any": [
+          "Neighbors with the same update policies can be\ngrouped into peer groups to simplify configuration and to make updating more efficient."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "eigrp_random_002",
+    "topic": "eigrp-nsf-restart-signaling",
+    "question": "Which EIGRP packet-header bit does a newly active switch use to signal an NSF restart and prevent neighbors from resetting the adjacency?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          233
+        ],
+        "contains_any": [
+          "To prevent an adjacency reset by the neighbors, the new active switch uses a new Restart (RS) bit in the\nEIGRP packet header to show the restart."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ospf_random_001",
+    "topic": "ospf-link-local-signaling-packets",
+    "question": "Which OSPF packet types carry additional data in a dedicated link-local signaling TLV block?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_OSPF_Configuration_Guide_2026.pdf",
+        "pages": [
+          74
+        ],
+        "contains_any": [
+          "Link-local signaling provides a mechanism to append additional data to OSPF hello and database description\npackets by using a dedicated link-local signaling data block (a TLV structure)."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "routing_random_002",
+    "topic": "ipv4-classless-supernet-forwarding",
+    "question": "With classless routing enabled, where does a router forward a packet for a subnet of a network with no default route?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          84
+        ],
+        "contains_any": [
+          "With classless\nrouting, if a router receives packets for a subnet of a network with no default route, the router forwards the\npacket to the best supernet route."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rip_random_002",
+    "topic": "rip-periodic-update-interval",
+    "question": "How often does the switch send routing information updates when using RIP?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          135
+        ],
+        "contains_any": [
+          "Using RIP, the switch sends routing information updates (advertisements) every 30 seconds."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "eigrp_random_003",
+    "topic": "eigrp-reliable-transport-delivery",
+    "question": "What delivery guarantees does the EIGRP reliable transport protocol provide for EIGRP packets sent to neighbors?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          232
+        ],
+        "contains_any": [
+          "The reliable transport protocol is responsible for guaranteed, ordered delivery of EIGRP packets to all\nneighbors."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nat_random_002",
+    "topic": "static-nat-fixed-external-reachability",
+    "question": "When is static inside source NAT useful for making an inside host accessible from outside?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          142
+        ],
+        "contains_any": [
+          "Static translation is useful when a host on the inside must be accessible by a fixed address from\nthe outside."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tunneling_random_001",
+    "topic": "overlay-tunnel-mtu-overhead",
+    "question": "According to the guide, by how many octets do overlay tunnels reduce an interface MTU when the basic IPv4 header has no optional fields?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          88
+        ],
+        "contains_any": [
+          "Overlay tunnels reduce the maximum transmission unit (MTU) of an interface by 20 octets (assuming that\nthe basic IPv4 packet header does not contain optional fields)."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bfd_random_001",
+    "topic": "bfd-failure-detection-routing-response",
+    "question": "After BFD detects a forwarding-path failure, which component must act to bypass the failed peer?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          9
+        ],
+        "contains_any": [
+          "BFD is a forwarding path failure detection protocol. BFD detects a failure, but the routing protocol must\nact to bypass a failed peer."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "msdp_random_001",
+    "topic": "msdp-source-active-message-contents",
+    "question": "What information does an MSDP source-active (SA) message identify?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          58
+        ],
+        "contains_any": [
+          "The SA message identifies the source,\nthe group the source is sending to, and the address of the RP or the originator ID (the IP address of the interface\nused as the RP address), if configured."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "hsrp_random_001",
+    "topic": "hsrp-active-router-failover",
+    "question": "What happens to control of an HSRP group's MAC and IP addresses when the designated active router fails?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          112
+        ],
+        "contains_any": [
+          "HSRP detects when the designated active router fails, and a selected standby router assumes control of the\nHot Standby group's MAC and IP addresses."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "wccp_random_001",
+    "topic": "wccp-content-engine-cache-miss",
+    "question": "What does a WCCP content engine do when requested information is absent from its local cache?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          181
+        ],
+        "contains_any": [
+          "If the requested information\nis not present, the content engine issues its own request to the originally targeted server to get the required\ninformation."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tracking_random_001",
+    "topic": "object-tracking-interface-ip-routing-state",
+    "question": "Which three conditions must be met for a tracked interface IP routing state to be up?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          202
+        ],
+        "contains_any": [
+          "When you track the IP\nrouting state, these three conditions are required for the object to be up:\n• IP routing must be enabled and active on the interface.\n• The interface line-protocol state must be up.\n• The interface IP address must be known."
+        ]
+      }
+    ]
+  }
+]

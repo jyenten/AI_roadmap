@@ -1,0 +1,82 @@
+[
+  {
+    "id": "arp_test_001",
+    "topic": "proxy-arp-reply-address",
+    "question": "A host asks for the MAC address of a host on another subnet. A router using proxy ARP has the best route to that destination; whose MAC address does it return?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          87
+        ],
+        "contains_any": [
+          "If a device receives an ARP\nrequest for a host that is not on the same network as the sender, the device evaluates whether it has the best\nroute to that host. If it does, it sends an ARP reply packet with its own Ethernet MAC address, and the host\nthat sent the request sends the packet to the device, which forwards it to the intended host."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "routing_test_002",
+    "topic": "irdp-default-router-reselection",
+    "question": "A device using ICMP router discovery learns of a router with a higher priority than its current default router. How does its default-router selection change?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          87
+        ],
+        "contains_any": [
+          "Each device that is discovered becomes a candidate for the default router, and a new highest-priority router\nis selected when a higher priority router is discovered, when the current default router is declared down, or\nwhen a TCP connection is about to time out because of excessive retransmissions."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dhcp_test_002",
+    "topic": "dhcp-port-based-address-allocation",
+    "question": "An administrator wants a replacement device plugged into the same Ethernet switch port to receive the same IP address despite having a different client identifier or MAC address. Which DHCP feature supports this?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          51
+        ],
+        "contains_any": [
+          "DHCP server port-based address allocation is a feature that enables DHCP to maintain the same IP address\non an Ethernet switch port regardless of the attached device client identifier or client hardware address."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dhcpv6_test_001",
+    "topic": "dhcpv6-client-link-layer-option-handling",
+    "question": "A DHCPv6 client receives a message containing the Client Link-Layer Address option used between relays and servers. How must the client handle that option?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          76
+        ],
+        "contains_any": [
+          "The DHCPv6 client must not send the Client\nLink-Layer Address option, and must ignore the Client Link-Layer Address option if received."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "wccp_test_001",
+    "topic": "wccp-closed-service-unavailable-client",
+    "question": "A WCCP service is configured as closed, but no active WCCP client device is available. What happens to packets matching that service?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          184
+        ],
+        "contains_any": [
+          "When a WCCP service is\nconfigured as closed, the packets that fulfill the services, but do not have an active client device, are discarded."
+        ]
+      }
+    ]
+  }
+]

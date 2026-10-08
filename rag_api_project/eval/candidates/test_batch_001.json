@@ -1,0 +1,82 @@
+[
+  {
+    "id": "vrrp_test_001",
+    "topic": "vrrp-equal-priority-election",
+    "question": "A VRRP primary fails while two backups both have priority 100. Which backup takes over?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          171
+        ],
+        "contains_any": [
+          "If devices B and C are both configured with the priority of 100, the virtual device backup\nwith the higher IP address is elected to become the primary virtual device."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "glbp_test_001",
+    "topic": "glbp-tracked-interface-weighting",
+    "question": "A GLBP device is tracking an interface that goes down. How does this failure change the group weighting?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          94
+        ],
+        "contains_any": [
+          "If a tracked interface goes down, the GLBP group weighting is reduced by a specified value."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "msdp_test_001",
+    "topic": "msdp-non-rpf-duplicate-rejection",
+    "question": "An MSDP device receives a duplicate source announcement from a neighbor other than its reverse-path peer toward the originating rendezvous point. How does it handle that announcement?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          58
+        ],
+        "contains_any": [
+          "If the MSDP peer receives the same SA message from a non-RPF peer toward the originating RP, it drops\nthe message."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ospf_test_001",
+    "topic": "ospf-startup-max-metric-timer-expiry",
+    "question": "An OSPF router uses timer-based maximum metrics to discourage transit traffic during startup. What happens to its advertised metrics and forwarding eligibility when the timer expires?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_OSPF_Configuration_Guide_2026.pdf",
+        "pages": [
+          80
+        ],
+        "contains_any": [
+          "After timer expiration,\nthe device advertises normal OSPF metrics, and can be used for forwarding traffic."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "routing_test_001",
+    "topic": "route-map-unconditional-match",
+    "question": "A route-map entry contains set actions but no match statements. Which routes satisfy its selection conditions?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          437
+        ],
+        "contains_any": [
+          "If there are\nno match commands, everything matches."
+        ]
+      }
+    ]
+  }
+]

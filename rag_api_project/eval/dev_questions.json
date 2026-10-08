@@ -74,5 +74,254 @@
         ]
       }
     ]
+  },
+  {
+    "id": "ospf_dev_005",
+    "topic": "router-id",
+    "question": "How does OSPF select the router ID?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [150],
+        "contains_any": [
+          "OSPF uses the highest IP address configured on the interfaces as its router ID",
+          "OSPF automatically prefers a loopback interface over other interfaces, and it chooses the highest IP address among all loopback interfaces"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ospf_dev_006",
+    "topic": "nssa-external-routes",
+    "question": "How does an OSPF NSSA ABR advertise external routes into the backbone?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_OSPF_Configuration_Guide_2026.pdf",
+        "pages": [40],
+        "contains_any": [
+          "NSSA areas use Type-7 LSAs to describe external routes",
+          "The NSSA ABR translates these Type-7 LSAs into Type-5 LSAs (Autonomous System External LSAs) before flooding them into the backbone (Area 0)"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dhcp_dev_001",
+    "topic": "dhcp-relay",
+    "question": "What command specifies the DHCP packet forwarding address on a relay agent?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [53],
+        "contains_any": [
+          "you must configure the switch with the ip helper-address address interface configuration command"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dhcp_dev_002",
+    "topic": "dhcp-option-82",
+    "question": "How can an Option-82-capable DHCP server use the remote ID and circuit ID?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [47],
+        "contains_any": [
+          "If the server is option-82-capable, it can use the remote ID, the circuit ID, or both to assign IP addresses and implement policies"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "routing_dev_001",
+    "topic": "administrative-distance",
+    "question": "What does administrative distance represent in IP routing?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [450],
+        "contains_any": [
+          "An administrative distance is a rating of the trustworthiness of a routing information source"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ipv6_dev_001",
+    "topic": "slaac",
+    "question": "What information from a Router Advertisement does a SLAAC client use to form its IPv6 address?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [24],
+        "contains_any": [
+          "Hosts take the first 64 bits of the IPv6 prefix from the Router Advertisement message"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nat_dev_001",
+    "topic": "nat-inside-source",
+    "question": "What happens to the inside local source address during NAT inside source translation?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [143],
+        "contains_any": [
+          "the packet gets translated to the corresponding inside global address",
+          "The device replaces the inside local source address of host 10.1.1.1 with the inside global address of the translation"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dhcpv6_dev_001",
+    "topic": "dhcpv6-relay-link-address",
+    "question": "How does a DHCPv6 server determine which address pool to use for a relayed client request?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [84],
+        "contains_any": [
+          "the relay includes an address from the client-facing interface (Ethernet 1/0) in the link-address field of a relay-forward message. This address is used by the server to select an address pool"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nat_dev_002",
+    "topic": "pat-overload",
+    "question": "How does PAT distinguish multiple inside hosts that share one global IP address?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [144],
+        "contains_any": [
+          "The TCP port numbers act as differentiators.",
+          "many inside hosts can share the inside global IP address by using many port numbers"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ipv6_dev_002",
+    "topic": "duplicate-address-detection",
+    "question": "What is the purpose of IPv6 Duplicate Address Detection?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [23],
+        "contains_any": [
+          "request to ensure there is no duplicate IP address on the network"
+        ]
+      },
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [24],
+        "contains_any": [
+          "Duplicate Address Detection is performed by IPv6 clients in order to ensure that random addresses that are picked do not collide with other clients"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "routing_dev_002",
+    "topic": "default-route",
+    "question": "Why are default routes used on routers that do not have routes to all networks?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [434],
+        "contains_any": [
+          "A router might not be able to learn the routes to all other networks. To provide complete routing capability, you can use some routers as smart routers and give the remaining routers default routes to the smart router."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rip_dev_001",
+    "topic": "rip-hop-count",
+    "question": "What does a hop count of 16 mean in RIP?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [135],
+        "contains_any": [
+          "a network with a hop count of 16 is unreachable"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "eigrp_dev_001",
+    "topic": "eigrp-feasible-successor",
+    "question": "What is the role of a feasible successor in EIGRP?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [247],
+        "contains_any": [
+          "EIGRP uses the successor as the primary path and feasible successors as repair paths or LFAs"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "bgp_dev_001",
+    "topic": "bgp-local-preference",
+    "question": "When comparing BGP local preference values, which value is preferred?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [292],
+        "contains_any": [
+          "The range is 0 to 4294967295 with the higher value preferred"
+        ]
+      },
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [298],
+        "contains_any": [
+          "The highest local preference value is preferred"
+        ]
+      },
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [283],
+        "contains_any": [
+          "Prefer the route with the highest local preference"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "ipv6_dev_003",
+    "topic": "neighbor-discovery",
+    "question": "Which IPv4 mechanisms does IPv6 Neighbor Discovery replace?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [26],
+        "contains_any": [
+          "Neighbor Discovery replaces ARP, ICMP Router Discovery, and ICMP Redirect used in IPv4"
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dhcp_dev_003",
+    "topic": "dhcp-snooping",
+    "question": "What two functions does DHCP snooping use to provide network security?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [45],
+        "contains_any": [
+          "DHCP snooping is a DHCP security feature that provides network security by filtering untrusted DHCP messages and by building and maintaining a DHCP snooping binding database"
+        ]
+      }
+    ]
   }
 ]

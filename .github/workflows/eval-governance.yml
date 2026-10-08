@@ -1,0 +1,106 @@
+name: Eval Governance
+
+on:
+  pull_request:
+    paths:
+      - "rag_api_project/eval/**"
+      - "rag_api_project/evaluation/candidates.py"
+      - "rag_api_project/scripts/validate_eval_candidates.py"
+      - "rag_api_project/scripts/promote_eval_candidates.py"
+      - "rag_api_project/AGENTS.md"
+      - "rag_api_project/docs/EVAL_CURATOR_AGENT.md"
+      - ".github/CODEOWNERS"
+      - ".github/workflows/eval-governance.yml"
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  governance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Check protected evaluation changes
+        shell: bash
+        env:
+          HUMAN_OVERRIDE: ${{ contains(github.event.pull_request.labels.*.name, 'human-approved-eval-change') }}
+        run: |
+          git diff \
+            --name-only \
+            "${{ github.event.pull_request.base.sha }}" \
+            "${{ github.event.pull_request.head.sha }}" \
+            > changed_files.txt
+
+          echo "Changed files:"
+          cat changed_files.txt
+
+          protected_changes="$(
+            grep -E \
+              '^(rag_api_project/eval/(dev_questions|random_questions|test_questions)\.json|rag_api_project/evaluation/candidates\.py|rag_api_project/scripts/(validate_eval_candidates|promote_eval_candidates)\.py|rag_api_project/AGENTS\.md|rag_api_project/docs/EVAL_CURATOR_AGENT\.md|\.github/CODEOWNERS|\.github/workflows/eval-governance\.yml)$' \
+              changed_files.txt \
+              || true
+          )"
+
+          if [[ -z "$protected_changes" ]]; then
+            echo "No protected evaluation files changed."
+            exit 0
+          fi
+
+          echo
+          echo "Protected files changed:"
+          echo "$protected_changes"
+
+          if [[ "$HUMAN_OVERRIDE" == "true" ]]; then
+            echo
+            echo "Human override label detected."
+            echo "Protected changes are allowed."
+            exit 0
+          fi
+
+          echo
+          echo "::error::Protected evaluation or governance files were modified."
+          echo "::error::Add the human-approved-eval-change label after human review."
+          exit 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Validate candidate dataset structure
+        working-directory: rag_api_project
+        shell: bash
+        run: |
+          shopt -s nullglob
+
+          files=(eval/candidates/*.json)
+
+          if [[ ${#files[@]} -eq 0 ]]; then
+            echo "No candidate JSON files found."
+            exit 0
+          fi
+
+          for file in "${files[@]}"; do
+            echo "Checking $file"
+
+            python - "$file" <<'PY'
+          import sys
+          from pathlib import Path
+
+          from evaluation.dataset import load_dataset
+
+          path = Path(sys.argv[1])
+          questions = load_dataset(path)
+
+          print(
+              f"VALID STRUCTURE: {path} "
+              f"({len(questions)} candidate(s))"
+          )
+          PY
+          done

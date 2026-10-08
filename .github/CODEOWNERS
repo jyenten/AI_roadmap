@@ -1,0 +1,21 @@
+# Repository ownership rules
+
+# Protect the ownership rules themselves.
+/.github/CODEOWNERS @jyenten
+
+# Evaluation datasets contain human-approved ground truth.
+/rag_api_project/eval/dev_questions.json @jyenten
+/rag_api_project/eval/random_questions.json @jyenten
+/rag_api_project/eval/test_questions.json @jyenten
+
+# Protect the validation and promotion boundary.
+/rag_api_project/evaluation/candidates.py @jyenten
+/rag_api_project/scripts/validate_eval_candidates.py @jyenten
+/rag_api_project/scripts/promote_eval_candidates.py @jyenten
+
+# Agent governance.
+/rag_api_project/AGENTS.md @jyenten
+/rag_api_project/docs/EVAL_CURATOR_AGENT.md @jyenten
+
+# Evaluation governance workflow.
+/.github/workflows/eval-governance.yml @jyenten

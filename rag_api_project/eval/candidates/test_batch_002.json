@@ -1,0 +1,82 @@
+[
+  {
+    "id": "bfd_test_001",
+    "topic": "bfd-version-interoperability",
+    "question": "One BFD neighbor runs version 0 and the other runs version 1. Which version does their session use?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          9
+        ],
+        "contains_any": [
+          "For example, if one BFD neighbor is running BFD Version 0 and\nthe other BFD neighbor is running Version 1, the session runs BFD Version 0."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "msdp_test_002",
+    "topic": "msdp-default-join-latency",
+    "question": "With default MSDP behavior, a receiver joins just after the local rendezvous point has received a source announcement. Why must the receiver wait for another announcement to learn about the source?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          59
+        ],
+        "contains_any": [
+          "By default, the switch does not cache source or group pairs from received SA messages. When the switch\nforwards the MSDP SA information, it does not store it in memory. Therefore, if a member joins a group soon\nafter an SA message is received by the local RP, that member needs to wait until the next SA message to hear\nabout the source."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "dhcp_test_001",
+    "topic": "dhcp-snooping-binding-persistence",
+    "question": "What must be used to preserve learned DHCP snooping bindings across a switch reload?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          49
+        ],
+        "contains_any": [
+          "To keep the bindings when the switch reloads, you must use the DHCP snooping database agent."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "vrrp_test_002",
+    "topic": "vrrp-virtual-address-owner-role",
+    "question": "A VRRP participant owns the virtual IP address as its physical interface address. What role does that device assume?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          171
+        ],
+        "contains_any": [
+          "If a VRRP device owns the IP address of the virtual device and the IP address of the physical interface, this\ndevice will function as a primary virtual device."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tracking_test_001",
+    "topic": "object-tracking-boolean-or",
+    "question": "A tracked list uses Boolean OR to combine several objects. If one object is up and the others are down, what state does the list report?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          202
+        ],
+        "contains_any": [
+          "A tracked\nlist with a Boolean “OR” function needs only one object in the list to be in the up state for the tracked object\nto be up."
+        ]
+      }
+    ]
+  }
+]

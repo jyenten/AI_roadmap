@@ -1,0 +1,82 @@
+[
+  {
+    "id": "routing_random_002",
+    "topic": "ipv4-classless-supernet-forwarding",
+    "question": "With classless routing enabled, where does a router forward a packet for a subnet of a network with no default route?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          84
+        ],
+        "contains_any": [
+          "With classless\nrouting, if a router receives packets for a subnet of a network with no default route, the router forwards the\npacket to the best supernet route."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "rip_random_002",
+    "topic": "rip-periodic-update-interval",
+    "question": "How often does the switch send routing information updates when using RIP?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          135
+        ],
+        "contains_any": [
+          "Using RIP, the switch sends routing information updates (advertisements) every 30 seconds."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "eigrp_random_003",
+    "topic": "eigrp-reliable-transport-delivery",
+    "question": "What delivery guarantees does the EIGRP reliable transport protocol provide for EIGRP packets sent to neighbors?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Routing_Configuration_Guide_2026.pdf",
+        "pages": [
+          232
+        ],
+        "contains_any": [
+          "The reliable transport protocol is responsible for guaranteed, ordered delivery of EIGRP packets to all\nneighbors."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "nat_random_002",
+    "topic": "static-nat-fixed-external-reachability",
+    "question": "When is static inside source NAT useful for making an inside host accessible from outside?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          142
+        ],
+        "contains_any": [
+          "Static translation is useful when a host on the inside must be accessible by a fixed address from\nthe outside."
+        ]
+      }
+    ]
+  },
+  {
+    "id": "tunneling_random_001",
+    "topic": "overlay-tunnel-mtu-overhead",
+    "question": "According to the guide, by how many octets do overlay tunnels reduce an interface MTU when the basic IPv4 header has no optional fields?",
+    "gold_evidence": [
+      {
+        "source": "Cisco_IP_Addressing_Services_Guide_2026.pdf",
+        "pages": [
+          88
+        ],
+        "contains_any": [
+          "Overlay tunnels reduce the maximum transmission unit (MTU) of an interface by 20 octets (assuming that\nthe basic IPv4 packet header does not contain optional fields)."
+        ]
+      }
+    ]
+  }
+]
