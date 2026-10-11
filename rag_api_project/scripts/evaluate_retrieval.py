@@ -1,35 +1,86 @@
+import argparse
 import subprocess
+from dataclasses import replace
 from pathlib import Path
 
 from app.config import get_settings
-from app.retrieval import Retriever
+from app.retrieval import Retriever as LegacyRetriever
+from app.retrievers.vector import VectorRetriever
 from evaluation.dataset import (
     calculate_dataset_hash,
     load_dataset,
 )
 from evaluation.history import append_run
+from evaluation.latency import TimedRetriever
 from evaluation.models import RetrievalConfig
 from evaluation.runner import evaluate_dataset
 
 
-EVAL_PATH = Path("eval/dev_questions.json")
-DEV_HISTORY_PATH = Path(
-    "eval/results/dev_runs.jsonl"
-)
+REPOSITORY_DIR = Path(__file__).resolve().parent.parent
+
+
+DATASET_PATHS = {
+    "dev": Path("eval/dev_questions.json"),
+    "random": Path("eval/random_questions.json"),
+}
+
+HISTORY_PATHS = {
+    ("legacy", "dev"): Path(
+        "eval/results/dev_runs.jsonl"
+    ),
+    ("legacy", "random"): Path(
+        "eval/results/random_runs.jsonl"
+    ),
+    ("vector", "dev"): Path(
+        "eval/results/dev_vector_runs.jsonl"
+    ),
+    ("vector", "random"): Path(
+        "eval/results/random_vector_runs.jsonl"
+    ),
+}
+
+
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        description=(
+            "Evaluate a retrieval strategy "
+            "against DEV or RANDOM."
+        )
+    )
+
+    parser.add_argument(
+        "--retriever",
+        choices=("legacy", "vector"),
+        default="legacy",
+        help="Retrieval strategy to evaluate.",
+    )
+
+    parser.add_argument(
+        "--dataset",
+        choices=("dev", "random"),
+        default="dev",
+        help="Evaluation dataset.",
+    )
+
+    return parser.parse_args()
 
 
 def get_git_commit() -> str:
     try:
-        return subprocess.check_output(
+        commit = subprocess.check_output(
             [
                 "git",
                 "rev-parse",
                 "HEAD",
             ],
             text=True,
+            cwd=REPOSITORY_DIR,
         ).strip()
-    except subprocess.CalledProcessError:
-        return "unknown"
+    except (subprocess.SubprocessError, OSError) as exc:
+        raise RuntimeError("Unable to determine Git commit.") from exc
+    if not commit:
+        raise RuntimeError("Unable to determine Git commit: empty output.")
+    return commit
 
 
 def get_git_dirty() -> bool:
@@ -41,47 +92,89 @@ def get_git_dirty() -> bool:
                 "--porcelain",
             ],
             text=True,
+            cwd=REPOSITORY_DIR,
         ).strip()
 
         return bool(status)
-    except subprocess.CalledProcessError:
-        return False
+    except (subprocess.SubprocessError, OSError) as exc:
+        raise RuntimeError("Unable to determine Git working-tree status.") from exc
+
+
+def build_retriever(
+    name: str,
+    settings,
+):
+    if name == "legacy":
+        return LegacyRetriever(settings)
+
+    if name == "vector":
+        return VectorRetriever(settings)
+
+    raise ValueError(
+        f"Unknown retriever: {name}"
+    )
 
 
 def main() -> None:
+    args = parse_args()
+    git_commit = get_git_commit()
+    git_dirty = get_git_dirty()
+
+    eval_path = DATASET_PATHS[
+        args.dataset
+    ]
+    history_path = HISTORY_PATHS[
+        (args.retriever, args.dataset)
+    ]
+
     questions = load_dataset(
-        EVAL_PATH
+        eval_path
     )
 
     settings = get_settings()
 
-    retriever = Retriever(
-        settings
-    )
+    retriever = TimedRetriever(build_retriever(
+        args.retriever,
+        settings,
+    ))
 
     retrieval_config = RetrievalConfig(
         collection_name=settings.collection_name,
-        embedding_model_name=settings.embedding_model_name,
-        retrieval_results=settings.retrieval_results,
+        embedding_model_name=(
+            settings.embedding_model_name
+        ),
+        retrieval_results=(
+            settings.retrieval_results
+        ),
     )
 
     run = evaluate_dataset(
         questions,
         retriever,
-        dataset="dev",
+        dataset=args.dataset,
         dataset_hash=calculate_dataset_hash(
-            EVAL_PATH
+            eval_path
         ),
         retrieval_config=retrieval_config,
-        git_commit=get_git_commit(),
-        git_dirty=get_git_dirty(),
+        git_commit=git_commit,
+        git_dirty=git_dirty,
     )
 
+    run = replace(run, latency=retriever.metrics())
+
     append_run(
-        DEV_HISTORY_PATH,
+        history_path,
         run,
         max_runs=10,
     )
+
+    print("=" * 80)
+    print(f"RETRIEVER: {args.retriever}")
+    print(f"DATASET: {args.dataset}")
+    print(f"QUESTIONS: {len(questions)}")
+    print(f"LATENCY MEAN: {run.latency.mean_ms:.2f} ms")
+    print(f"LATENCY P50: {run.latency.p50_ms:.2f} ms")
+    print(f"LATENCY P95: {run.latency.p95_ms:.2f} ms")
 
     for question, result in zip(
         questions,

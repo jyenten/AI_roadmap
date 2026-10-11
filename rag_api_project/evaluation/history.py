@@ -5,6 +5,7 @@ from pathlib import Path
 from evaluation.models import(
     EvaluationMetrics,
     EvaluationRun,
+    LatencyMetrics,
     QuestionResult,
     RetrievalConfig
 )
@@ -106,6 +107,14 @@ def _parse_run(
         raw_config = raw_run["retrieval_config"]
         raw_metrics = raw_run["metrics"]
         raw_questions = raw_run["questions"]
+        raw_latency = raw_run.get("latency")
+        if raw_latency is not None and not isinstance(raw_latency, dict):
+            raise TypeError
+        latency = (
+            LatencyMetrics(**raw_latency)
+            if raw_latency is not None
+            else None
+        )
 
         if not isinstance(raw_config, dict):
             raise TypeError
@@ -141,10 +150,12 @@ def _parse_run(
             sample_size=raw_run.get(
                 "sample_size"
             ),
+            latency=latency,
         )
     except (
         KeyError,
         TypeError,
+        ValueError,
     ) as exc:
         raise ValueError(
             "Invalid evaluation history entry."

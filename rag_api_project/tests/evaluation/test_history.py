@@ -1,4 +1,5 @@
 import json
+from dataclasses import asdict, replace
 
 import pytest
 
@@ -10,6 +11,7 @@ from evaluation.history import (
 from evaluation.models import (
     EvaluationMetrics,
     EvaluationRun,
+    LatencyMetrics,
     QuestionResult,
     RetrievalConfig,
 )
@@ -153,3 +155,55 @@ def test_history_preserves_random_metadata(
 
     assert loaded[0].sample_seed == 42
     assert loaded[0].sample_size == 5
+
+
+@pytest.mark.parametrize("include_null", [False, True])
+def test_historical_history_without_latency(tmp_path, include_null):
+    run = build_run("old", sample_seed=42, sample_size=5)
+    raw = asdict(run)
+    if not include_null:
+        raw.pop("latency")
+    path = tmp_path / "runs.jsonl"
+    path.write_text(json.dumps(raw) + "\n", encoding="utf-8")
+    assert load_history(path) == (run,)
+
+
+def test_append_preserves_old_and_new_history(tmp_path):
+    path = tmp_path / "runs.jsonl"
+    old = build_run("old", sample_seed=42, sample_size=5)
+    raw = asdict(old)
+    raw.pop("latency")
+    measured = replace(build_run("measured"), latency=LatencyMetrics(2, 1, 3))
+    path.write_text(
+        json.dumps(raw) + "\n" + json.dumps(asdict(measured)) + "\n",
+        encoding="utf-8",
+    )
+    loaded = load_history(path)
+    assert loaded == (old, measured)
+    assert isinstance(loaded[1].latency, LatencyMetrics)
+    added = replace(build_run("new"), latency=LatencyMetrics(4, 3, 5))
+    append_run(path, added)
+    assert load_history(path) == (old, measured, added)
+    assert json.loads(path.read_text(encoding="utf-8").splitlines()[1])["latency"] == asdict(measured.latency)
+
+
+@pytest.mark.parametrize("latency", [
+    [], "invalid", 1, {}, {"mean_ms": 1, "p50_ms": 1},
+    {"mean_ms": 1, "p50_ms": 2, "p95_ms": 1},
+    {"mean_ms": -1, "p50_ms": 1, "p95_ms": 2},
+    {"mean_ms": float("nan"), "p50_ms": 1, "p95_ms": 2},
+    {"mean_ms": 1, "p50_ms": 1, "p95_ms": float("inf")},
+    {"mean_ms": "1", "p50_ms": 1, "p95_ms": 2},
+    {"mean_ms": 1, "p50_ms": 1, "p95_ms": 2, "extra": 0},
+])
+def test_history_rejects_malformed_latency_without_overwriting(tmp_path, latency):
+    path = tmp_path / "runs.jsonl"
+    raw = asdict(build_run("invalid"))
+    raw["latency"] = latency
+    contents = json.dumps(raw) + "\n"
+    path.write_text(contents, encoding="utf-8")
+    with pytest.raises(ValueError, match="Invalid evaluation history entry"):
+        load_history(path)
+    with pytest.raises(ValueError):
+        append_run(path, build_run("new"))
+    assert path.read_text(encoding="utf-8") == contents

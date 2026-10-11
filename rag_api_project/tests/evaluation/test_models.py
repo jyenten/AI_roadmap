@@ -7,6 +7,7 @@ from evaluation.models import (
     EvaluationQuestion,
     EvaluationRun,
     GoldEvidence,
+    LatencyMetrics,
     QuestionResult,
     RetrievalConfig,
 )
@@ -79,3 +80,31 @@ def test_evaluation_run_composes_results_and_metrics() -> None:
     assert run.metrics.mrr == 1.0
     assert run.retrieval_config.retrieval_results == 8
     assert run.questions == (result,)
+    assert run.latency is None
+
+
+@pytest.mark.parametrize("field", ["mean_ms", "p50_ms", "p95_ms"])
+@pytest.mark.parametrize("value", [-1, float("nan"), float("inf"), -float("inf"), True, "1", None])
+def test_latency_rejects_invalid_values(field, value):
+    values = dict(mean_ms=2.0, p50_ms=1.0, p95_ms=3.0)
+    values[field] = value
+    with pytest.raises(ValueError):
+        LatencyMetrics(**values)
+
+
+@pytest.mark.parametrize("field", ["mean_ms", "p50_ms", "p95_ms"])
+@pytest.mark.parametrize("value", [10**1000, -(10**1000)], ids=["huge-positive", "huge-negative"])
+def test_latency_rejects_extremely_large_integers(field, value):
+    values = dict(mean_ms=2.0, p50_ms=1.0, p95_ms=3.0)
+    values[field] = value
+    with pytest.raises(ValueError, match=f"{field} must be a finite non-negative number"):
+        LatencyMetrics(**values)
+
+
+def test_latency_is_frozen_slotted_and_ordered():
+    latency = LatencyMetrics(0, 0, 0)
+    assert not hasattr(latency, "__dict__")
+    with pytest.raises(FrozenInstanceError):
+        latency.mean_ms = 1
+    with pytest.raises(ValueError, match="p95_ms"):
+        LatencyMetrics(1, 2, 1)
