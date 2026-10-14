@@ -1,317 +1,164 @@
-# RAG API Project
+# RAG API — Document Search & Retrieval Evaluation
 
-A FastAPI-based Retrieval-Augmented Generation API for answering questions over technical PDF documentation.
+A Python/FastAPI project for answering questions about technical PDF documentation, focusing on retrieval quality, source traceability, and regression testing.
 
-The project uses ChromaDB for vector search, Sentence Transformers for embeddings, a CrossEncoder reranker for improving context selection, and a lazy-loaded text generation model as a fallback when rule-based answers are not available.
+**Status:** actively developed educational prototype, not a production service. The existing `/ask` pipeline uses Chroma retrieval, context selection, reranking, and rule-based/model-generated responses. Separately, the repository includes a vector retriever, BM25 lexical retriever, and offline retrieval evaluation tools.
 
-## Current Capabilities
+## Tech stack
 
-- Ingests PDF documentation into a local ChromaDB vector database.
-- Retrieves relevant document chunks for a user question.
-- Extracts and reranks candidate context lines.
-- Returns an auditable answer with context and source previews.
-- Uses high-confidence rule-based answers for known OSPF questions.
-- Lazy-loads the fallback generation model only when needed.
-- Provides a simple regression test script for key questions.
+Python 3.11 · FastAPI · Pydantic · ChromaDB · Sentence Transformers · `rank-bm25` · Transformers/PyTorch · pypdf · pytest · Docker · GitHub Actions.
 
-## Architecture
+## Architecture and modules
 
-The application is split into separate modules:
+| Component | Path | Purpose |
+| --- | --- | --- |
+| HTTP API | `app/main.py` | `/`, `/health`, `/ready`, `/stats`, `/ask` |
+| Configuration | `app/config.py` | Environment-based Pydantic settings |
+| RAG orchestration | `app/rag.py` | Answers and supporting context |
+| Existing retrieval pipeline | `app/retrieval.py` | Retrieval, context-line selection and reranking |
+| Vector retrieval | `app/retrievers/vector.py` | Chroma vector baseline |
+| BM25 retrieval | `app/retrievers/bm25.py` | Lexical ranking over Chroma chunks |
+| PDF ingestion | `scripts/ingest.py` | Extract and index PDF text |
+| PDF search CLI | `scripts/search_pdf.py` | Independent local BM25 page search |
+| Retrieval evaluation | `evaluation/`, `scripts/evaluate_retrieval.py` | Rank-based quality, latency and provenance |
+| Tests | `tests/` | Unit and regression tests |
 
-- `app/main.py` - FastAPI entrypoint and HTTP endpoints.
-- `app/config.py` - centralized application settings.
-- `app/schemas.py` - request and response models.
-- `app/retrieval.py` - ChromaDB retrieval, candidate extraction, reranking, and context building.
-- `app/generation.py` - fallback text generation model.
-- `app/rag.py` - orchestration layer combining retrieval, rules, and generation.
-- `scripts/ingest.py` - PDF ingestion into ChromaDB.
-- `scripts/test_questions.py` - simple regression test script.
+### Data flow
 
-## Tech Stack
+~~~text
+PDF documents --> text extraction / chunking --> ChromaDB + metadata
+                                                   |
+                   +-------------------------------+----------------------+
+                   |                                                      |
+             Existing RAG API                                     Retrieval experiments
+          context -> answer -> sources                           vector and BM25 retrievers
+                                                                  |
+                                                          offline evaluation
+                                                           MRR / Hit@K / latency
+~~~
 
-- Python
-- FastAPI
-- Pydantic
-- ChromaDB
-- Sentence Transformers
-- CrossEncoder reranking
-- Transformers
-- PyTorch
-- pypdf
+**Integration boundary:** BM25 is implemented and tested but is not yet selectable through `/ask` or the existing evaluation CLI. Hybrid search is planned, not implemented.
 
-## Setup
+## Key engineering decisions
 
-Create and activate a virtual environment:
+- Indexed chunks carry source, physical PDF page, and chunk metadata for traceability.
+- BM25 loads stored chunks in bounded batches, validates data consistency, filters non-matching documents, and breaks score ties using ascending chunk IDs.
+- Vector search returns distance-like scores (lower typically closer); BM25 returns ranking scores (higher ranks first). Raw scores should not be compared directly.
+- Evaluation is split into development, random-sample, and held-out test data, with dataset hashes and Git provenance.
+- Model-based generation is a fallback to task-specific answer logic; the system is not a general-purpose, production-grade QA engine.
 
-```bash
+## Local setup
+
+Run from `rag_api_project/` using Python 3.11.
+
+**Windows PowerShell**
+
+~~~powershell
 python -m venv .venv
-.venv\Scripts\activate
-```
+.\.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+Copy-Item .env.example .env
+~~~
 
-Install dependencies:
+**macOS/Linux**
 
-```bash
-pip install -r requirements.txt
-```
+~~~bash
+python3.11 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+cp .env.example .env
+~~~
 
-Create a local environment file from the example:
+Dependencies are currently unpinned; this is not yet a fully reproducible lockfile-based installation.
 
-```bash
-copy .env.example .env
-```
+### Index local PDFs
 
-The `.env` file can be used to override default settings such as model names, retrieval count, returned source count, and generation limits.
+Put technical PDF files in `data/` (ignored by Git), then run:
 
-## PDF Ingestion
-
-Place PDF files into the local `data/` directory:
-
-```text
-data/
-└── example.pdf
-```
-
-Run the ingestion script:
-
-```bash
+~~~bash
 python -m scripts.ingest
-```
+~~~
 
-The script reads PDF files from `data/`, splits the extracted text into chunks, creates embeddings, and stores them in a local ChromaDB database.
-
-The generated ChromaDB files are stored in:
-
-```text
-chroma_db/
-```
-
-Both `data/` and `chroma_db/` are excluded from Git because they may contain large or local-only files.
+The local Chroma collection is stored under `chroma_db/`. The example configuration uses the collection named `ospf`. The API requires suitable indexed data to answer corpus-specific questions.
 
 ## Running the API
 
-Start the FastAPI server:
+~~~bash
+python -m uvicorn app.main:app --reload
+~~~
 
-```bash
-uvicorn app.main:app --reload
-```
+Open `http://127.0.0.1:8000/docs` for interactive OpenAPI documentation.
 
-The API will be available at:
+- `GET /` and `GET /health` — liveness and environment information.
+- `GET /ready` — verifies the RAG service is available; requires working corpus/configuration.
+- `GET /stats` — reports collection information.
+- `POST /ask` — accepts a JSON question and returns an answer with supporting context and source previews.
 
-```text
-http://127.0.0.1:8000
-```
+Example request:
 
-Interactive API documentation is available at:
+~~~bash
+curl -X POST http://127.0.0.1:8000/ask -H "Content-Type: application/json" -d '{"question":"How does OSPF select the router ID?"}'
+~~~
 
-```text
-http://127.0.0.1:8000/docs
-```
+On Windows PowerShell, use `Invoke-RestMethod` if shell-specific `curl` quoting differs:
 
-Health check endpoint:
+~~~powershell
+Invoke-RestMethod -Uri http://127.0.0.1:8000/ask -Method Post -ContentType 'application/json' -Body '{"question":"How does OSPF select the router ID?"}'
+~~~
 
-```bash
-curl http://127.0.0.1:8000/
-```
+## Tests
 
-Ask a question:
+From `rag_api_project/`:
 
-```bash
-curl -X POST http://127.0.0.1:8000/ask \
-  -H "Content-Type: application/json" \
-  -d "{\"question\":\"How does OSPF select the router ID?\"}"
-```
+~~~bash
+python -m pytest -q tests
+~~~
 
-For a formatted JSON response on Windows CMD:
+Most recent **locally reported** full-suite run after BM25 integration: **210 passed, 1 skipped**. The skip was caused by unavailable Windows symlink privileges; external dependency deprecation warnings were reported. Remote CI results must be verified independently on the GitHub Actions tab.
 
-```bash
-curl -X POST http://127.0.0.1:8000/ask -H "Content-Type: application/json" -d "{\"question\":\"How does OSPF select the router ID?\"}" | python -m json.tool
-```
+BM25 tests use synthetic Chroma fixtures and cover pagination, ranking, deterministic tie-breaking, metadata alignment, invalid queries and records, and malformed batches.
 
-## Regression Test Script
+## Offline retrieval evaluation
 
-The project includes a simple script for checking key RAG questions:
+The framework reports MRR, Hit@1/3/5/8 and retrieval latency mean/p50/p95. Run metadata includes the dataset hash, Git commit and dirty-worktree state. Runtime evaluation results under `eval/results/` are excluded from version control.
 
-```bash
-python -m scripts.test_questions
-```
+Supported commands in the currently published evaluation CLI:
 
-The script runs a small set of predefined questions and prints:
+~~~bash
+python -m scripts.evaluate_retrieval --retriever legacy --dataset dev
+python -m scripts.evaluate_retrieval --retriever vector --dataset dev
+~~~
 
-- the question
-- the generated or rule-based answer
-- the selected context
-- a short preview of returned source chunks
+The documented CLI version accepts `legacy` or `vector`, and `dev` or `random`. A BM25 CLI option and hybrid retrieval evaluation are follow-up work. The held-out TEST set is reserved for final assessment, not iterative tuning.
 
-This is useful after changing retrieval, reranking, chunking, or rule logic, because it helps verify that existing behavior was not accidentally broken.
+## Standalone BM25 PDF search
 
-## API Response Format
+A separate discovery CLI indexes local PDF pages:
 
-The `/ask` endpoint returns an answer together with the selected context and source previews.
+~~~bash
+python -m scripts.search_pdf "router ID" --top-k 5 --interactive
+~~~
 
-Example response:
+This tool reads PDF files in `data/` and is distinct from the Chroma-backed `BM25Retriever`.
 
-```json
-{
-  "question": "How does OSPF select the router ID?",
-  "answer": "OSPF selects the router ID using the largest IP address configured on its interfaces. If a loopback interface is configured, OSPF uses the loopback IP address as the router ID.",
-  "context": "OSPF uses the largest IP address configured on the interfaces as its router ID.",
-  "context_lines": [
-    "OSPF uses the largest IP address configured on the interfaces as its router ID."
-  ],
-  "sources": [
-    {
-      "text": "Short source preview...",
-      "distance": 0.4004
-    }
-  ]
-}
-```
+## Docker and Compose
 
-Field meaning:
+The repository contains a Dockerfile and `compose.yaml`:
 
-- `question` - the original user question.
-- `answer` - the final answer returned by the RAG service.
-- `context` - the selected text used as direct support for the answer.
-- `context_lines` - the same context split into individual lines for easier inspection.
-- `sources` - short previews of retrieved source chunks.
-- `distance` - ChromaDB distance score for the retrieved chunk. Lower values generally mean closer semantic similarity.
-
-## Current Limitations
-
-This is an educational RAG API prototype, not a production-ready system.
-
-Known limitations:
-
-- PDF text extraction can produce noisy text, especially from tables or multi-column layouts.
-- Current chunking is character-based, so some chunks may start or end in the middle of a word or sentence.
-- Source previews may contain imperfect text formatting from the original PDF extraction.
-- Rule-based answers currently cover only a small set of known OSPF questions.
-- The fallback generation model is relatively small and may produce incomplete answers for unsupported questions.
-- The regression script prints results for manual inspection but does not yet perform automated assertions.
-
-## Planned Improvements
-
-Planned next steps:
-
-- Improve PDF text cleaning before chunking.
-- Replace character-based chunking with paragraph-based or sentence-aware chunking.
-- Store richer metadata for chunks, such as source file, page number, and chunk index.
-- Improve source attribution so returned sources are more directly connected to selected context lines.
-- Convert the regression script into assertion-based automated tests.
-- Add better API error handling for missing ChromaDB collections or missing ingested data.
-- Add Docker support for easier setup and deployment.
-- Evaluate stronger fallback generation models.
-
-## Project Status
-
-This project is currently a working educational prototype.
-
-The main RAG API pipeline is functional, including retrieval, reranking, context selection, rule-based answers, lazy-loaded fallback generation, and a basic regression test script.
-
-
-## Docker
-
-The API can also be built and run with Docker.
-
-The Docker image contains the application code and Python dependencies. Runtime data such as the ChromaDB database, PDF files, `.env`, and Hugging Face model cache are kept outside the image and mounted as volumes.
-
-### Run with Docker Compose
-
-Instead of running the long `docker run` command manually, the API can also be started with Docker Compose:
-
-```bash
+~~~bash
 docker compose up --build
-
-CTRL+C
-
 docker compose down
+~~~
 
+Compose maps host port `8001` to container port `8000` and mounts local Chroma/model-cache directories. This is a local container configuration, not a hosted demo.
 
+**Known limitation:** review the Docker build context and copied modules before relying on newer retrieval/evaluation functionality inside the image. The current Dockerfile copies `app/` and `scripts/` rather than every newer top-level package.
 
-### Build the image
+## Current limitations and next steps
 
-```bash
-docker build -t rag-api .
-```
+- Evaluate BM25 and vector retrieval on development data; compare MRR, Hit@K and latency.
+- Experiment with hybrid lexical + semantic retrieval, based on measured results.
+- Improve dependency pinning, Docker packaging coverage, and operational observability.
+- Continue improving extraction robustness, error reporting and evaluation on unseen questions.
 
-### Run the API
-
-On Windows Command Prompt:
-
-```cmd
-docker run --rm -p 8001:8000 -v "%cd%\chroma_db:/app/chroma_db" -v "%cd%\.cache\huggingface:/app/.cache/huggingface" --name rag-api-container rag-api
-```
-
-The API will be available at:
-
-```text
-http://127.0.0.1:8001
-```
-
-The container exposes port `8000` internally, while the host machine uses port `8001`.
-
-### Test the Docker container
-
-Health check:
-
-```bash
-curl http://127.0.0.1:8001/health
-```
-
-Stats endpoint:
-
-```bash
-curl http://127.0.0.1:8001/stats
-```
-
-Ask endpoint:
-
-```bash
-curl -X POST http://127.0.0.1:8001/ask -H "Content-Type: application/json" -d "{\"question\":\"How do you enable OSPF routing?\"}"
-```
-
-The `/stats` endpoint should show a non-zero chunk count if the local `chroma_db` volume is mounted correctly.
-
-Example:
-
-```json
-{
-  "app_name": "RAG API",
-  "environment": "development",
-  "collection_name": "ospf",
-  "chunks": 1136,
-  "retrieval_results": 8,
-  "returned_sources": 3
-}
-```
-
-### Runtime data
-
-The following paths are intentionally not copied into the Docker image:
-
-```text
-data/
-chroma_db/
-.env
-.cache/
-```
-
-They are ignored because they are local runtime data, not application source code.
-
-## Testing
-
-The project includes two lightweight test scripts:
-
-- `scripts/test_questions.py`
-- `scripts/test_api.py`
-
-### RAG evaluation
-
-Run: `python -m scripts.test_questions`
-
-### API smoke tests
-
-Run: `python -m scripts.test_api`
-
-Expected result for both scripts: `RESULT: 5/5 passed`
-
+The [repository's agent collaboration rules](../AGENTS.md) and [learning log](../LEARNING_LOG.md) explain how independent learning work is separated from delegated AI-assisted tests and reviews.
