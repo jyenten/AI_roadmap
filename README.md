@@ -54,7 +54,9 @@ This is a hands-on learning project developed with substantial AI assistance. I 
 
 Collaboration rules are documented at two levels: [repository-wide AGENTS.md](AGENTS.md) defines the LEARN / IMPLEMENT / REVIEW modes and approval boundaries; [RAG project AGENTS.md](rag_api_project/AGENTS.md) adds safeguards for evaluation dataset curation. Progress and skill evidence are tracked in [LEARNING_LOG.md](LEARNING_LOG.md).
 
-For the BM25 milestone, Codex prepared regression tests in an **isolated local Git worktree** on `agent/bm25-tests`. The tests were reviewed, then copied into and committed on the main development branch. That agent worktree is **not a private GitHub branch or a published mirror**; GitHub branches inherit their repository's visibility.
+For the BM25 milestone, Codex prepared regression tests in an **isolated local Git worktree** on `agent/bm25-tests`. The reviewed tests were then integrated into the public development branch.
+
+For ongoing agent experiments, a **separate private GitHub repository** (`jyenten/AI_roadmap_codex_mirror`) mirrors an approved public snapshot. Its `main` branch is the mirror baseline, while `agent/bm25-tests` is reserved for Codex work. The private repository is not publicly accessible and **synchronization is manual**; Codex changes are not automatically published or merged without review.
 
 ## Repository layout
 
