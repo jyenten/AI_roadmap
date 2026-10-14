@@ -167,4 +167,6 @@ This learning project uses ChatGPT and Codex for explanations, design, implement
 
 The [repository-level AGENTS.md](../AGENTS.md) describes LEARN, IMPLEMENT and REVIEW modes and requires human approval for integration. The [project-level AGENTS.md](AGENTS.md) adds specific rules for evaluation dataset curation, including human approval before promoting candidate questions. Skill evidence and progress are documented in [LEARNING_LOG.md](../LEARNING_LOG.md).
 
-For the BM25 feature, Codex authored synthetic regression tests in an isolated **local** worktree (`agent/bm25-tests`); the reviewed tests were integrated into the public development branch alongside the BM25 implementation. There is currently no published private BM25 GitHub mirror.
+For the BM25 feature, Codex authored synthetic regression tests in an isolated **local** worktree (`agent/bm25-tests`); the reviewed tests were integrated into the public development branch alongside the BM25 implementation.
+
+Ongoing Codex experiments use a separate **private GitHub mirror** (`jyenten/AI_roadmap_codex_mirror`). Its `main` holds an approved public snapshot and `agent/bm25-tests` provides an isolated remote branch for agent work. The original local worktree is separate from this new remote branch. Synchronization and integration are manual, subject to the approval rules in `AGENTS.md`.
