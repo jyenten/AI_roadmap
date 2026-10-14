@@ -52,7 +52,9 @@ Technical PDF files
 
 This is a hands-on learning project developed with substantial AI assistance. I use ChatGPT and Codex for explanations, design discussions, code suggestions and generation, debugging, tests, and reviews. I also implement and modify code, investigate failures, and validate changes. The repository documents the development process and the resulting system; it is not a claim that every component was independently conceived or written by me.
 
-Project guidance is documented in [AGENTS.md](AGENTS.md), with progress and skill evidence in [LEARNING_LOG.md](LEARNING_LOG.md).
+Collaboration rules are documented at two levels: [repository-wide AGENTS.md](AGENTS.md) defines the LEARN / IMPLEMENT / REVIEW modes and approval boundaries; [RAG project AGENTS.md](rag_api_project/AGENTS.md) adds safeguards for evaluation dataset curation. Progress and skill evidence are tracked in [LEARNING_LOG.md](LEARNING_LOG.md).
+
+For the BM25 milestone, Codex prepared regression tests in an **isolated local Git worktree** on `agent/bm25-tests`. The tests were reviewed, then copied into and committed on the main development branch. That agent worktree is **not a private GitHub branch or a published mirror**; GitHub branches inherit their repository's visibility.
 
 ## Repository layout
 
