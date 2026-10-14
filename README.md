@@ -58,7 +58,7 @@ Project guidance is documented in [AGENTS.md](AGENTS.md), with progress and skil
 
 - [rag_api_project/](rag_api_project/) — active FastAPI, RAG, retrieval and evaluation work.
 - .github/ — CI workflow configuration.
-- ALG/ and den_1/ through den_28/ — earlier programming and machine-learning learning exercises, retained for reference (planned to be grouped under archive/ after a dependency audit).
+- [archive/](archive/) — 29 earlier programming and machine-learning exercise folders (`ALG/` and `den_1/` through `den_28_Docker/`), moved without altering their contents; preserved for learning history and reference.
 
 ## Next steps
 
