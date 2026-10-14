@@ -161,4 +161,10 @@ Compose maps host port `8001` to container port `8000` and mounts local Chroma/m
 - Improve dependency pinning, Docker packaging coverage, and operational observability.
 - Continue improving extraction robustness, error reporting and evaluation on unseen questions.
 
-The [repository's agent collaboration rules](../AGENTS.md) and [learning log](../LEARNING_LOG.md) explain how independent learning work is separated from delegated AI-assisted tests and reviews.
+## AI-assisted development and contributor boundaries
+
+This learning project uses ChatGPT and Codex for explanations, design, implementation assistance, debugging, tests, and review; not every component was independently conceived or written by the repository owner.
+
+The [repository-level AGENTS.md](../AGENTS.md) describes LEARN, IMPLEMENT and REVIEW modes and requires human approval for integration. The [project-level AGENTS.md](AGENTS.md) adds specific rules for evaluation dataset curation, including human approval before promoting candidate questions. Skill evidence and progress are documented in [LEARNING_LOG.md](../LEARNING_LOG.md).
+
+For the BM25 feature, Codex authored synthetic regression tests in an isolated **local** worktree (`agent/bm25-tests`); the reviewed tests were integrated into the public development branch alongside the BM25 implementation. There is currently no published private BM25 GitHub mirror.
