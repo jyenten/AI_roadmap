@@ -50,7 +50,7 @@ Technical PDF files
 
 ## Engineering approach
 
-I use the project to develop practical Python and software engineering skills while applying systematic testing. Core learning implementations are written by me; narrowly scoped tests and reviews may be delegated to AI coding assistants. Agent contributions are reviewed before integration.
+This is a hands-on learning project developed with substantial AI assistance. I use ChatGPT and Codex for explanations, design discussions, code suggestions and generation, debugging, tests, and reviews. I also implement and modify code, investigate failures, and validate changes. The repository documents the development process and the resulting system; it is not a claim that every component was independently conceived or written by me.
 
 Project guidance is documented in [AGENTS.md](AGENTS.md), with progress and skill evidence in [LEARNING_LOG.md](LEARNING_LOG.md).
 
