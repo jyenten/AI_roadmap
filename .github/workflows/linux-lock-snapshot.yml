@@ -6,7 +6,9 @@ on:
       - chore/linux-lock-ci
     paths:
       - "rag_api_project/requirements.txt"
+      - "rag_api_project/requirements-linux-py311.lock.txt"
       - ".github/workflows/linux-lock-snapshot.yml"
+
   workflow_dispatch:
 
 permissions:
@@ -55,3 +57,28 @@ jobs:
           path: rag_api_project/requirements-linux-py311.lock.txt
           retention-days: 7
           if-no-files-found: error
+  verify-lock:
+    name: Verify clean Linux installation
+    runs-on: ubuntu-24.04
+
+    defaults:
+      run:
+        working-directory: rag_api_project
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v7
+
+      - name: Set up Python
+        uses: actions/setup-python@v7
+        with:
+          python-version: "3.11"
+
+      - name: Install locked dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install --no-cache-dir -r requirements-linux-py311.lock.txt
+          python -m pip check
+
+      - name: Run regression tests
+        run: python -m pytest tests -q
