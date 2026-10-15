@@ -23,7 +23,7 @@ jobs:
 
 
       - name: Verify dependency lock consistency
-      - run: python -B scripts\check_dependency_lock.py
+      - run: python -B scripts/check_dependency_lock.py
 
       - name: Install dependencies
         run: |
