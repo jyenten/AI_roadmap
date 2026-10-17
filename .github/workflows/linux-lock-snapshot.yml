@@ -3,6 +3,7 @@
 on:
   push:
     branches:
+      - document-search-bm25
       - chore/linux-lock-ci
     paths:
       - "rag_api_project/requirements.txt"
