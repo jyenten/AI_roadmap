@@ -1,111 +1,59 @@
 # AI RAG Project Roadmap
 
+This document owns **what to build, phase order, goals and acceptance criteria**.
+Use [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md) for how to implement/review work,
+[ARCHITECTURE.md](ARCHITECTURE.md) for component boundaries and
+[LEARNING_LOG.md](../../LEARNING_LOG.md) for dated work and learning evidence.
+
 ## Status snapshot — 2026-10-28
 
-This is an observed milestone snapshot, **not** a change to the approved phase priorities. Older phase descriptions below may be historical plans; use this section and the implementation for current state.
+This is the current planning checkpoint, not a renumbering or replacement of the
+approved phase specifications below. Completion of a milestone does not certify
+all acceptance criteria of its broader phase or production readiness.
 
-The Phase 3.3/3.4 milestone names below follow [LEARNING_LOG.md](../../LEARNING_LOG.md), whose later numbering differs from the original roadmap headings (Vector Search / Query Processing / Reranker). They do not rename or replace those approved phases. Hybrid RRF is the next development milestone, not evidence that the original Phase 3.5 Reranker plan is complete.
-
-| Milestone | Status | Evidence |
+| Milestone | Observed status | Evidence / procedure |
 | --- | --- | --- |
-| Chunk-level BM25 retriever (Phase 3.3) | Completed | Regression tests and historical commit `c101680` |
-| BM25 evaluation CLI + DEV/RANDOM comparison (Phase 3.4) | Completed | CLI regression tests; 20 DEV and 25 RANDOM questions |
-| Hybrid BM25 + Vector with RRF (Phase 3.5) | In progress | Learning-stage RRF algorithm; not released as CLI/API mode |
-| Held-out TEST evaluation | Reserved | Do not tune on TEST |
-| Documentation runbooks and gold governance | Being updated | `docs/OPERATIONS.md`, `docs/EVALUATION.md` |
+| RAG API, PDF ingestion and Chroma storage | Implemented prototype; hardening remains planned | [Project README](../README.md), [architecture](ARCHITECTURE.md) |
+| Independent PDF page explorer | Implemented | `document_search/`, [operations](OPERATIONS.md) |
+| Evidence-based retrieval evaluation | Implemented: metrics, history, latency and provenance | `evaluation/`, [evaluation guide](EVALUATION.md) |
+| Chunk-level BM25 and Vector comparison | Implemented in the offline CLI on DEV/RANDOM | `app/retrievers/`, [recorded milestones](../../LEARNING_LOG.md#project-and-learning-history) |
+| Hybrid lexical/semantic retrieval with RRF | Local work in progress; not a published CLI/API mode | [Uncommitted-work record](../../LEARNING_LOG.md#uncommitted-work-observed-on-2026-10-28) |
+| Held-out TEST evaluation | Reserved for final assessment, not iterative tuning | [Evaluation policy](EVALUATION.md) |
+| Bilingual runbooks and validator regressions | Integrated through [PR #3](https://github.com/jyenten/AI_roadmap/pull/3) | [Operations](OPERATIONS.md), [evaluation](EVALUATION.md) |
+| Dependency/security automation | Enabled; ChromaDB dependency findings remain open | `.github/workflows/`, [current project checkpoint](../../LEARNING_LOG.md#current-project-checkpoint) |
 
-**Historical MRR (Phase 3.4):** DEV BM25 0.7171 vs Vector 0.8321; RANDOM BM25 0.8133 vs Vector 0.6050. These are locally reported baseline measurements, not universal performance results. Measure latency, usage and cost where applicable, in addition to retrieval quality. The approved workflow remains **Complete → Measure → Improve**.
+Detailed results and historical MRR/Hit@K belong to the evaluation guide and
+learning log; this roadmap does not maintain a second benchmark table.
 
-Refer to [OPERATIONS.md](OPERATIONS.md) for reproducible local commands and [EVALUATION.md](EVALUATION.md) for evidence creation, validation and protection.
+## Current development focus
 
----
+The next recorded development milestone is hybrid BM25 + Vector retrieval with
+RRF. Complete and review the implementation, then measure DEV/RANDOM against the
+preserved baselines before deciding on improvements. Keep TEST held out.
+Separate local/backend experiments and unmerged dependency proposals remain
+subject to their own review; their presence is not integration into `main` or
+approval to replace the retrieval architecture.
 
+The learning journal historically used labels such as Phase 3.3 for BM25,
+Phase 3.4 for retrieval evaluation and Phase 3.5 for hybrid RRF. Those journal
+labels are **not IDs in this roadmap**. Here, the original phase numbers and
+names remain authoritative: 3.3 Vector Search, 3.4 Query Processing and
+3.5 Reranker. Use the full milestone name when referring to journal work.
 
-## 1. Purpose
+## Reading and updating the approved plan
 
-This document defines the development roadmap of the AI RAG project.
+The phase specifications below preserve the approved order, planned modules,
+learning concepts and Definition of Done checklists. Their original **Status**,
+estimates and unchecked boxes are a planning baseline, not a second live status
+tracker. Use the snapshot above for observed progress; do not infer that an
+existing module is missing just because an original checkbox remains unchecked.
+Do not mark acceptance criteria satisfied without the necessary evidence.
 
-It describes:
-
-- development phases
-- development order
-- estimated effort
-- planned Python modules
-- important functions
-- new concepts introduced in each phase
-- Definition of Done for each phase
-- current development focus
-
-The roadmap is intentionally phase-based.
-
-The project follows:
-
-```text
-Complete
-   ->
-Measure
-   ->
-Improve
-```
-
-The goal is to avoid endless optimization of individual components before
-the complete system can be measured.
-
----
-
-## 2. Development Strategy
-
-The preferred development model is:
-
-```text
-working vertical system
-        ->
-measurement
-        ->
-identify weakest area
-        ->
-improve one subsystem
-        ->
-test
-        ->
-measure again
-```
-
-The project should avoid:
-
-```text
-perfect component A
-        ->
-perfect component B
-        ->
-perfect component C
-```
-
-because the most important system bottleneck may not be known until the
-complete pipeline exists.
-
-The project should also avoid:
-
-```text
-feature
-->
-temporary workaround
-->
-another feature
-->
-another workaround
-->
-large uncontrolled refactor
-```
-
-Each phase therefore has a clear Definition of Done.
-
-Once that Definition of Done is satisfied, the phase is frozen unless:
-
-- evaluation exposes a concrete problem
-- integration exposes a concrete problem
-- security exposes a concrete problem
-- requirements materially change
+The working method is **Complete → Measure → Improve**. Shared scope, backlog,
+freeze, testing and review rules live in the
+[development workflow](DEVELOPMENT_GUIDE.md#development-workflow), not here.
+Changes to phase goals, priorities or acceptance criteria require an explicit
+planning decision; editorial cleanup does not authorize them.
 
 ---
 
@@ -2872,9 +2820,13 @@ This phase must not be designed prematurely.
 
 ---
 
-# Estimated Remaining Development Time
+# Original planning estimates — historical
 
-Approximate active development time:
+These values are preserved from the original plan. They are not a current
+remaining-work forecast or a delivery commitment; reassessment requires a
+separate planning decision.
+
+Original active-development estimates (not recalculated):
 
 | Phase | Estimated time |
 |---|---:|
@@ -2889,7 +2841,7 @@ Approximate active development time:
 | PHASE 8B SQL / ETL | 6-10 h |
 | PHASE 8C MLOps | 8-12 h |
 
-Approximate remaining effort to Production v1:
+Original estimate of remaining effort to Production v1:
 
 ```text
 43-70 hours
@@ -2908,163 +2860,10 @@ They are not pure typing estimates.
 
 ---
 
-# Historical Project Status (original Phase 2A plan)
+## Planning history
 
-Preserved for planning history. This section and its immediate steps are not the current status; see the [2026-10-28 snapshot](#status-snapshot--2026-10-28). Original estimates and checklists below have not been recalculated or reapproved.
-
-## Completed or largely completed
-
-```text
-RAG skeleton
-PDF ingestion
-ChromaDB
-embedding retrieval
-CrossEncoder reranking
-generation
-FastAPI API
-basic Docker setup
-GitHub Actions CI
-smoke tests
-ingestion tests
-initial evaluation framework
-```
-
----
-
-## Current Development Phase
-
-```text
-PHASE 2
-Evaluation Foundation
-```
-
-Current subphase:
-
-```text
-PHASE 2A
-Universal Document Explorer
-```
-
-Current step:
-
-```text
-PHASE 2A.0
-Architecture Freeze
-```
-
-Current documentation:
-
-```text
-docs/ROADMAP.md
-docs/ARCHITECTURE.md
-docs/DEVELOPMENT_GUIDE.md
-```
-
----
-
-# Historical Immediate Next Steps
-
-After documentation is committed:
-
-```text
-PHASE 2A.1
-document_search/models.py
-```
-
-Then:
-
-```text
-PHASE 2A.2
-normalize.py
-+
-tokenize.py
-+
-unit tests
-```
-
-Then:
-
-```text
-PHASE 2A.3
-security foundations
-```
-
-Then:
-
-```text
-PHASE 2A.4
-PDF loading
-+
-PDF validation
-```
-
-Then:
-
-```text
-PHASE 2A.5
-BM25 index
-```
-
-Then:
-
-```text
-PHASE 2A.6
-search engine
-```
-
-Then:
-
-```text
-PHASE 2A.7
-CLI
-```
-
-Then:
-
-```text
-PHASE 2A.8
-integration
-```
-
-After PHASE 2A satisfies its Definition of Done:
-
-```text
-freeze PHASE 2A
-    ->
-continue PHASE 2B
-```
-
----
-
-# Final Roadmap Rule
-
-When a new idea appears, ask:
-
-```text
-Does this help satisfy the current phase Definition of Done?
-```
-
-If yes:
-
-```text
-implement it
-```
-
-If no:
-
-```text
-record it for later
-and continue the current phase
-```
-
-The project should optimize for:
-
-```text
-completed
-measured
-tested
-understandable
-reproducible
-```
-
-systems rather than endless local refinement.
+The previous Phase 2A status and step-by-step immediate-task list are retained in
+[the pre-cleanup roadmap revision](https://github.com/jyenten/AI_roadmap/blob/d7c3b4f71711c798646bd0a878b96b9c46c92d93/rag_api_project/docs/ROADMAP.md#historical-project-status-original-phase-2a-plan).
+They describe an earlier checkpoint, not today's next steps. Completed work is
+recorded in [LEARNING_LOG.md](../../LEARNING_LOG.md); the current focus belongs
+only to this roadmap's [current development focus](#current-development-focus).

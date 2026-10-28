@@ -1741,7 +1741,7 @@ preferred.
 
 ## 26. Historical Phase 2A Architectural Focus
 
-The sequence below preserves the original plan. It is no longer the active step; see the [current implementation snapshot](#current-implementation-snapshot-2026-10-28) and [development guide](DEVELOPMENT_GUIDE.md#61-current-workflow-verified-snapshot-2026-10-28). The current work is the hybrid RRF experiment described in the development log; this does not renumber the approved roadmap.
+The sequence below preserves the original plan. It is no longer the active step; see the [current implementation snapshot](#current-implementation-snapshot-2026-10-28) and [current development focus](ROADMAP.md#current-development-focus). The current work is the hybrid RRF experiment described in the development log; this does not renumber the approved roadmap.
 
 Current development phase:
 
