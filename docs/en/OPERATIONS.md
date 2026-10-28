@@ -2,7 +2,7 @@
 
 # Operations runbook
 
-[Česky](../cs/OPERATIONS.md#cz) · [English](#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](../README.md)
+[Česky](../cs/OPERATIONS.md#cz) · [English](#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -26,8 +26,6 @@
 > **Scope:** Current Chroma-backed RAG project, Python 3.11. Commands below run from `rag_api_project/`. This is a local educational prototype, not a production deployment.
 >
 > **Safety:** `python -m scripts.ingest` **deletes and recreates** the existing Chroma collection with the configured name. Back up the index and confirm the PDF corpus and configuration before running. It is **not** an incremental ingest.
-
-[↑ Contents](#obsah)
 
 <a id="en-1-setup-and-configuration"></a>
 
@@ -60,16 +58,12 @@ The configuration lives in `.env` (see `.env.example` and `app/config.py`). Defa
 `RAG_GENERATION_MODEL_NAME` defaults to `google/flan-t5-base`; `RAG_RERANKER_MODEL_NAME` to `cross-encoder/ms-marco-MiniLM-L-6-v2`. Optional `RAG_DATA_DIR` / `RAG_CHROMA_DIR` override paths (prefer absolute paths). Environment variables override `.env`; restart the API after changes because settings are cached. Ingest and vector/legacy retrieval must use the index's embedding model. Page discovery and candidate validation default to relative `data/`, independently of `RAG_DATA_DIR`; pass `--data-dir <directory>` for a custom corpus.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-1a-dependency-reproducibility-windows-python-311"></a>
 
 ## 1a. Dependency reproducibility (Windows Python 3.11)
 
 The published `requirements.txt` does not pin versions. A locally generated `requirements-win-py311.lock.txt` may exist but is **not automatically approved, tracked or portable**. Before adopting such a lockfile, independently verify the generation method, Python/OS support, clean Windows installs, CI compatibility, consistency with the requirements file, and an update policy. Keep dependency changes in a separate reviewed commit.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-2-prepare-and-ingest-pdf-sources"></a>
 
@@ -96,8 +90,6 @@ python -c "import chromadb; from app.config import get_settings; s=get_settings(
 Keep private PDFs, indices, `.env` secrets and model caches out of Git. Document corpus/configuration changes before comparing evaluation runs.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-3-run-and-inspect-the-application"></a>
 
 ## 3. Run and inspect the application
@@ -114,8 +106,6 @@ Invoke-RestMethod -Uri http://127.0.0.1:8000/ask -Method Post -ContentType 'appl
 
 BM25 is selectable in the offline evaluation CLI, **not** as an established `/ask` retrieval mode. Hybrid RRF integration is experimental, not a documented deployed endpoint.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-4-pdf-evidence-discovery-and-offline-evaluation"></a>
 
@@ -139,8 +129,6 @@ python -m scripts.evaluate_retrieval --retriever bm25 --dataset random
 
 Evaluation prints MRR, Hit@K and retrieval-only latency. It appends JSONL run history with dataset hash and Git provenance. **TEST is intentionally unavailable for iterative tuning.** Follow [EVALUATION.md](EVALUATION.md) for ground-truth construction, validation, approval and interpretation.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-5-tests-git-and-docker"></a>
 
@@ -170,8 +158,6 @@ Compose exposes http://127.0.0.1:8001/docs and mounts Chroma/model-cache directo
 Compose does **not** pass the host `.env` to the application: it defines neither `env_file` nor `environment`, and the image contains only `.env.example`. Custom `RAG_*` values require explicit local Compose configuration with container-valid paths. Startup or `/health` alone does not verify `/ask`; also inspect `/ready` and `/stats`.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-6-troubleshooting-and-limits"></a>
 
 ## 6. Troubleshooting and limits
@@ -182,4 +168,4 @@ Compose does **not** pass the host `.env` to the application: it defines neither
 - `FIRST_EVIDENCE_RANK=None`: no ranked result matched the declared source/page/text evidence; this does not prove the retriever returned no documents.
 - Fast latency measurements exclude initialization and full answer generation; compare repeated warmed runs for operational conclusions.
 
-[↑ Back to top](#top) · [Obsah / Contents](#obsah)
+[↑ Back to top](#top)

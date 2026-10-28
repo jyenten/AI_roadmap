@@ -2,7 +2,7 @@
 
 # Evaluation Curator Agent
 
-[Česky](../cs/EVAL_CURATOR_AGENT.md#cz) · [English](#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](../README.md)
+[Česky](../cs/EVAL_CURATOR_AGENT.md#cz) · [English](#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -28,7 +28,7 @@
 
 <a id="en"></a>
 
-[↑ Contents](#obsah)
+**Working directory:** Run commands from `rag_api_project/`. Dataset and PDF paths below are relative to that project directory.
 
 <a id="en-goal"></a>
 
@@ -49,8 +49,6 @@ The agent must never promote candidates into the real evaluation datasets.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-allowed-output"></a>
 
@@ -77,8 +75,6 @@ Do not modify:
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-existing-datasets"></a>
 
 ## Existing datasets
@@ -94,8 +90,6 @@ Avoid duplicate questions, duplicate facts, and unnecessarily repeated topics.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-source-material"></a>
 
@@ -120,8 +114,6 @@ A high BM25 score does not mean that a passage is correct gold evidence.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-candidate-creation-method"></a>
 
 ## Candidate creation method
@@ -145,8 +137,6 @@ For every candidate:
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-candidate-schema"></a>
 
@@ -178,8 +168,6 @@ Each item must follow this structure:
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-gold-evidence-rules"></a>
 
 ## Gold evidence rules
@@ -204,8 +192,6 @@ Do not place two fragments into contains_any when both are required together to 
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-topic-diversity"></a>
 
@@ -237,8 +223,6 @@ Never create a weak question just to improve topic balance.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-prohibited-behavior"></a>
 
 ## Prohibited behavior
@@ -259,8 +243,6 @@ Do not:
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-batch-size"></a>
 
 ## Batch size
@@ -279,8 +261,6 @@ IDs must be unique across all evaluation datasets and the current candidate batc
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-validation"></a>
 
@@ -309,8 +289,6 @@ VALID: 5 candidate(s)
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-human-approval-boundary"></a>
 
 ## Human approval boundary
@@ -329,4 +307,4 @@ Do not run promote_eval_candidates.
 
 Promotion requires explicit human approval.
 
-[↑ Back to top](#top) · [Obsah / Contents](#obsah)
+[↑ Back to top](#top)

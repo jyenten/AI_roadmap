@@ -2,7 +2,7 @@
 
 # Golden evidence and retrieval evaluation
 
-[Česky](../cs/EVALUATION.md#cz) · [English](#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](../README.md)
+[Česky](../cs/EVALUATION.md#cz) · [English](#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -23,9 +23,9 @@
 
 <a id="en"></a>
 
-> **Policy:** The real `eval/dev_questions.json`, `eval/random_questions.json` and `eval/test_questions.json` datasets are protected. Candidate generation never modifies these files. Promotion requires explicit human approval. The TEST set is held out and must not be used to tune retrieval.
+**Working directory:** Run commands from `rag_api_project/`. Dataset and PDF paths below are relative to that project directory.
 
-[↑ Contents](#obsah)
+> **Policy:** The real `eval/dev_questions.json`, `eval/random_questions.json` and `eval/test_questions.json` datasets are protected. Candidate generation never modifies these files. Promotion requires explicit human approval. The TEST set is held out and must not be used to tune retrieval.
 
 <a id="en-1-definition-and-source-of-truth"></a>
 
@@ -35,8 +35,6 @@ A **gold evidence** record is a source-grounded passage, not an LLM-generated an
 
 The [JSON example](../cs/EVALUATION.md#cz-1-co-je-golden-evidence) illustrates the **schema only**; it is not real evidence. Evidence text must be copied from the actual local PDF and must genuinely answer the question.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-2-dataset-separation"></a>
 
@@ -48,8 +46,6 @@ The [JSON example](../cs/EVALUATION.md#cz-1-co-je-golden-evidence) illustrates t
 
 Historically the project uses 20 DEV, 25 RANDOM and 15 TEST questions. Dataset count and SHA-256 hash belong to the run's provenance.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-3-evidence-first-curation-workflow"></a>
 
@@ -64,8 +60,6 @@ Historically the project uses 20 DEV, 25 RANDOM and 15 TEST questions. Dataset c
 
 Page-level BM25 discovery is distinct from Chroma-backed chunk-level BM25 evaluation. A high search score never proves gold validity.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-4-validation-approval-and-promotion"></a>
 
@@ -94,8 +88,6 @@ This changes a protected dataset. GitHub evaluation governance requires human re
 `--ids` accepts space-separated IDs. Promotion revalidates only selected candidates and rewrites the target JSON without an automatic backup or an approval check. Human approval is a procedural boundary, not a CLI flag. CI checks candidate **structure only**, not source-PDF truth. After reviewing protected changes, an authorized human must add `human-approved-eval-change`. The workflow does not trigger on labeling alone; rerunning an old run may retain its old event payload, so ensure a fresh PR run sees the current labels.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-5-matching-and-metrics"></a>
 
 ## 5. Matching and metrics
@@ -104,8 +96,6 @@ This changes a protected dataset. GitHub evaluation governance requires human re
 
 MRR averages reciprocal rank of the first match (0 for no match); Hit@K counts questions with a match at or before position K. Extracted page text and indexed chunk text can differ; avoid fragments crossing chunk boundaries.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-6-repeatable-evaluation-and-historical-baseline"></a>
 
@@ -123,15 +113,13 @@ The CLI **writes** strategy-specific JSONL histories under `eval/results/`; each
 
 Also archive PDF SHA-256 hashes, an index snapshot/identity and chunk count, ingest parameters, model versions/revisions, Python/packages, OS/hardware and warm-up procedure. These are not automatically recorded; a dirty flag does not preserve the diff. Export histories before rotation. There is no built-in warm-up or repetition flag; the first `search()` is included. `--dataset random` evaluates the **entire fixed** RANDOM set. The older `scripts.evaluate_random` has unresolved history-path, Git-status and metric-output defects; use `scripts.evaluate_retrieval --dataset random` for this workflow.
 
-The historical Phase 3.4 metrics are in the [baseline table](../cs/EVALUATION.md#cz-8-historický-baseline-phase-34-2026-10-20) (2026-10-20). MRR is recorded in [LEARNING_LOG.md](../../../LEARNING_LOG.md); Hit@K values are from an earlier working report and cannot be independently confirmed without its original JSONL runs. These are not current guarantees or production performance claims. Latency is retrieval-only; do not infer full-pipeline cost or response time from it. No TEST tuning.
+The historical Phase 3.4 metrics are in the [baseline table](../cs/EVALUATION.md#cz-8-historický-baseline-phase-34-2026-10-20) (2026-10-20). MRR is recorded in [LEARNING_LOG.md](LEARNING_LOG.md); Hit@K values are from an earlier working report and cannot be independently confirmed without its original JSONL runs. These are not current guarantees or production performance claims. Latency is retrieval-only; do not infer full-pipeline cost or response time from it. No TEST tuning.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-7-governance-references"></a>
 
 ## 7. Governance references
 
-Read [EVAL_CURATOR_AGENT.md](EVAL_CURATOR_AGENT.md), [../AGENTS.md](../../AGENTS.md), the [repository-wide AGENTS.md](../../../AGENTS.md), [OPERATIONS.md](OPERATIONS.md) and `.github/workflows/eval-governance.yml` (repository root). Respect human approval boundaries even when a validation script passes.
+Read [EVAL_CURATOR_AGENT.md](EVAL_CURATOR_AGENT.md), [../AGENTS.md](PROJECT_AGENTS.md), the [repository-wide AGENTS.md](AGENTS.md), [OPERATIONS.md](OPERATIONS.md) and `.github/workflows/eval-governance.yml` (repository root). Respect human approval boundaries even when a validation script passes.
 
-[↑ Back to top](#top) · [Obsah / Contents](#obsah)
+[↑ Back to top](#top)

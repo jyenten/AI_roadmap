@@ -2,7 +2,7 @@
 
 # Architektura projektu AI RAG
 
-[Česky](#cz) · [English](../en/ARCHITECTURE.md#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](../README.md)
+[Česky](#cz) · [English](../en/ARCHITECTURE.md#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -44,8 +44,6 @@
 
 <a id="cz"></a>
 
-[↑ Obsah](#obsah)
-
 <a id="cz-přehled-implementace-k-28-10-2026"></a>
 
 ## Přehled implementace k 28. 10. 2026
@@ -62,8 +60,6 @@
 Hranice architektury: samostatný průzkumník stránek není chunkový BM25 retriever; evaluace retrievalu je nezávislá na HTTP pipeline odpovědi; surové skóre relevance BM25 se nesmí přímo sčítat s vektorovými vzdálenostmi. Samostatné dvojjazyčné dokumenty [OPERATIONS.md](OPERATIONS.md#cz) a [EVALUATION.md](EVALUATION.md#cz) obsahují ověřené příkazy a pravidla správy golden evidence.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-identita-a-hranice-evaluace"></a>
 
 ## Identita a hranice evaluace
@@ -73,8 +69,6 @@ Chunk v Chroma má `id` odlišné od `chunk_index`. `source`, fyzická `page` a 
 ---
 
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-1-účel"></a>
 
@@ -99,8 +93,6 @@ Doménové chování nesmí být vloženo do obecných komponent retrievalu, eva
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-2-architektonické-principy"></a>
 
@@ -266,8 +258,6 @@ comparison
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-3-celková-architektura-systému"></a>
 
 ## 3. Celková architektura systému
@@ -309,8 +299,6 @@ Běhová aplikace přímo nezávisí na evaluačním systému ani na průzkumní
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-4-offline-datová-pipeline"></a>
 
 ## 4. Offline datová pipeline
@@ -347,8 +335,6 @@ Budoucí refaktoring může ingest rozdělit do dalších modulů, ale není to 
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-5-běhová-aplikace"></a>
 
@@ -477,8 +463,6 @@ retrieve(
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-6-cílová-architektura-retrievalu"></a>
 
@@ -672,8 +656,6 @@ Ostatní vrstvy aplikace mají primárně záviset na této službě, nikoli na 
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-7-architektura-generování"></a>
 
 ## 7. Architektura generování
@@ -710,8 +692,6 @@ Rozdělení se má zavést pouze tehdy, odůvodňuje-li je složitost.
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-8-koordinace-rag"></a>
 
@@ -757,8 +737,6 @@ Její úlohou je koordinace.
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-9-architektura-api"></a>
 
@@ -908,8 +886,6 @@ Middleware má řešit průřezové záležitosti HTTP, nikoli aplikační logik
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-10-architektura-evaluace"></a>
 
 ## 10. Architektura evaluace
@@ -961,8 +937,6 @@ evaluation
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-11-role-evaluačních-datasetů"></a>
 
 ## 11. Role evaluačních datasetů
@@ -1010,8 +984,6 @@ Opakované ruční prohlížení výsledků TEST při optimalizaci by snížilo 
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-12-průběh-evaluace"></a>
 
 ## 12. Průběh evaluace
@@ -1052,8 +1024,6 @@ Díky tomu jsou výsledky reprodukovatelné a porovnatelné.
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-13-univerzální-průzkumník-dokumentů"></a>
 
@@ -1098,8 +1068,6 @@ scripts/search_pdf.py
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-14-tok-dat-průzkumníku-dokumentů"></a>
 
@@ -1161,8 +1129,6 @@ Oddělení omezuje kruhovou konstrukci benchmarku.
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-15-modely-vyhledávání-v-dokumentech"></a>
 
@@ -1233,8 +1199,6 @@ Zbytek aplikace nemá potřebovat spravovat tyto dva objekty samostatně.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-16-bezpečnostní-hranice-průzkumníku-dokumentů"></a>
 
 ## 16. Bezpečnostní hranice průzkumníku dokumentů
@@ -1279,8 +1243,6 @@ Pokud dokument nelze bezpečně nebo úplně načíst, musí být selhání výs
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-17-bezpečnostní-architektura"></a>
 
@@ -1358,8 +1320,6 @@ dependency vulnerabilities
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-18-architektura-observability"></a>
 
@@ -1449,8 +1409,6 @@ Měří různé vlastnosti systému a nemají se zaměňovat.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-19-architektura-testování"></a>
 
 ## 19. Architektura testování
@@ -1526,8 +1484,6 @@ Testy se skutečným korpusem patří do integračních nebo ručních ověřova
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-20-architektura-infrastruktury"></a>
 
@@ -1614,8 +1570,6 @@ Automatizace nasazení se má přidat až tehdy, bude-li běhová architektura d
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-21-směr-závislostí"></a>
 
 ## 21. Směr závislostí
@@ -1662,8 +1616,6 @@ Tím se omezuje provázanost.
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-22-veřejná-rozhraní"></a>
 
@@ -1721,8 +1673,6 @@ Interní pomocné funkce se mohou měnit, aniž by se museli měnit všichni vol
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-23-současný-technický-dluh"></a>
 
@@ -1831,8 +1781,6 @@ Nerefaktoruj ingest pouze kvůli architektonické symetrii.
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-24-cílová-struktura-projektu"></a>
 
@@ -1947,8 +1895,6 @@ Projekt nemá vytvářet prázdnou architekturu jen kvůli shodě s diagramem.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-25-pravidlo-změn-architektury"></a>
 
 ## 25. Pravidlo změn architektury
@@ -1977,8 +1923,6 @@ Upřednostňuje se nejjednodušší architektura, která splní současné poža
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-26-historické-architektonické-zaměření-fáze-2a"></a>
 
@@ -2029,4 +1973,4 @@ PHASE 2A.1
 document_search/models.py
 ```
 
-[↑ Nahoru](#top) · [Obsah / Contents](#obsah)
+[↑ Nahoru](#top)

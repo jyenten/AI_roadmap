@@ -2,7 +2,7 @@
 
 # Golden evidence a evaluace retrievalu
 
-[Česky](#cz) · [English](../en/EVALUATION.md#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](../README.md)
+[Česky](#cz) · [English](../en/EVALUATION.md#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -24,9 +24,9 @@
 
 <a id="cz"></a>
 
-> **Pravidlo:** Skutečné DEV/RANDOM/TEST datasety jsou chráněné. Generování kandidátů je nesmí upravovat. Povýšení kandidátů vyžaduje výslovný souhlas člověka a TEST nesmí sloužit k ladění.
+**Pracovní adresář:** Příkazy spouštěj z `rag_api_project/`. Níže uvedené cesty k datasetům a PDF jsou relativní k tomuto projektovému adresáři.
 
-[↑ Obsah](#obsah)
+> **Pravidlo:** Skutečné DEV/RANDOM/TEST datasety jsou chráněné. Generování kandidátů je nesmí upravovat. Povýšení kandidátů vyžaduje výslovný souhlas člověka a TEST nesmí sloužit k ladění.
 
 <a id="cz-1-co-je-golden-evidence"></a>
 
@@ -60,8 +60,6 @@ Evaluační otázka má navíc `id`, `topic` a `question`. Příklad **pouze for
 Jedna otázka může mít více objektů `gold_evidence`, pokud ji nezávisle podporuje více pasáží. Fragmenty musí skutečně odpovídat textu ze zdrojového PDF; nevymýšlej je, neupravuj je podle retrieval výsledků a nevybírej fragmenty pouze proto, že je vyhledávač vrací.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-2-rozdělení-datasetů"></a>
 
 ## 2. Rozdělení datasetů
@@ -74,8 +72,6 @@ Jedna otázka může mít více objektů `gold_evidence`, pokud ji nezávisle po
 
 Historický rozsah projektu: DEV 20, RANDOM 25 a TEST 15 otázek. Konkrétní počet ověř při načtení datasetu a u každého měření zaznamenej hash. Přehledové soubory mohou obsahovat starší naměřené hodnoty; samotný nový běh je autoritativní pro daný commit a lokální korpus.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-3-jak-vytvořit-nový-důkaz-evidence--question"></a>
 
@@ -94,8 +90,6 @@ Historický rozsah projektu: DEV 20, RANDOM 25 a TEST 15 otázek. Konkrétní po
 
 Page explorer používá BM25 index *stránek*. Vyhodnocované retrievery pracují s chunky z Chroma. Výsledek page exploreru **není automaticky správná golden evidence**.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-4-validace-kandidátů"></a>
 
@@ -119,8 +113,6 @@ Revize 2026-10-28: všech sedm verzovaných dávek má platnou strukturu (5 polo
 Pokud validace selže, oprav **pouze kandidátní JSON**, ne validátor ani stávající golden evidence. Validátor nemá být oslabován kvůli průchodu chybné dávky.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-5-povýšení-schválených-kandidátů"></a>
 
 ## 5. Povýšení schválených kandidátů
@@ -136,8 +128,6 @@ Před spuštěním zkontroluj zdroj, cílový soubor a seznam ID; zálohuj schv�
 `--ids` přijímá jedno nebo více ID oddělených mezerami. Skript znovu validuje pouze vybrané kandidáty a přepíše celý cílový JSON bez automatické zálohy a bez kontroly lidského schválení. Schválení je procesní hranice, nikoli CLI přepínač. CI kontroluje u kandidátů pouze **strukturu**, ne shodu se soukromými PDF. Po lidské revizi chráněných změn musí oprávněný člověk přidat label `human-approved-eval-change`. Workflow nereaguje na samotné přidání labelu a opakování starého běhu může používat starý payload; pro ověření zajisti nový PR běh s aktuálními labely.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-6-jak-se-důkaz-páruje-s-chunkem"></a>
 
 ## 6. Jak se důkaz páruje s chunkem
@@ -148,8 +138,6 @@ Před spuštěním zkontroluj zdroj, cílový soubor a seznam ID; zálohuj schv�
 
 Pozor: validátor fragmenty ověřuje vůči textu extrahovanému ze *stránky*, zatímco evaluátor požaduje přítomnost fragmentu uvnitř konkrétního *chunku*. Příliš dlouhý fragment přes hranici chunků může dát falešné neúspěchy. Při tvorbě referencí proto používej krátké, ale dostatečně specifické, nezávisle ověřené pasáže.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-7-spuštění-offline-evaluace"></a>
 
@@ -172,8 +160,6 @@ Každý běh: vypíše individuální `FIRST_EVIDENCE_RANK`, `RECIPROCAL_RANK`, 
 Pro reprodukci ulož mimo automatickou historii také SHA-256 každého PDF, identitu/snapshot indexu a počet chunků, parametry ingestu, verze a revize modelů, Python/balíčky, OS/hardware a postup warm-upu. Tyto údaje se automaticky neukládají a dirty příznak neuchovává samotný diff. Historii exportuj před rotací. CLI neprovádí warm-up ani nemá parametr pro opakování; měří i první `search()`. `--dataset random` zde vyhodnotí **celý** pevný RANDOM dataset, nikoli nový náhodný vzorek. Starší `scripts.evaluate_random` má samostatné neopravené chyby v historii, Git statusu a výpisu metrik; pro tento postup použij `scripts.evaluate_retrieval --dataset random`.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-8-historický-baseline-phase-34-2026-10-20"></a>
 
 ## 8. Historický baseline Phase 3.4 (2026-10-20)
@@ -185,6 +171,6 @@ Pro reprodukci ulož mimo automatickou historii také SHA-256 každého PDF, ide
 | RANDOM (25) | BM25 | 0.8133 | 0.72 | 0.92 | 0.92 | 0.92 |
 | RANDOM (25) | Vector | 0.6050 | 0.44 | 0.72 | 0.80 | 0.84 |
 
-MRR jsou doložena v [LEARNING_LOG.md](../../../LEARNING_LOG.cs.md). Hodnoty Hit@K pocházejí z předchozího pracovního reportu a bez původních JSONL běhů je nelze nezávisle potvrdit. Nejsou zárukou stejného výsledku při změně dat nebo prostředí. Latency jednotlivých krátkých běhů nepovažuj za finální benchmark. TEST zůstává nedotčený.
+MRR jsou doložena v [LEARNING_LOG.md](LEARNING_LOG.md). Hodnoty Hit@K pocházejí z předchozího pracovního reportu a bez původních JSONL běhů je nelze nezávisle potvrdit. Nejsou zárukou stejného výsledku při změně dat nebo prostředí. Latency jednotlivých krátkých běhů nepovažuj za finální benchmark. TEST zůstává nedotčený.
 
-[↑ Nahoru](#top) · [Obsah / Contents](#obsah)
+[↑ Nahoru](#top)

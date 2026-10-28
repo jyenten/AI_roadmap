@@ -2,7 +2,7 @@
 
 # Pokyny pro agenty
 
-[Česky](#cz) · [English](AGENTS.md#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](docs/README.md)
+[Česky](#cz) · [English](../en/PROJECT_AGENTS.md#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -18,7 +18,7 @@
 
 <a id="cz"></a>
 
-[↑ Obsah](#obsah)
+**Působnost:** Tato pravidla platí pro práci v `rag_api_project/` společně s [globálními pravidly](AGENTS.md). Cesty začínající `docs/` jsou relativní ke kořeni repozitáře; provozní příkazy se spouštějí z `rag_api_project/`.
 
 <a id="cz-kurátorství-evaluačních-datasetů"></a>
 
@@ -48,13 +48,11 @@ python -m scripts.validate_eval_candidates <candidate-file>
 - Dodržuj postup evidence -> otázka.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-provozní-a-evaluační-postupy"></a>
 
 ## Provozní a evaluační postupy
 
-[OPERATIONS.md](docs/cs/OPERATIONS.md#cz) používej pro **anglické/české** příkazy instalace, ingestu, API, Dockeru a testů; [EVALUATION.md](docs/cs/EVALUATION.md#cz) pro golden evidence, metriky, validaci a povýšení schválené člověkem. Tyto dokumenty vysvětlují postupy; tento soubor určuje oprávnění agentů.
+[OPERATIONS.md](OPERATIONS.md#cz) používej pro **anglické/české** příkazy instalace, ingestu, API, Dockeru a testů; [EVALUATION.md](EVALUATION.md#cz) pro golden evidence, metriky, validaci a povýšení schválené člověkem. Tyto dokumenty vysvětlují postupy; tento soubor určuje oprávnění agentů.
 
 - Před navržením nebo spuštěním ingestu zkontroluj `scripts/ingest.py` a vybraný korpus/kolekci. Ingest nyní kolekci **smaže a znovu vytvoří**. Destruktivní ingest nikdy nespouštěj bez výslovného oprávnění a rozhodnutí o záloze.
 - Při správě evidence zachovej výše uvedená pravidla: pouze zdrojová PDF, fyzické stránky a nejprve evidence. Validace kandidáta **neopravňuje** k jeho povýšení.
@@ -63,4 +61,4 @@ python -m scripts.validate_eval_candidates <candidate-file>
 - Při změně evaluačního validačního kódu přidej regresní testy (včetně více stránek evidence) a zkontroluj pravidla CI pro chráněné soubory.
 - Kvůli aktualizaci dokumentace neměň `requirements.txt`, lock soubory, architekturu ani parametry retrievalu. Udržuj české a anglické návody synchronizované.
 
-[↑ Nahoru](#top) · [Obsah / Contents](#obsah)
+[↑ Nahoru](#top)

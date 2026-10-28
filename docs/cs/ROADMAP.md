@@ -2,7 +2,7 @@
 
 # Roadmapa projektu AI RAG
 
-[Česky](#cz) · [English](../en/ROADMAP.md#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](../README.md)
+[Česky](#cz) · [English](../en/ROADMAP.md#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -76,10 +76,8 @@
 
 <a id="cz"></a>
 
-Tento dokument určuje **co budovat, pořadí fází, cíle a kritéria přijetí**. Postup implementace a revize patří do [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md#cz), hranice komponent do [ARCHITECTURE.md](ARCHITECTURE.md#cz) a datované výsledky práce a učení do [LEARNING_LOG.md](../../../LEARNING_LOG.cs.md#cz).
+Tento dokument určuje **co budovat, pořadí fází, cíle a kritéria přijetí**. Postup implementace a revize patří do [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md#cz), hranice komponent do [ARCHITECTURE.md](ARCHITECTURE.md#cz) a datované výsledky práce a učení do [LEARNING_LOG.md](LEARNING_LOG.md#cz).
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-stavový-přehled--2026-10-28"></a>
 
@@ -89,19 +87,17 @@ Jde o aktuální plánovací bod, nikoli o přečíslování nebo náhradu schv�
 
 | Milník | Zjištěný stav | Důkazy / postup |
 | --- | --- | --- |
-| RAG API, ingest PDF a úložiště Chroma | Implementovaný prototyp; další zodolnění je plánované | [README projektu](../../README.cs.md), [architektura](ARCHITECTURE.md#cz) |
+| RAG API, ingest PDF a úložiště Chroma | Implementovaný prototyp; další zodolnění je plánované | [README projektu](PROJECT.md), [architektura](ARCHITECTURE.md#cz) |
 | Samostatný průzkumník PDF stránek | Implementovaný | `document_search/`, [provoz](OPERATIONS.md#cz) |
 | Evaluace retrievalu podle důkazů | Implementované metriky, historie, latence a provenance | `evaluation/`, [evaluační metodika](EVALUATION.md#cz) |
-| Porovnání chunkového BM25 a Vector | Implementované v offline CLI nad DEV/RANDOM | `app/retrievers/`, [zapsané milníky](../../../LEARNING_LOG.cs.md#cz-historie-projektu-a-učení) |
-| Hybridní lexikální/sémantický retrieval s RRF | Lokálně rozpracovaný; nejde o zveřejněný režim CLI/API | [Záznam necommitnuté práce](../../../LEARNING_LOG.cs.md#cz-necommitnutá-práce-pozorovaná-28-10-2026) |
+| Porovnání chunkového BM25 a Vector | Implementované v offline CLI nad DEV/RANDOM | `app/retrievers/`, [zapsané milníky](LEARNING_LOG.md#cz-historie-projektu-a-učení) |
+| Hybridní lexikální/sémantický retrieval s RRF | Lokálně rozpracovaný; nejde o zveřejněný režim CLI/API | [Záznam necommitnuté práce](LEARNING_LOG.md#cz-necommitnutá-práce-pozorovaná-28-10-2026) |
 | Evaluace na odděleném TEST | Vyhrazena pro závěrečné posouzení, nikoli průběžné ladění | [Evaluační pravidla](EVALUATION.md#cz) |
 | Dvojjazyčné příručky a regrese validátoru | Začleněné přes [PR #3](https://github.com/jyenten/AI_roadmap/pull/3) | [Provoz](OPERATIONS.md#cz), [evaluace](EVALUATION.md#cz) |
-| Automatizace závislostí a bezpečnosti | Zapnutá; nálezy závislosti ChromaDB zůstávají otevřené | `.github/workflows/`, [aktuální projektový bod](../../../LEARNING_LOG.cs.md#cz-ověřený-stav-projektu) |
+| Automatizace závislostí a bezpečnosti | Zapnutá; nálezy závislosti ChromaDB zůstávají otevřené | `.github/workflows/`, [aktuální projektový bod](LEARNING_LOG.md#cz-ověřený-stav-projektu) |
 
 Podrobné výsledky a historické MRR/Hit@K patří do evaluační metodiky a deníku učení; roadmapa neudržuje další kopii benchmarkové tabulky.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-aktuální-zaměření-vývoje"></a>
 
@@ -111,8 +107,6 @@ Dalším zaznamenaným milníkem je hybridní BM25 + Vector retrieval s RRF. Nej
 
 Deník učení historicky označoval BM25 jako Phase 3.3, evaluaci retrievalu jako Phase 3.4 a hybridní RRF jako Phase 3.5. Tato označení **nejsou identifikátory fází této roadmapy**. Zde nadále platí původní čísla a názvy: 3.3 Vektorové vyhledávání, 3.4 Zpracování dotazu a 3.5 Reranker. Při odkazu na práci v deníku používej celý název milníku.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-jak-číst-a-aktualizovat-schválený-plán"></a>
 
@@ -124,8 +118,6 @@ Pracovní postup je **Complete → Measure → Improve**. Společná pravidla ro
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-1---funkční-kostra-rag"></a>
 
@@ -454,8 +446,6 @@ Po splnění těchto podmínek je FÁZE 1 zmrazená.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-2---základ-evaluace"></a>
 
 # FÁZE 2 - Základ evaluace
@@ -539,8 +529,6 @@ Jeho účelem je odhad generalizace po dokončení ladění.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-2a---univerzální-průzkumník-dokumentů"></a>
 
 # FÁZE 2A - Univerzální průzkumník dokumentů
@@ -623,8 +611,6 @@ tests/
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-2a0---zmrazení-architektury"></a>
 
 # FÁZE 2A.0 - Zmrazení architektury
@@ -654,8 +640,6 @@ Produkční kód nepřepracovávej opakovaně, když už vznikají závislé mod
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-2a1---datové-modely"></a>
 
@@ -759,8 +743,6 @@ completed search score
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-2a2---zpracování-textu"></a>
 
 # FÁZE 2A.2 - Zpracování textu
@@ -851,8 +833,6 @@ se přibližně změní na:
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-2a3---základy-bezpečnosti"></a>
 
 # FÁZE 2A.3 - Základy bezpečnosti
@@ -941,8 +921,6 @@ Interní funkce pak mohou pracovat s hodnotami, které už splňují očekávan�
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-2a4---načítání-pdf-a-validace-pdf"></a>
 
@@ -1055,8 +1033,6 @@ Pokud nelze soubor zpracovat bezpečně nebo celý, musí být selhání výslov
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-2a5---bm25-index"></a>
 
 # FÁZE 2A.5 - BM25 index
@@ -1126,8 +1102,6 @@ protože řazení BM25 vychází ze statistik korpusu, nikoli z ručně zadanýc
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-2a6---vyhledávací-modul"></a>
 
 # FÁZE 2A.6 - Vyhledávací modul
@@ -1196,8 +1170,6 @@ Interní implementaci pak lze změnit bez změny každého volajícího.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-2a7---cli"></a>
 
 # FÁZE 2A.7 - CLI
@@ -1248,8 +1220,6 @@ Nemá obsahovat:
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-2a8---integrace"></a>
 
@@ -1305,8 +1275,6 @@ advanced UI
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-2b---evaluační-datové-modely"></a>
 
@@ -1462,8 +1430,6 @@ v rámci jedné přijatelné varianty důkazu.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-2c---metriky-retrievalu"></a>
 
 # FÁZE 2C - Metriky retrievalu
@@ -1546,8 +1512,6 @@ MRR odměňuje systémy, které umisťují relevantní důkazy poblíž začátk
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-2d---evaluační-runner-a-historie"></a>
 
 # FÁZE 2D - Evaluační runner a historie
@@ -1626,8 +1590,6 @@ Změny retrievalu tak lze porovnávat podle důkazů.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-2e---evaluace-random"></a>
 
 # FÁZE 2E - Evaluace RANDOM
@@ -1693,8 +1655,6 @@ To zůstává úlohou TEST.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-2f---kompletní-evaluační-dataset"></a>
 
 # FÁZE 2F - Kompletní evaluační dataset
@@ -1741,8 +1701,6 @@ Po FÁZI 2 se evaluační infrastruktura zmrazí, pokud se neobjeví konkrétní
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-3---refaktoring-retrievalu"></a>
 
 # FÁZE 3 - Refaktoring retrievalu
@@ -1781,8 +1739,6 @@ app/
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-31---retrieval-modely"></a>
 
 # FÁZE 3.1 - Retrieval modely
@@ -1809,8 +1765,6 @@ nahradit volně strukturované slovníky a n-tice explicitními interními typy 
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-32---embeddingy"></a>
 
@@ -1845,8 +1799,6 @@ Nesmí:
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-33---vektorové-vyhledávání"></a>
 
 # FÁZE 3.3 - Vektorové vyhledávání
@@ -1877,8 +1829,6 @@ Vyšší vrstvy nemají přímo záviset na struktuře odpovědí Chroma.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-34---zpracování-dotazu"></a>
 
 # FÁZE 3.4 - Zpracování dotazu
@@ -1903,8 +1853,6 @@ Doménové podmínky pevně zakódované v retrievalu mají být odstraněny.
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-35---reranker"></a>
 
@@ -1939,8 +1887,6 @@ relevance score
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-36---skórování"></a>
 
@@ -1990,8 +1936,6 @@ Zavést je lze pouze při odůvodnění evaluací.
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-37---retrieval-služba"></a>
 
@@ -2053,8 +1997,6 @@ Vyšší vrstvy mají primárně volat toto veřejné rozhraní.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-4---zodolnění-api"></a>
 
 # FÁZE 4 - Zodolnění API
@@ -2087,8 +2029,6 @@ app/
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-41---životní-cyklus-aplikace"></a>
 
@@ -2140,8 +2080,6 @@ Přínosy:
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-42---routy"></a>
 
 # FÁZE 4.2 - Routy
@@ -2173,8 +2111,6 @@ Nemají obsahovat implementaci retrievalu.
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-43---vkládání-závislostí"></a>
 
@@ -2213,8 +2149,6 @@ Přínosy:
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-44---chyby"></a>
 
 # FÁZE 4.4 - Chyby
@@ -2247,8 +2181,6 @@ převádět interní selhání na řízené strukturované HTTP odpovědi.
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-45---middleware"></a>
 
@@ -2288,8 +2220,6 @@ Možné odpovědnosti:
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-5---produkční-inženýrství"></a>
 
 # FÁZE 5 - Produkční inženýrství
@@ -2308,8 +2238,6 @@ Fáze zahrnuje Python i infrastrukturu.
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-51---linux--wsl2"></a>
 
@@ -2343,8 +2271,6 @@ Kompatibilita s Linuxem připravuje projekt také pro Docker a cloudové nasazen
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-52---strukturované-logování"></a>
 
@@ -2408,8 +2334,6 @@ Strukturované logy se snáze:
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-53---běhové-metriky"></a>
 
@@ -2479,8 +2403,6 @@ Důležité jsou oba rozměry.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-54---zodolnění-dockeru"></a>
 
 # FÁZE 5.4 - Zodolnění Dockeru
@@ -2522,8 +2444,6 @@ Použij pouze tehdy, přinese-li to projektu praktickou hodnotu.
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-55---cicd"></a>
 
@@ -2576,8 +2496,6 @@ Možná zlepšení:
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-6---bezpečnost"></a>
 
 # FÁZE 6 - Bezpečnost
@@ -2607,8 +2525,6 @@ app/
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-61---modelování-hrozeb"></a>
 
@@ -2653,8 +2569,6 @@ generation model
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-62---validace-běhových-vstupů"></a>
 
 # FÁZE 6.2 - Validace běhových vstupů
@@ -2676,8 +2590,6 @@ validate_input_size(...)
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-63---běhové-limity"></a>
 
@@ -2705,8 +2617,6 @@ Zde lze posoudit případné budoucí omezení frekvence požadavků.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-64---tajemství"></a>
 
 # FÁZE 6.4 - Tajemství
@@ -2722,8 +2632,6 @@ Zde lze posoudit případné budoucí omezení frekvence požadavků.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-65---bezpečnost-závislostí"></a>
 
 # FÁZE 6.5 - Bezpečnost závislostí
@@ -2737,8 +2645,6 @@ Možné úkoly:
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-66---bezpečnost-kontejneru"></a>
 
@@ -2757,8 +2663,6 @@ Zkontrolovat:
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-67---bezpečnost-http"></a>
 
 # FÁZE 6.7 - Bezpečnost HTTP
@@ -2773,8 +2677,6 @@ Zkontrolovat:
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-68---bezpečnost-specifická-pro-rag"></a>
 
@@ -2821,8 +2723,6 @@ Bezpečnostní revize má zvážit:
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-7---produkční-verze-v1"></a>
 
 # FÁZE 7 - Produkční verze v1
@@ -2852,8 +2752,6 @@ reasonably hardened
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-71---health-a-readiness"></a>
 
@@ -2904,8 +2802,6 @@ Aplikace může běžet, ale její model nebo vektorové úložiště nemusí b�
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-72---produkční-smoke-test"></a>
 
 # FÁZE 7.2 - Produkční smoke test
@@ -2936,8 +2832,6 @@ record latency
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-73---dokumentace"></a>
 
@@ -2994,8 +2888,6 @@ Production v1
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-8---rozšíření"></a>
 
 # FÁZE 8 - Rozšíření
@@ -3006,8 +2898,6 @@ FÁZE 8 začíná až po produkční v1.
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-8a---průzkum-agentů"></a>
 
@@ -3115,8 +3005,6 @@ final response
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-fáze-8b---sql-a-etl"></a>
 
@@ -3248,8 +3136,6 @@ Jde o běžný vzor pipeline v datovém inženýrství.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-8c---mlops"></a>
 
 # FÁZE 8C - MLOps
@@ -3361,8 +3247,6 @@ Možné odpovědnosti:
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-fáze-8d---pokročilí-agenti"></a>
 
 # FÁZE 8D - Pokročilí agenti
@@ -3387,8 +3271,6 @@ Tuto fázi nenavrhuj předčasně.
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-původní-plánovací-odhady--historické"></a>
 
@@ -3431,12 +3313,10 @@ Nejde o odhady samotného psaní kódu.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-historie-plánování"></a>
 
 ## Historie plánování
 
-Předchozí stav FÁZE 2A a podrobný seznam nejbližších úkolů zůstávají v [roadmapě před zkrácením](https://github.com/jyenten/AI_roadmap/blob/d7c3b4f71711c798646bd0a878b96b9c46c92d93/rag_api_project/docs/ROADMAP.md#historical-project-status-original-phase-2a-plan). Popisují starší bod, nikoli dnešní další kroky. Dokončená práce je v [LEARNING_LOG.md](../../../LEARNING_LOG.cs.md#cz); aktuální zaměření patří pouze do [aktuálního zaměření vývoje](#cz-aktuální-zaměření-vývoje) této roadmapy.
+Předchozí stav FÁZE 2A a podrobný seznam nejbližších úkolů zůstávají v [roadmapě před zkrácením](https://github.com/jyenten/AI_roadmap/blob/d7c3b4f71711c798646bd0a878b96b9c46c92d93/rag_api_project/docs/ROADMAP.md#historical-project-status-original-phase-2a-plan). Popisují starší bod, nikoli dnešní další kroky. Dokončená práce je v [LEARNING_LOG.md](LEARNING_LOG.md#cz); aktuální zaměření patří pouze do [aktuálního zaměření vývoje](#cz-aktuální-zaměření-vývoje) této roadmapy.
 
-[↑ Nahoru](#top) · [Obsah / Contents](#obsah)
+[↑ Nahoru](#top)
