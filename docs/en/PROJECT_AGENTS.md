@@ -2,7 +2,7 @@
 
 # Agent Instructions
 
-[Česky](AGENTS.cs.md#cz) · [English](#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](docs/README.md)
+[Česky](../cs/PROJECT_AGENTS.md#cz) · [English](#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -18,7 +18,7 @@
 
 <a id="en"></a>
 
-[↑ Contents](#obsah)
+**Scope:** These rules apply to work in `rag_api_project/` together with the [repository-wide rules](AGENTS.md). Paths beginning with `docs/` are repository-relative; operational commands run from `rag_api_project/`.
 
 <a id="en-evaluation-dataset-curation"></a>
 
@@ -48,13 +48,11 @@ python -m scripts.validate_eval_candidates <candidate-file>
 - Use evidence -> question methodology.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-operational-and-evaluation-procedures"></a>
 
 ## Operational and evaluation procedures
 
-Use [OPERATIONS.md](docs/en/OPERATIONS.md) for the **English/Czech** setup, ingestion, API, Docker and test commands, and [EVALUATION.md](docs/en/EVALUATION.md) for golden evidence, metrics, validation and human-approved promotion. These documents explain procedures; this file sets agent permissions.
+Use [OPERATIONS.md](OPERATIONS.md) for the **English/Czech** setup, ingestion, API, Docker and test commands, and [EVALUATION.md](EVALUATION.md) for golden evidence, metrics, validation and human-approved promotion. These documents explain procedures; this file sets agent permissions.
 
 - Before suggesting or running ingest, inspect `scripts/ingest.py` and the selected corpus/collection. Ingest currently **deletes and recreates** the collection. Never run destructive ingest without explicit authorization and a backup decision.
 - In evidence curation, retain the source-PDF-only, physical-page and evidence-first rules above. Candidate validation does **not** authorize candidate promotion.
@@ -63,4 +61,4 @@ Use [OPERATIONS.md](docs/en/OPERATIONS.md) for the **English/Czech** setup, inge
 - When changing evaluation validation code, add regression tests (including multiple evidence pages) and review the protected-file CI governance policy.
 - Do not change `requirements.txt`, lockfiles, architecture or retrieval parameters merely to update documentation. Keep English and Czech usage instructions synchronized.
 
-[↑ Back to top](#top) · [Obsah / Contents](#obsah)
+[↑ Back to top](#top)

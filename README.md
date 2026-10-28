@@ -2,7 +2,9 @@
 
 # AI Engineering Portfolio — Python, RAG & Retrieval Evaluation
 
-[Česky](README.cs.md#cz) · [English](#en) · [Obsah / Contents](#obsah) · [Documentation](rag_api_project/docs/README.md)
+[Česky](docs/cs/README.md#cz) · [English](#en) · [Documentation](docs/README.md)
+
+> **Documentation and agent rules:** All other Markdown documents live in [docs/](docs/README.md). Before changing files, read the [repository agent rules](docs/en/AGENTS.md) and, for RAG work, the [project agent rules](docs/en/PROJECT_AGENTS.md).
 
 <a id="obsah"></a>
 
@@ -31,18 +33,14 @@ An evolving, hands-on AI engineering project focused on building **testable retr
 **Tech stack:** Python 3.11 · FastAPI · Pydantic · ChromaDB · Sentence Transformers · BM25 · Pytest · Docker · GitHub Actions
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="en-featured-project-rag-api-and-document-search"></a>
 
 ## Featured project: RAG API and document search
 
-**[Explore the RAG API project](rag_api_project/README.md)**
+**[Explore the RAG API project](docs/en/PROJECT.md)**
 
 The project processes technical PDF documentation into searchable chunks and provides a FastAPI question-answering workflow. In parallel, it develops standalone retrieval strategies and a reproducible offline evaluation framework.
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="en-what-is-implemented"></a>
 
@@ -56,16 +54,12 @@ The project processes technical PDF documentation into searchable chunks and pro
 - **Deployment tooling:** Dockerfile and Compose configuration for the API.
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="en-verification"></a>
 
 ### Verification
 
-Historical *locally reported* full-suite run after BM25 integration: **210 passed, 1 skipped** (the skip was due to Windows symlink restrictions). This is not a current test count or a claim about GitHub Actions status; see the dated [verified checkpoint](LEARNING_LOG.md#en-current-project-checkpoint) and verify new runs on [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
+Historical *locally reported* full-suite run after BM25 integration: **210 passed, 1 skipped** (the skip was due to Windows symlink restrictions). This is not a current test count or a claim about GitHub Actions status; see the dated [verified checkpoint](docs/en/LEARNING_LOG.md#en-current-project-checkpoint) and verify new runs on [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="en-architecture-at-a-glance"></a>
 
@@ -95,33 +89,28 @@ Technical PDF files
 **Integration status:** `legacy`, `vector` and `bm25` are selectable in the **offline evaluation CLI** (DEV/RANDOM). BM25 is **not** an established selectable mode in HTTP `/ask`. Hybrid RRF remains in development and must not be presented as completed.
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="en-engineering-approach"></a>
 
 ## Engineering approach
 
 This is a hands-on learning project developed with substantial AI assistance. I use ChatGPT and Codex for explanations, design discussions, code suggestions and generation, debugging, tests, and reviews. I also implement and modify code, investigate failures, and validate changes. The repository documents the development process and the resulting system; it is not a claim that every component was independently conceived or written by me.
 
-Collaboration rules are documented at two levels: [repository-wide AGENTS.md](AGENTS.md) defines the LEARN / IMPLEMENT / REVIEW modes and approval boundaries; [RAG project AGENTS.md](rag_api_project/AGENTS.md) adds safeguards for evaluation dataset curation. Progress and skill evidence are tracked in [LEARNING_LOG.md](LEARNING_LOG.md).
+Collaboration rules are documented at two levels: [repository-wide AGENTS.md](docs/en/AGENTS.md) defines the LEARN / IMPLEMENT / REVIEW modes and approval boundaries; [RAG project AGENTS.md](docs/en/PROJECT_AGENTS.md) adds safeguards for evaluation dataset curation. Progress and skill evidence are tracked in [LEARNING_LOG.md](docs/en/LEARNING_LOG.md).
 
 For the BM25 milestone, Codex prepared regression tests in an **isolated local Git worktree** on `agent/bm25-tests`. The reviewed tests were then integrated into the public development branch.
 
 For ongoing agent experiments, a **separate private GitHub repository** (`jyenten/AI_roadmap_codex_mirror`) mirrors an approved public snapshot. Its `main` branch is the mirror baseline, while `agent/bm25-tests` is reserved for Codex work. The private repository is not publicly accessible and **synchronization is manual**; Codex changes are not automatically published or merged without review.
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="en-repository-layout"></a>
 
 ## Repository layout
 
 - [rag_api_project/](rag_api_project/) — active FastAPI, RAG, retrieval and evaluation work.
+- [docs/](docs/README.md) — Czech/English guides, agent rules and the learning log.
 - .github/ — CI workflow configuration.
 - [archive/](archive/) — 29 earlier programming and machine-learning exercise folders (`ALG/` and `den_1/` through `den_28_Docker/`), moved without altering their contents; preserved for learning history and reference.
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="en-next-steps"></a>
 
@@ -132,14 +121,12 @@ For ongoing agent experiments, a **separate private GitHub repository** (`jyente
 - Improve reproducibility, dependency pinning, operational metrics and onboarding documentation.
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="en-getting-started"></a>
 
 ## Getting started
 
-Start with the [project README](rag_api_project/README.md) or [Czech project README](rag_api_project/README.cs.md). Use the bilingual [operations runbook](rag_api_project/docs/en/OPERATIONS.md) for setup/ingestion and the [golden evidence guide](rag_api_project/docs/en/EVALUATION.md) for curation, validation, approvals and evaluation.
+Start with the [project overview](docs/en/PROJECT.md) or [Czech project overview](docs/cs/PROJECT.md). Use the bilingual [operations runbook](docs/en/OPERATIONS.md) for setup/ingestion and the [golden evidence guide](docs/en/EVALUATION.md) for curation, validation, approvals and evaluation.
 
 > **Project status:** educational engineering portfolio / actively developed prototype, not a production SaaS or hosted demo.
 
-[↑ Nahoru / Back to top](#top) · [Obsah / Contents](#obsah)
+[↑ Nahoru / Back to top](#top)

@@ -2,7 +2,7 @@
 
 # AI Engineering — Learning Log
 
-[Česky](LEARNING_LOG.cs.md#cz) · [English](#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](rag_api_project/docs/README.md)
+[Česky](../cs/LEARNING_LOG.md#cz) · [English](#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -34,6 +34,7 @@
 - [2026-10-28 — Bilingual runbooks, validator regressions and default main](#en-2026-10-28--bilingual-runbooks-validator-regressions-and-default-main)
 - [2026-10-28 — Documentation responsibilities and Czech navigation](#en-2026-10-28--documentation-responsibilities-and-czech-navigation)
 - [2026-10-28 — Separate documentation languages](#en-separate-documentation-languages)
+- [2026-10-28 — Centralized documentation and simpler navigation](#en-centralized-documentation)
 - [Uncommitted work observed on 2026-10-28](#en-uncommitted-work-observed-on-2026-10-28)
 - [Branch audit coverage — 2026-10-28](#en-branch-audit-coverage--2026-10-28)
 
@@ -42,8 +43,6 @@
 ---
 
 <a id="en"></a>
-
-[↑ Contents](#obsah)
 
 <a id="en-goal"></a>
 
@@ -59,8 +58,6 @@ Develop independent proficiency in:
 - AI agents and agent-assisted development
 
 
-[↑ Contents](#obsah)
-
 <a id="en-skill-levels"></a>
 
 ## Skill levels
@@ -73,8 +70,6 @@ Develop independent proficiency in:
 A completed project feature does not automatically
 mean the corresponding skill is mastered.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-current-project-checkpoint"></a>
 
@@ -99,8 +94,6 @@ Project completion and human skill assessment remain separate. The existing
 GUIDED assessments below are preserved; this history review assigns no new
 INDEPENDENT or PROFICIENT rating.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-historical-project-checkpoint--2026-10-12"></a>
 
@@ -129,8 +122,6 @@ These are project achievements, not independent
 skill assessments.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-historical-learning-plan-phase-33--bm25-2026-10-12"></a>
 
 ## Historical learning plan: Phase 3.3 — BM25 (2026-10-12)
@@ -156,14 +147,10 @@ Current skill assessment:
 NOT ASSESSED
 
 
-[↑ Contents](#obsah)
-
 <a id="en-learning-entry-template"></a>
 
 ## Learning entry template
 
-
-[↑ Contents](#obsah)
 
 <a id="en-yyyy-mm-dd--topic"></a>
 
@@ -201,8 +188,6 @@ Next exercise:
 - To be filled in.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-learning-rules"></a>
 
 ## Learning rules
@@ -214,8 +199,6 @@ Record difficulties and misunderstandings.
 Do not inflate skill assessments.
 Revisit weak topics through independent exercises.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-project-and-learning-history"></a>
 
@@ -229,8 +212,6 @@ implementation, understanding or the extent of AI assistance. Attribution is
 stated only where the existing log or observed collaboration establishes it.
 Historical scripts and experimental tests were not rerun during this log audit.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-2026-05-12-to-2026-05-22--python-data-analysis-and-classical-ml"></a>
 
@@ -250,8 +231,6 @@ by `master`, subsequently inherited by `main` and moved under `archive/`.
   [complete ML exercise, 1c852a6](https://github.com/jyenten/AI_roadmap/commit/1c852a6).
 
 
-[↑ Contents](#obsah)
-
 <a id="en-2026-05-23-to-2026-06-09--pytorch-nlp-initial-rag-and-containers"></a>
 
 ### 2026-05-23 to 2026-06-09 — PyTorch, NLP, initial RAG and containers
@@ -269,8 +248,6 @@ by `master`, subsequently inherited by `main` and moved under `archive/`.
   [Hugging Face QA, 1441c8a](https://github.com/jyenten/AI_roadmap/commit/1441c8a),
   [Docker/RAG API, f57517e](https://github.com/jyenten/AI_roadmap/commit/f57517e).
 
-
-[↑ Contents](#obsah)
 
 <a id="en-2026-07-27-to-2026-08-21--rag-api-foundation-diagnostics-and-ci"></a>
 
@@ -291,8 +268,6 @@ by `master`, subsequently inherited by `main` and moved under `archive/`.
   [`master` tip, 3c0bfdd](https://github.com/jyenten/AI_roadmap/commit/3c0bfdd).
 
 
-[↑ Contents](#obsah)
-
 <a id="en-2026-09-01-to-2026-09-16--retrieval-diagnostics-and-evaluation-foundation"></a>
 
 ### 2026-09-01 to 2026-09-16 — Retrieval diagnostics and evaluation foundation
@@ -310,8 +285,6 @@ early checkpoint of this development, not the final evaluation implementation.
   [`retrieval-eval-refactor` tip, 010d8d1](https://github.com/jyenten/AI_roadmap/commit/010d8d1).
 
 
-[↑ Contents](#obsah)
-
 <a id="en-2026-09-16-to-2026-09-17--independent-pdf-page-explorer"></a>
 
 ### 2026-09-16 to 2026-09-17 — Independent PDF page explorer
@@ -327,8 +300,6 @@ early checkpoint of this development, not the final evaluation implementation.
   [BM25 search, 4a0fa06](https://github.com/jyenten/AI_roadmap/commit/4a0fa06),
   [page-explorer CLI, 1f3fad5](https://github.com/jyenten/AI_roadmap/commit/1f3fad5).
 
-
-[↑ Contents](#obsah)
 
 <a id="en-2026-09-22-to-2026-10-08--evidence-matching-and-governed-evaluation"></a>
 
@@ -350,10 +321,8 @@ early checkpoint of this development, not the final evaluation implementation.
 - Later review identified defects in the older `scripts.evaluate_random`;
   historical implementation does not mean every legacy CLI is currently sound.
   The supported comparison procedure is documented in
-  [EVALUATION.md](rag_api_project/docs/en/EVALUATION.md).
+  [EVALUATION.md](EVALUATION.md).
 
-
-[↑ Contents](#obsah)
 
 <a id="en-2026-10-11-to-2026-10-12--vector-baseline-latency-and-agent-rules"></a>
 
@@ -370,8 +339,6 @@ early checkpoint of this development, not the final evaluation implementation.
 - Evidence: [vector/observability, 9ed9985](https://github.com/jyenten/AI_roadmap/commit/9ed9985),
   [agent rules/log, 50797d4](https://github.com/jyenten/AI_roadmap/commit/50797d4).
 
-
-[↑ Contents](#obsah)
 
 <a id="en-2026-10-13--phase-33-bm25-retriever"></a>
 
@@ -400,8 +367,6 @@ early checkpoint of this development, not the final evaluation implementation.
 **Next project milestone:** BM25 vs. Vector evaluation on DEV, followed by RANDOM.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-2026-10-14--portfolio-history-agent-provenance-and-security-automation"></a>
 
 ### 2026-10-14 — Portfolio history, agent provenance and security automation
@@ -422,8 +387,6 @@ early checkpoint of this development, not the final evaluation implementation.
   [dependency audit, 6a20b25](https://github.com/jyenten/AI_roadmap/commit/6a20b25).
 
 
-[↑ Contents](#obsah)
-
 <a id="en-2026-10-15-to-2026-10-17--linux-dependency-reproducibility-proposal"></a>
 
 ### 2026-10-15 to 2026-10-17 — Linux dependency reproducibility proposal
@@ -443,8 +406,6 @@ early checkpoint of this development, not the final evaluation implementation.
   passed at that tip, while dependency-security checks failed. This is not
   approval of those dependency versions or proof that `main` uses the lock.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-2026-10-20--phase-34-retrieval-evaluation"></a>
 
@@ -477,8 +438,6 @@ early checkpoint of this development, not the final evaluation implementation.
 **Next project milestone:** Hybrid retrieval using RRF.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-2026-10-26--document-store-and-verified-faiss-bundle-experiment"></a>
 
 ### 2026-10-26 — Document store and verified FAISS bundle experiment
@@ -503,8 +462,6 @@ early checkpoint of this development, not the final evaluation implementation.
   from the available evidence; no new skill rating is assigned.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-2026-10-26--automated-github-actions-dependency-proposal"></a>
 
 ### 2026-10-26 — Automated GitHub Actions dependency proposal
@@ -519,8 +476,6 @@ early checkpoint of this development, not the final evaluation implementation.
 - This records automation activity and a review opportunity, not human
   implementation or a demonstrated new skill.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-2026-10-28--bilingual-runbooks-validator-regressions-and-default-main"></a>
 
@@ -556,8 +511,6 @@ early checkpoint of this development, not the final evaluation implementation.
   independent human mastery of these topics.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-2026-10-28--documentation-responsibilities-and-czech-navigation"></a>
 
 ### 2026-10-28 — Documentation responsibilities and Czech navigation
@@ -578,14 +531,22 @@ ROADMAP.md owns phase goals and status. Original phase specifications were prese
 
 ### 2026-10-28 — Separate documentation languages
 
-**Project maintenance:** The documentation revision in [PR #4](https://github.com/jyenten/AI_roadmap/pull/4) separates full project guides into `rag_api_project/docs/en/` and `rag_api_project/docs/cs/`, with a shared [documentation index](rag_api_project/docs/README.md).
+**Project maintenance:** The documentation revision in [PR #4](https://github.com/jyenten/AI_roadmap/pull/4) separates full project guides into `rag_api_project/docs/en/` and `rag_api_project/docs/cs/`, with a shared [documentation index](../README.md).
 
 - README, AGENTS and this log retain English/Czech file pairs at their repository/project level.
 - Original guide paths retain navigation and chapter bookmarks; relative links and language switches are updated.
 - CODEOWNERS and Eval Governance retain existing protections and cover the new Czech agent rules and both curator-guide paths.
 - This agent-assisted documentation work changes no retrieval code, dependencies, golden evidence, protected datasets or existing skill assessments.
 
-[↑ Contents](#obsah)
+<a id="en-centralized-documentation"></a>
+
+### 2026-10-28 — Centralized documentation and simpler navigation
+
+**Documentation maintenance:** All versioned Markdown files now live under repository-root `docs/`, except the root `README.md`. Czech and English guides, learning records and agent rules use `docs/cs/` and `docs/en/`; [the documentation index](../README.md) lists their locations.
+
+- Removed repeated links back to the contents; chapter contents and the final back-to-top link remain.
+- Updated relative links and the protected paths in CODEOWNERS/Eval Governance; repository and project agent rules retain their scope and must be loaded explicitly through the README references.
+- Historical skill assessments, approved roadmap goals, retrieval code, dependencies, golden evidence and DEV/RANDOM/TEST are unchanged.
 
 <a id="en-uncommitted-work-observed-on-2026-10-28"></a>
 
@@ -612,8 +573,6 @@ The original worktrees and their uncommitted changes were read only and preserve
 Next learning focus remains hybrid RRF with DEV/RANDOM measurement and no TEST
 tuning; the storage/backend experiment remains a separate review track.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-branch-audit-coverage--2026-10-28"></a>
 
@@ -656,4 +615,4 @@ the documentation checkout is a pre-rename ref, not an eighth current public
 branch. No branches, source code, datasets or dependency files were changed by
 this learning-log audit.
 
-[↑ Back to top](#top) · [Obsah / Contents](#obsah)
+[↑ Back to top](#top)

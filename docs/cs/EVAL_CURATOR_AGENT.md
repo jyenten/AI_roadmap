@@ -2,7 +2,7 @@
 
 # Agent pro kurátorství evaluace
 
-[Česky](#cz) · [English](../en/EVAL_CURATOR_AGENT.md#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](../README.md)
+[Česky](#cz) · [English](../en/EVAL_CURATOR_AGENT.md#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -28,7 +28,7 @@
 
 <a id="cz"></a>
 
-[↑ Obsah](#obsah)
+**Pracovní adresář:** Příkazy spouštěj z `rag_api_project/`. Níže uvedené cesty k datasetům a PDF jsou relativní k tomuto projektovému adresáři.
 
 <a id="cz-cíl"></a>
 
@@ -48,8 +48,6 @@ Agent připravuje pouze kandidáty. Nikdy je nesmí sám povýšit do skutečný
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-povolený-výstup"></a>
 
@@ -76,8 +74,6 @@ Neměň:
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-existující-datasety"></a>
 
 ## Existující datasety
@@ -93,8 +89,6 @@ Vyhni se duplicitním otázkám, duplicitním faktům a zbytečně opakovaným t
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-zdrojový-materiál"></a>
 
@@ -119,8 +113,6 @@ Vysoké BM25 skóre neznamená, že je pasáž správnou gold evidence.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-postup-tvorby-kandidátů"></a>
 
 ## Postup tvorby kandidátů
@@ -144,8 +136,6 @@ Pro každého kandidáta:
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-schéma-kandidáta"></a>
 
@@ -177,8 +167,6 @@ Každá položka musí mít tuto strukturu:
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-pravidla-gold-evidence"></a>
 
 ## Pravidla gold evidence
@@ -203,8 +191,6 @@ Nevkládej do contains_any dva fragmenty, pokud jsou pro odpověď potřebné ob
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-různorodost-témat"></a>
 
@@ -236,8 +222,6 @@ Nikdy nevytvářej slabou otázku jen kvůli vyvážení témat.
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-zakázané-chování"></a>
 
 ## Zakázané chování
@@ -258,8 +242,6 @@ Nesmíš:
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-velikost-dávky"></a>
 
 ## Velikost dávky
@@ -278,8 +260,6 @@ ID musí být unikátní napříč všemi evaluačními datasety a současnou ka
 
 ---
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-validace"></a>
 
@@ -308,8 +288,6 @@ VALID: 5 candidate(s)
 ---
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-hranice-lidského-schválení"></a>
 
 ## Hranice lidského schválení
@@ -328,4 +306,4 @@ Nespouštěj promote_eval_candidates.
 
 Povýšení vyžaduje výslovné lidské schválení.
 
-[↑ Nahoru](#top) · [Obsah / Contents](#obsah)
+[↑ Nahoru](#top)

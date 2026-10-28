@@ -2,7 +2,7 @@
 
 # AI inženýrství — deník učení
 
-[Česky](#cz) · [English](LEARNING_LOG.md#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](rag_api_project/docs/README.md)
+[Česky](#cz) · [English](../en/LEARNING_LOG.md#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -34,6 +34,7 @@
 - [2026-10-28 — Dvojjazyčné návody, regrese validátoru a výchozí main](#cz-2026-10-28--dvojjazyčné-návody-regrese-validátoru-a-výchozí-main)
 - [2026-10-28 — Odpovědnosti dokumentace a česká navigace](#cz-2026-10-28--odpovědnosti-dokumentace-a-česká-navigace)
 - [2026-10-28 — Oddělené jazyky dokumentace](#cz-oddělené-jazyky-dokumentace)
+- [2026-10-28 — Centralizovaná dokumentace a jednodušší navigace](#cz-centralizovaná-dokumentace)
 - [Necommitnutá práce pozorovaná 28. 10. 2026](#cz-necommitnutá-práce-pozorovaná-28-10-2026)
 - [Pokrytí auditu větví — 2026-10-28](#cz-pokrytí-auditu-větví--2026-10-28)
 
@@ -42,8 +43,6 @@
 ---
 
 <a id="cz"></a>
-
-[↑ Obsah](#obsah)
 
 <a id="cz-cíl"></a>
 
@@ -59,8 +58,6 @@ Rozvíjet samostatnou zdatnost v:
 - AI agentech a vývoji s jejich pomocí
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-úrovně-dovedností"></a>
 
 ## Úrovně dovedností
@@ -72,8 +69,6 @@ Rozvíjet samostatnou zdatnost v:
 
 Dokončená funkce projektu automaticky neznamená zvládnutí příslušné dovednosti.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-ověřený-stav-projektu"></a>
 
@@ -92,8 +87,6 @@ Zkontrolovaný commit projektu: bfb1d85 (před touto aktualizací deníku)
 
 Dokončení projektu a hodnocení lidských dovedností zůstávají oddělené. Níže uvedená existující hodnocení GUIDED jsou zachována; tato revize historie nepřiděluje nové INDEPENDENT ani PROFICIENT.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-historický-stav-projektu--2026-10-12"></a>
 
@@ -120,8 +113,6 @@ Poslední ověřená úplná testovací sada: 142 úspěšných testů, 1 přesk
 Jde o dosažené výsledky projektu, nikoli o hodnocení samostatných dovedností.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-historický-učební-plán-fáze-33--bm25-2026-10-12"></a>
 
 ## Historický učební plán: fáze 3.3 — BM25 (2026-10-12)
@@ -144,14 +135,10 @@ Implementovat BM25Retriever.search() a vysvětlit řazení i rozhodování při 
 Dosavadní hodnocení dovednosti: NOT ASSESSED
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-šablona-záznamu-učení"></a>
 
 ## Šablona záznamu učení
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-yyyy-mm-dd--téma"></a>
 
@@ -188,8 +175,6 @@ Další cvičení:
 - doplnit
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-pravidla-záznamů-učení"></a>
 
 ## Pravidla záznamů učení
@@ -199,16 +184,12 @@ Deník aktualizuj po významných milnících, nikoli po každé malé změně k
 Zaznamenávej obtíže a neporozumění. Nenadhodnocuj dovednosti. Ke slabým tématům se vracej samostatnými cvičeními.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-historie-projektu-a-učení"></a>
 
 ## Historie projektu a učení
 
 Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie commitů, vybraných změn zdrojů/testů, stavu PR a lokálních worktrees. Data označují zaznamenané commity, nikoli ověřenou dobu studia. Uvedené pojmy se v práci vyskytují; samotné Git autorství neprokazuje samostatnou lidskou implementaci, porozumění ani rozsah AI pomoci. Autorství uvádíme pouze tam, kde je dokládá existující deník nebo pozorovaná spolupráce. Historické skripty a experimentální testy při auditu deníku nebyly znovu spouštěny.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-2026-05-12-až-2026-05-22--python-analýza-dat-a-klasické-ml"></a>
 
@@ -221,8 +202,6 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Pojmy k upevnění: oddělení train/test, reprodukovatelné rozdělení, předzpracování a interpretace metrik místo pouhého fitování modelu.
 - Důkazy: [počáteční dny 1–4, 8daf3fa](https://github.com/jyenten/AI_roadmap/commit/8daf3fa), [Pandas, 909b475](https://github.com/jyenten/AI_roadmap/commit/909b475), [úplné ML cvičení, 1c852a6](https://github.com/jyenten/AI_roadmap/commit/1c852a6).
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-2026-05-23-až-2026-06-09--pytorch-nlp-počáteční-rag-a-kontejnery"></a>
 
@@ -237,8 +216,6 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Důkazy: [PyTorch, 1c05b12](https://github.com/jyenten/AI_roadmap/commit/1c05b12), [BERT, 4097483](https://github.com/jyenten/AI_roadmap/commit/4097483), [Hugging Face QA, 1441c8a](https://github.com/jyenten/AI_roadmap/commit/1441c8a), [Docker/RAG API, f57517e](https://github.com/jyenten/AI_roadmap/commit/f57517e).
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-2026-07-27-až-2026-08-21--základ-rag-api-diagnostika-a-ci"></a>
 
 ### 2026-07-27 až 2026-08-21 — Základ RAG API, diagnostika a CI
@@ -252,8 +229,6 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Důkazy: [metadata zdrojů, 581d6f6](https://github.com/jyenten/AI_roadmap/commit/581d6f6), [readiness, 6950495](https://github.com/jyenten/AI_roadmap/commit/6950495), [CI/smoke testy, 702c0ab](https://github.com/jyenten/AI_roadmap/commit/702c0ab), [vrchol `master`, 3c0bfdd](https://github.com/jyenten/AI_roadmap/commit/3c0bfdd).
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-2026-09-01-až-2026-09-16--diagnostika-retrievalu-a-základ-evaluace"></a>
 
 ### 2026-09-01 až 2026-09-16 — Diagnostika retrievalu a základ evaluace
@@ -265,8 +240,6 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Zahrnuté pojmy: diagnostika retrievalu odděleně od generování, hranice/překryv chunků, evaluace podložená evidencí a ohraničený rozsah vývoje.
 - Důkazy: [regrese chunkování, 26b39e6](https://github.com/jyenten/AI_roadmap/commit/26b39e6), [počáteční evaluace, 2fafcae](https://github.com/jyenten/AI_roadmap/commit/2fafcae), [vrchol `retrieval-eval-refactor`, 010d8d1](https://github.com/jyenten/AI_roadmap/commit/010d8d1).
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-2026-09-16-až-2026-09-17--nezávislý-průzkumník-pdf-stránek"></a>
 
@@ -280,8 +253,6 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Důkazy: [bezpečné načítání PDF, f05e080](https://github.com/jyenten/AI_roadmap/commit/f05e080), [BM25 vyhledávání, 4a0fa06](https://github.com/jyenten/AI_roadmap/commit/4a0fa06), [CLI průzkumníku stránek, 1f3fad5](https://github.com/jyenten/AI_roadmap/commit/1f3fad5).
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-2026-09-22-až-2026-10-08--párování-evidence-a-řízená-evaluace"></a>
 
 ### 2026-09-22 až 2026-10-08 — Párování evidence a řízená evaluace
@@ -292,10 +263,8 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Oddělení DEV/RANDOM/závěrečného TEST, validace/povýšení kandidátů, kurátorská pravidla, CODEOWNERS a CI Eval Governance.
 - Zahrnuté pojmy: fyzická čísla PDF stránek, normalizované doslovné fragmenty, MRR/Hit@K, náhodné seedy, únik dat mezi datasety a hranice lidského schválení.
 - Důkazy: [modely datasetů, f0b30b8](https://github.com/jyenten/AI_roadmap/commit/f0b30b8), [párování evidence, 8e93ce5](https://github.com/jyenten/AI_roadmap/commit/8e93ce5), [runner/metriky, ed6bf73](https://github.com/jyenten/AI_roadmap/commit/ed6bf73), [náhodný výběr, 3247ab4](https://github.com/jyenten/AI_roadmap/commit/3247ab4), [governance, 8aae380](https://github.com/jyenten/AI_roadmap/commit/8aae380).
-- Pozdější revize našla vady ve starším `scripts.evaluate_random`; historická implementace neznamená, že je každé starší CLI nyní správné. Podporovaný postup porovnání je v [EVALUATION.md](rag_api_project/docs/cs/EVALUATION.md#cz).
+- Pozdější revize našla vady ve starším `scripts.evaluate_random`; historická implementace neznamená, že je každé starší CLI nyní správné. Podporovaný postup porovnání je v [EVALUATION.md](EVALUATION.md#cz).
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-2026-10-11-až-2026-10-12--vektorový-baseline-latence-a-pravidla-agentů"></a>
 
@@ -309,8 +278,6 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Zahrnuté pojmy: stabilní rozhraní retrieverů, hranice měření, reprodukovatelná metadata běhu a oddělení dokončení projektu od zvládnutí dovedností.
 - Důkazy: [vector/observabilita, 9ed9985](https://github.com/jyenten/AI_roadmap/commit/9ed9985), [pravidla agentů/deník, 50797d4](https://github.com/jyenten/AI_roadmap/commit/50797d4).
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-2026-10-13--fáze-33-bm25-retriever"></a>
 
@@ -339,8 +306,6 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 **Další projektový milník:** Evaluace BM25 oproti Vector na DEV a poté RANDOM.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-2026-10-14--historie-portfolia-původ-práce-agentů-a-bezpečnostní-automatizace"></a>
 
 ### 2026-10-14 — Historie portfolia, původ práce agentů a bezpečnostní automatizace
@@ -354,8 +319,6 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Důkazy: [přesun archivu, d157023](https://github.com/jyenten/AI_roadmap/commit/d157023), [původ agentů, 646525d](https://github.com/jyenten/AI_roadmap/commit/646525d), [kontrola tajných údajů, b032e9a](https://github.com/jyenten/AI_roadmap/commit/b032e9a), [audit závislostí, 6a20b25](https://github.com/jyenten/AI_roadmap/commit/6a20b25).
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-2026-10-15-až-2026-10-17--návrh-reprodukovatelných-linux-závislostí"></a>
 
 ### 2026-10-15 až 2026-10-17 — Návrh reprodukovatelných Linux závislostí
@@ -368,8 +331,6 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Důkazy: [snapshot workflow, 4b26db1](https://github.com/jyenten/AI_roadmap/commit/4b26db1), [kontrola locku, 8e2e7ec](https://github.com/jyenten/AI_roadmap/commit/8e2e7ec), [vrchol větve, a258e85](https://github.com/jyenten/AI_roadmap/commit/a258e85).
 - [Historické PR CI](https://github.com/jyenten/AI_roadmap/actions/runs/39022965393) na tomto vrcholu prošlo, bezpečnostní kontroly závislostí selhaly. Nejde o schválení verzí závislostí ani důkaz, že `main` tento lock používá.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-2026-10-20--fáze-34-evaluace-retrievalu"></a>
 
@@ -400,8 +361,6 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 **Další projektový milník:** Hybridní retrieval pomocí RRF.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-2026-10-26--experiment-úložiště-dokumentů-a-ověřeného-faiss-balíčku"></a>
 
 ### 2026-10-26 — Experiment úložiště dokumentů a ověřeného FAISS balíčku
@@ -417,8 +376,6 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Z dostupných důkazů nebylo určeno rozdělení implementace člověk/AI ani samostatné vysvětlení; nové hodnocení dovednosti se nepřiděluje.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-2026-10-26--automatizovaný-návrh-závislosti-github-actions"></a>
 
 ### 2026-10-26 — Automatizovaný návrh závislosti GitHub Actions
@@ -429,8 +386,6 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - [PR #2](https://github.com/jyenten/AI_roadmap/pull/2) je otevřený. Jeho historický [běh CI](https://github.com/jyenten/AI_roadmap/actions/runs/40291737972) prošel; neprošly všechny bezpečnostní/governance kontroly.
 - Jde o záznam aktivity automatizace a příležitosti k revizi, nikoli lidské implementace nebo prokázané nové dovednosti.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-2026-10-28--dvojjazyčné-návody-regrese-validátoru-a-výchozí-main"></a>
 
@@ -448,8 +403,6 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Zahrnuté pojmy: dokumentace podložená důkazy, smysluplné regrese, schvalovací hranice, testy závislé na prostředí a zachování Git historie.
 - Pozorovaná implementace/audit využívaly agenta; nedokládají samostatné lidské zvládnutí těchto témat.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-2026-10-28--odpovědnosti-dokumentace-a-česká-navigace"></a>
 
@@ -471,14 +424,22 @@ fází. Původní specifikace fází zůstaly zachovány.
 
 ### 2026-10-28 — Oddělené jazyky dokumentace
 
-**Údržba projektu:** Revize dokumentace v [PR #4](https://github.com/jyenten/AI_roadmap/pull/4) odděluje úplné projektové příručky do `rag_api_project/docs/en/` a `rag_api_project/docs/cs/` se společným [rozcestníkem dokumentace](rag_api_project/docs/README.md).
+**Údržba projektu:** Revize dokumentace v [PR #4](https://github.com/jyenten/AI_roadmap/pull/4) odděluje úplné projektové příručky do `rag_api_project/docs/en/` a `rag_api_project/docs/cs/` se společným [rozcestníkem dokumentace](../README.md).
 
 - README, AGENTS a tento deník zachovávají anglické/české soubory na své úrovni repozitáře/projektu.
 - Původní cesty příruček zachovávají navigaci a záložky kapitol; relativní odkazy a přepínání jazyků jsou aktualizované.
 - CODEOWNERS a Eval Governance zachovávají dosavadní ochranu a pokrývají nová česká pravidla agentů a obě jazykové cesty kurátorské příručky.
 - Tato dokumentační práce s pomocí agenta nemění retrieval kód, závislosti, golden evidence, chráněné datasety ani existující hodnocení dovedností.
 
-[↑ Obsah](#obsah)
+<a id="cz-centralizovaná-dokumentace"></a>
+
+### 2026-10-28 — Centralizovaná dokumentace a jednodušší navigace
+
+**Údržba dokumentace:** Všechny verzované Markdown soubory jsou nyní pod `docs/` v kořeni repozitáře, kromě kořenového `README.md`. České a anglické příručky, deník učení i pravidla agentů používají `docs/cs/` a `docs/en/`; jejich umístění uvádí [rozcestník dokumentace](../README.md).
+
+- Odstraněny opakované návraty na obsah; obsah kapitol a závěrečný odkaz nahoru zůstávají.
+- Aktualizovány relativní odkazy a chráněné cesty v CODEOWNERS/Eval Governance; globální a projektová pravidla agentů zachovávají působnost a načítají se výslovně přes odkazy v README.
+- Historická hodnocení dovedností, schválené cíle roadmapy, retrieval kód, závislosti, golden evidence a DEV/RANDOM/TEST jsou beze změn.
 
 <a id="cz-necommitnutá-práce-pozorovaná-28-10-2026"></a>
 
@@ -492,8 +453,6 @@ Jde o pozorování worktrees, nikoli datované dokončené milníky. Z pouhé p�
 
 Původní worktrees a necommitnuté změny byly pouze čteny a zachovány. Dalším učebním zaměřením zůstává hybridní RRF s měřením DEV/RANDOM bez ladění na TEST; experiment úložiště/backendu zůstává samostatným předmětem revize.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-pokrytí-auditu-větví--2026-10-28"></a>
 
@@ -526,4 +485,4 @@ Zkontrolováno bylo také osm lokálních větví v původním klonu projektu a 
 
 Uložené reference soukromého zrcadla `codex-private/main` a `codex-private/agent/bm25-tests` obě ukazovaly na `646525d`, již zahrnutý ve veřejné historii. Kontrolovaly se pouze tyto lokální reference; živý soukromý remote nebyl stahován. Zastaralá uložená `origin/document-search-bm25` v dokumentačním checkoutu je reference před přejmenováním, nikoli osmá současná veřejná větev. Audit deníku učení nezměnil větve, zdrojový kód, datasety ani soubory závislostí.
 
-[↑ Nahoru](#top) · [Obsah / Contents](#obsah)
+[↑ Nahoru](#top)

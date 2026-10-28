@@ -2,7 +2,9 @@
 
 # AI Engineering Portfolio — Python, RAG a evaluace retrievalu
 
-[Česky](#cz) · [English](README.md#en) · [Obsah / Contents](#obsah) · [Dokumentace](rag_api_project/docs/README.md)
+[Česky](#cz) · [English](../../README.md#en) · [Dokumentace](../README.md)
+
+> **Dokumentace a pravidla agentů:** Ostatní Markdown dokumenty jsou v [docs/](../README.md). Před změnou souborů načti [globální pravidla agentů](AGENTS.md) a pro RAG také [projektová pravidla](PROJECT_AGENTS.md).
 
 <a id="obsah"></a>
 
@@ -32,18 +34,14 @@ Průběžně rozvíjený praktický projekt AI inženýrství zaměřený na **t
 **Technologie:** Python 3.11 · FastAPI · Pydantic · ChromaDB · Sentence Transformers · BM25 · Pytest · Docker · GitHub Actions
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="cz-hlavní-projekt-rag-api-a-vyhledávání-v-dokumentech"></a>
 
 ## Hlavní projekt: RAG API a vyhledávání v dokumentech
 
-**[Otevřít projekt RAG API](rag_api_project/README.cs.md)**
+**[Otevřít projekt RAG API](PROJECT.md)**
 
 Projekt zpracovává technickou PDF dokumentaci do prohledávatelných chunků a poskytuje FastAPI postup pro otázky a odpovědi. Současně vyvíjí samostatné strategie retrievalu a reprodukovatelný framework offline evaluace.
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="cz-co-je-implementováno"></a>
 
@@ -57,16 +55,12 @@ Projekt zpracovává technickou PDF dokumentaci do prohledávatelných chunků a
 - **Nástroje nasazení:** Dockerfile a Compose konfigurace pro API.
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="cz-ověření"></a>
 
 ### Ověření
 
-Historický *lokálně hlášený* úplný běh po integraci BM25: **210 úspěšných testů, 1 přeskočený** (omezení symlinků ve Windows). Nejde o aktuální počet testů ani tvrzení o současném GitHub Actions. Datované ověřené výsledky jsou v [deníku učení](LEARNING_LOG.cs.md#cz-ověřený-stav-projektu); nové běhy ověř na [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
+Historický *lokálně hlášený* úplný běh po integraci BM25: **210 úspěšných testů, 1 přeskočený** (omezení symlinků ve Windows). Nejde o aktuální počet testů ani tvrzení o současném GitHub Actions. Datované ověřené výsledky jsou v [deníku učení](LEARNING_LOG.md#cz-ověřený-stav-projektu); nové běhy ověř na [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="cz-architektura-v-přehledu"></a>
 
@@ -96,33 +90,28 @@ Technical PDF files
 **Stav integrace:** `legacy`, `vector` a `bm25` jsou volitelné v **offline evaluačním CLI** (DEV/RANDOM). BM25 **není** zavedený volitelný režim HTTP `/ask`. Hybridní RRF je ve vývoji a nesmí být prezentovaný jako hotový.
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="cz-inženýrský-přístup"></a>
 
 ## Inženýrský přístup
 
 Jde o praktický výukový projekt vyvíjený s výraznou pomocí AI. ChatGPT a Codex používám pro vysvětlování, návrhové diskuse, návrhy a generování kódu, diagnostiku, testy a revize. Také sám implementuji a upravuji kód, zkoumám selhání a ověřuji změny. Repozitář dokumentuje vývojový proces i výsledný systém; netvrdí, že jsem každou komponentu samostatně vymyslel či napsal.
 
-Pravidla spolupráce jsou ve dvou úrovních: [globální AGENTS.md](AGENTS.cs.md#cz) určuje režimy LEARN / IMPLEMENT / REVIEW a hranice schvalování; [projektový AGENTS.md](rag_api_project/AGENTS.cs.md#cz) přidává ochrany kurátorství evaluačních datasetů. Pokrok a doklady dovedností jsou v [LEARNING_LOG.md](LEARNING_LOG.cs.md#cz).
+Pravidla spolupráce jsou ve dvou úrovních: [globální AGENTS.md](AGENTS.md#cz) určuje režimy LEARN / IMPLEMENT / REVIEW a hranice schvalování; [projektový AGENTS.md](PROJECT_AGENTS.md#cz) přidává ochrany kurátorství evaluačních datasetů. Pokrok a doklady dovedností jsou v [LEARNING_LOG.md](LEARNING_LOG.md#cz).
 
 Pro BM25 milník připravil Codex regresní testy v **izolovaném lokálním Git worktree** na `agent/bm25-tests`. Zkontrolované testy byly poté integrovány do veřejné vývojové větve.
 
 Pro průběžné experimenty agentů zrcadlí **samostatný soukromý GitHub repozitář** (`jyenten/AI_roadmap_codex_mirror`) schválený veřejný snapshot. Jeho `main` je základ zrcadla, `agent/bm25-tests` je vyhrazená práci Codexu. Soukromý repozitář není veřejně přístupný a **synchronizace je ruční**; změny Codexu se bez revize automaticky nezveřejňují ani neslučují.
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="cz-struktura-repozitáře"></a>
 
 ## Struktura repozitáře
 
-- [rag_api_project/](rag_api_project/) — aktivní vývoj FastAPI, RAG, retrievalu a evaluace.
+- [rag_api_project/](../../rag_api_project/) — aktivní vývoj FastAPI, RAG, retrievalu a evaluace.
+- [docs/](../README.md) — české a anglické příručky, pravidla agentů a deník učení.
 - .github/ — konfigurace CI workflow.
-- [archive/](archive/) — 29 dřívějších složek programovacích a ML cvičení (`ALG/` a `den_1/` až `den_28_Docker/`), přesunutých bez změny obsahu; zachovaných jako historie učení a reference.
+- [archive/](../../archive/) — 29 dřívějších složek programovacích a ML cvičení (`ALG/` a `den_1/` až `den_28_Docker/`), přesunutých bez změny obsahu; zachovaných jako historie učení a reference.
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="cz-další-kroky"></a>
 
@@ -133,18 +122,14 @@ Pro průběžné experimenty agentů zrcadlí **samostatný soukromý GitHub rep
 - Zlepšovat reprodukovatelnost, pinování závislostí, provozní metriky a úvodní dokumentaci.
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="cz-jak-začít"></a>
 
 ## Jak začít
 
-Začni [českým projektovým README](rag_api_project/README.cs.md) ([English](rag_api_project/README.md)). Pro instalaci/ingest použij dvojjazyčný [provozní návod](rag_api_project/docs/cs/OPERATIONS.md#cz); pro tvorbu evidence, validaci, schvalování a evaluaci [příručku golden evidence](rag_api_project/docs/cs/EVALUATION.md#cz).
+Začni [českým přehledem projektu](PROJECT.md) ([English](../en/PROJECT.md)). Pro instalaci/ingest použij dvojjazyčný [provozní návod](OPERATIONS.md#cz); pro tvorbu evidence, validaci, schvalování a evaluaci [příručku golden evidence](EVALUATION.md#cz).
 
 > **Stav projektu:** výukové inženýrské portfolio / aktivně vyvíjený prototyp, nikoli produkční SaaS nebo hostovaná ukázka.
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="cz-rychlý-start-na-windows"></a>
 
@@ -176,4 +161,4 @@ python -m scripts.evaluate_retrieval --retriever vector --dataset dev
 
 Tyto evaluace zapisují JSONL historii. TEST dataset je záměrně vyhrazen pro závěrečné ověření.
 
-[↑ Nahoru / Back to top](#top) · [Obsah / Contents](#obsah)
+[↑ Nahoru / Back to top](#top)

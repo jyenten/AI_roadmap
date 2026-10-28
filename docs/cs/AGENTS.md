@@ -2,7 +2,7 @@
 
 # AI Roadmap — pravidla spolupráce s agenty
 
-[Česky](#cz) · [English](AGENTS.md#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](rag_api_project/docs/README.md)
+[Česky](#cz) · [English](../en/AGENTS.md#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -25,7 +25,7 @@
 
 <a id="cz"></a>
 
-[↑ Obsah](#obsah)
+**Působnost:** Tato globální pravidla platí pro veškerou práci v repozitáři. Při změnách v `rag_api_project/` načti také [projektová pravidla agentů](PROJECT_AGENTS.md). Uložení pod `docs/` jejich působnost neomezuje.
 
 <a id="cz-cíle"></a>
 
@@ -39,14 +39,10 @@ Tento repozitář má dva cíle:
 Kvalita učení se nesmí obětovat rychlosti psaní kódu.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-režimy-spolupráce"></a>
 
 ## Režimy spolupráce
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-learn--výchozí-režim"></a>
 
@@ -62,8 +58,6 @@ Používej pro nové pojmy, algoritmy a inženýrské dovednosti.
 - Zařaď praktické ověření porozumění.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-implement--výslovné-zadání-implementace"></a>
 
 ### IMPLEMENT — výslovné zadání implementace
@@ -78,8 +72,6 @@ Používej, když vlastník deleguje ohraničený implementační úkol.
 - Bez schválení neprováděj commit, push ani merge.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-review--audit"></a>
 
 ### REVIEW — audit
@@ -90,8 +82,6 @@ Používej, když vlastník deleguje ohraničený implementační úkol.
 - Doporuč minimální opravy a regresní testy.
 - Soubory neupravuj bez oprávnění.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-inženýrský-postup"></a>
 
@@ -110,13 +100,11 @@ Complete -> Measure -> Improve
 - Nikdy nepoužívej git add . pro automatický staging.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-pravidla-záznamů-o-učení"></a>
 
 ## Pravidla záznamů o učení
 
-Udržuj LEARNING_LOG.md.
+Udržuj [LEARNING_LOG.md](LEARNING_LOG.md).
 
 - Navrhuj aktualizace po významných milnících.
 - Odděluj dokončenou projektovou práci od prokázaných dovedností.
@@ -124,8 +112,6 @@ Udržuj LEARNING_LOG.md.
 - Upřednostni samostatná cvičení a diagnostické úkoly.
 - Bez lidského schválení neměň hodnocení dovedností.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-závěrečný-přehled"></a>
 
@@ -142,13 +128,11 @@ U implementační práce uveď:
 Konečnou integraci a commity schvaluje lidský vlastník.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-provozní-dokumentace-a-bezpečnost"></a>
 
 ## Provozní dokumentace a bezpečnost
 
-Při práci v `rag_api_project/` si podle úkolu přečti projektový [README](rag_api_project/README.cs.md), [provozní návod](rag_api_project/docs/cs/OPERATIONS.md#cz) a [evaluační příručku](rag_api_project/docs/cs/EVALUATION.md#cz). Anglické a české pokyny musí popisovat stejné implementované chování.
+Při práci v `rag_api_project/` si podle úkolu přečti projektový [přehled](PROJECT.md), [provozní návod](OPERATIONS.md#cz) a [evaluační příručku](EVALUATION.md#cz). Anglické a české pokyny musí popisovat stejné implementované chování.
 
 - Před dokumentováním příkazů zkontroluj skutečné CLI a zdrojový kód; nevymýšlej parametry, cesty ani dokončené funkce.
 - Považuj `python -m scripts.ingest` za **destruktivní** operaci: existující pojmenovanou Chroma kolekci smaže a znovu vytvoří. Bez výslovného oprávnění jej nespouštěj ani nenahrazuj uživatelův lokální index.
@@ -158,4 +142,4 @@ Při práci v `rag_api_project/` si podle úkolu přečti projektový [README](r
 - Kde je to praktické, odděl úpravy dokumentace od oprav validátoru a změn závislostí či jejich verzí.
 - V režimu REVIEW uváděj ověřené vady odděleně od rizik; soubory upravuj jen po schválení vlastníkem.
 
-[↑ Nahoru](#top) · [Obsah / Contents](#obsah)
+[↑ Nahoru](#top)

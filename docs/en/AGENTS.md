@@ -2,7 +2,7 @@
 
 # AI Roadmap — Agent Collaboration Rules
 
-[Česky](AGENTS.cs.md#cz) · [English](#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](rag_api_project/docs/README.md)
+[Česky](../cs/AGENTS.md#cz) · [English](#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -25,7 +25,7 @@
 
 <a id="en"></a>
 
-[↑ Contents](#obsah)
+**Scope:** These repository-wide rules apply to all work in this repository. For changes in `rag_api_project/`, also read the [project agent rules](PROJECT_AGENTS.md). Their storage under `docs/` does not narrow their scope.
 
 <a id="en-objectives"></a>
 
@@ -40,14 +40,10 @@ This repository serves two purposes:
 Learning quality must not be sacrificed for coding speed.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-collaboration-modes"></a>
 
 ## Collaboration modes
 
-
-[↑ Contents](#obsah)
 
 <a id="en-learn--default"></a>
 
@@ -63,8 +59,6 @@ Use for new concepts, algorithms and engineering skills.
 - Include a practical understanding check.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-implement--explicit-delegation"></a>
 
 ### IMPLEMENT — explicit delegation
@@ -79,8 +73,6 @@ Use when the owner delegates a bounded implementation task.
 - Do not commit, push or merge without approval.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-review--audit"></a>
 
 ### REVIEW — audit
@@ -91,8 +83,6 @@ Use when the owner delegates a bounded implementation task.
 - Recommend minimal fixes and regression tests.
 - Do not modify files unless authorized.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-engineering-workflow"></a>
 
@@ -111,13 +101,11 @@ Complete -> Measure -> Improve
 - Never use git add . for automatic staging.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-learning-governance"></a>
 
 ## Learning governance
 
-Maintain LEARNING_LOG.md.
+Maintain [LEARNING_LOG.md](LEARNING_LOG.md).
 
 - Suggest updates after meaningful milestones.
 - Distinguish completed project work from demonstrated skills.
@@ -125,8 +113,6 @@ Maintain LEARNING_LOG.md.
 - Prefer independent exercises and debugging tasks.
 - Do not alter learning assessments without human approval.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-completion-report"></a>
 
@@ -143,13 +129,11 @@ For implementation work, report:
 The human owner approves final integration and commits.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-operational-documentation-and-safety"></a>
 
 ## Operational documentation and safety
 
-For work inside `rag_api_project/`, read the project [README](rag_api_project/README.md), [operations runbook](rag_api_project/docs/en/OPERATIONS.md) and [evaluation guide](rag_api_project/docs/en/EVALUATION.md) as applicable. The English and Czech instructions must describe the same implemented behavior.
+For work inside `rag_api_project/`, read the project [overview](PROJECT.md), [operations runbook](OPERATIONS.md) and [evaluation guide](EVALUATION.md) as applicable. The English and Czech instructions must describe the same implemented behavior.
 
 - Inspect the actual CLI and source code before documenting commands; never invent flags, paths or completed features.
 - Treat `python -m scripts.ingest` as **destructive**: it deletes and recreates an existing named Chroma collection. Never launch it or replace a user's local index without explicit authorization.
@@ -159,4 +143,4 @@ For work inside `rag_api_project/`, read the project [README](rag_api_project/RE
 - Keep documentation-only edits separate from validator fixes and dependency/version updates where practical.
 - In REVIEW mode, report verified defects separately from risks; do not modify files unless the owner approved the change.
 
-[↑ Back to top](#top) · [Obsah / Contents](#obsah)
+[↑ Back to top](#top)

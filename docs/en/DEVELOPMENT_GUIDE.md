@@ -2,7 +2,7 @@
 
 # AI RAG Project Development Guide
 
-[Česky](../cs/DEVELOPMENT_GUIDE.md#cz) · [English](#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](../README.md)
+[Česky](../cs/DEVELOPMENT_GUIDE.md#cz) · [English](#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -28,10 +28,8 @@
 
 This guide defines **how to develop and review changes**. Phase priorities and
 current project status belong to [ROADMAP.md](ROADMAP.md); completed work and
-learning evidence belong to [LEARNING_LOG.md](../../../LEARNING_LOG.md).
+learning evidence belong to [LEARNING_LOG.md](LEARNING_LOG.md).
 
-
-[↑ Contents](#obsah)
 
 <a id="en-documentation-responsibilities"></a>
 
@@ -44,14 +42,12 @@ learning evidence belong to [LEARNING_LOG.md](../../../LEARNING_LOG.md).
 | This guide | Development workflow, code quality, verification and Git practice |
 | [OPERATIONS.md](OPERATIONS.md) | Setup, configuration, ingestion, API, Docker and runnable commands (CZ/EN) |
 | [EVALUATION.md](EVALUATION.md) | Evidence construction, matching, metrics, evaluation and reproducibility (CZ/EN) |
-| [LEARNING_LOG.md](../../../LEARNING_LOG.md) | Dated milestones, branch provenance and demonstrated learning evidence |
-| [Repository AGENTS.md](../../../AGENTS.md), [project AGENTS.md](../../AGENTS.md) | Agent permissions, collaboration modes and approval boundaries |
+| [LEARNING_LOG.md](LEARNING_LOG.md) | Dated milestones, branch provenance and demonstrated learning evidence |
+| [Repository AGENTS.md](AGENTS.md), [project AGENTS.md](PROJECT_AGENTS.md) | Agent permissions, collaboration modes and approval boundaries |
 
 Do not maintain another milestone table, benchmark table or active-phase list
 here. Link to the owning document when a procedure needs that context.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-development-workflow"></a>
 
@@ -78,8 +74,6 @@ security issue or a material requirement change.
 The roadmap owns phase-specific goals and Definition of Done checklists. This
 guide defines the shared implementation and verification practices below.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-code-and-module-design"></a>
 
@@ -109,8 +103,6 @@ guide defines the shared implementation and verification practices below.
   problem, target boundaries and interfaces in ARCHITECTURE.md.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-errors-side-effects-and-diagnostics"></a>
 
 ## Errors, side effects and diagnostics
@@ -130,8 +122,6 @@ file must not silently change valid document semantics. Prefer logging in
 reusable modules; CLI scripts may print user-facing output. Diagnostics should
 identify failures without exposing secrets or private corpus content.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-verification-and-regression-tests"></a>
 
@@ -168,8 +158,6 @@ what ran, skips/warnings and material checks that could not be performed. Do not
 claim GitHub CI success or real-corpus results from a local report alone.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-retrieval-and-evaluation-discipline"></a>
 
 ## Retrieval and evaluation discipline
@@ -192,8 +180,6 @@ approval/promotion procedure and reproducibility requirements. Use
   includes. Do not combine incompatible raw relevance scores without a justified
   scoring method and measured evaluation.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-git-review-and-integration"></a>
 
@@ -231,8 +217,6 @@ Commit, push and merge only within explicit authorization; do not bypass
 required reviews or CI policies.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-security-and-dependency-management"></a>
 
 ## Security and dependency management
@@ -256,8 +240,6 @@ Before recommending or running `python -m scripts.ingest`, explain that it
 configuration and authorization boundaries in [OPERATIONS.md](OPERATIONS.md).
 
 
-[↑ Contents](#obsah)
-
 <a id="en-collaboration-and-learning"></a>
 
 ## Collaboration and learning
@@ -279,12 +261,10 @@ own focused review; avoid import-by-import conversational steps. Use idiomatic
 Python without artificial simplification or unnecessary advanced machinery.
 
 Record meaningful milestones, difficulties, assistance and test evidence in
-[LEARNING_LOG.md](../../../LEARNING_LOG.md). Separate a completed feature from an
+[LEARNING_LOG.md](LEARNING_LOG.md). Separate a completed feature from an
 independently demonstrated skill. Do not assign mastery or change learning
 assessments without the required human evidence/approval.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-completion-and-documentation-updates"></a>
 
@@ -308,4 +288,4 @@ When behavior or an approved decision changes:
 A phase's goals or priorities change only through an approved roadmap decision.
 Do not silently redesign the plan as part of a documentation cleanup.
 
-[↑ Back to top](#top) · [Obsah / Contents](#obsah)
+[↑ Back to top](#top)

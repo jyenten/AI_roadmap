@@ -2,7 +2,7 @@
 
 # Vývojová příručka projektu AI RAG
 
-[Česky](#cz) · [English](../en/DEVELOPMENT_GUIDE.md#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](../README.md)
+[Česky](#cz) · [English](../en/DEVELOPMENT_GUIDE.md#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -26,10 +26,8 @@
 
 <a id="cz"></a>
 
-Tato příručka určuje, **jak vyvíjet a kontrolovat změny**. Priority fází a současný stav projektu patří do [ROADMAP.md](ROADMAP.md#cz); dokončená práce a doklady o učení do [LEARNING_LOG.md](../../../LEARNING_LOG.cs.md#cz).
+Tato příručka určuje, **jak vyvíjet a kontrolovat změny**. Priority fází a současný stav projektu patří do [ROADMAP.md](ROADMAP.md#cz); dokončená práce a doklady o učení do [LEARNING_LOG.md](LEARNING_LOG.md#cz).
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-odpovědnosti-dokumentace"></a>
 
@@ -42,13 +40,11 @@ Tato příručka určuje, **jak vyvíjet a kontrolovat změny**. Priority fází
 | Tato příručka | Vývojový postup, kvalita kódu, ověřování a práce s Gitem |
 | [OPERATIONS.md](OPERATIONS.md#cz) | Instalace, konfigurace, ingest, API, Docker a spustitelné příkazy (CZ/EN) |
 | [EVALUATION.md](EVALUATION.md#cz) | Tvorba evidence, párování, metriky, evaluace a reprodukovatelnost (CZ/EN) |
-| [LEARNING_LOG.md](../../../LEARNING_LOG.cs.md#cz) | Datované milníky, původ práce ve větvích a prokázané učební výsledky |
-| [Globální AGENTS.md](../../../AGENTS.cs.md#cz), [projektový AGENTS.md](../../AGENTS.cs.md#cz) | Oprávnění agentů, režimy spolupráce a hranice schvalování |
+| [LEARNING_LOG.md](LEARNING_LOG.md#cz) | Datované milníky, původ práce ve větvích a prokázané učební výsledky |
+| [Globální AGENTS.md](AGENTS.md#cz), [projektový AGENTS.md](PROJECT_AGENTS.md#cz) | Oprávnění agentů, režimy spolupráce a hranice schvalování |
 
 Neudržuj zde další tabulku milníků, benchmarků ani seznam aktivních fází. Pokud postup potřebuje tento kontext, odkaž na příslušný dokument.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-vývojový-postup"></a>
 
@@ -67,8 +63,6 @@ Nový nápad patří do současné změny pouze tehdy, pomáhá-li splnit nyněj
 Cíle a checklisty Definition of Done jednotlivých fází určuje roadmapa. Tato příručka níže stanovuje společné implementační a ověřovací postupy.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-návrh-kódu-a-modulů"></a>
 
 ## Návrh kódu a modulů
@@ -84,8 +78,6 @@ Cíle a checklisty Definition of Done jednotlivých fází určuje roadmapa. Tat
 - Nezaváděj dědičnost, asynchronní kód, návrhové vzory ani metaprogramování pouze kvůli architektonické symetrii. Před velkým refaktoringem nejprve popiš problém, cílové hranice a rozhraní v ARCHITECTURE.md.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-chyby-vedlejší-účinky-a-diagnostika"></a>
 
 ## Chyby, vedlejší účinky a diagnostika
@@ -96,8 +88,6 @@ Odděl čisté transformace od přístupu k souborům/databázi, načítání mo
 
 Bezpečnostní validaci odděl od předzpracování textu: odmítnutí nebezpečného souboru nesmí potichu měnit význam platného dokumentu. Ve znovupoužitelných modulech preferuj logování; CLI může vypisovat uživatelské výstupy. Diagnostika má určit selhání bez vyzrazení tajných údajů či soukromého obsahu korpusu.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-ověřování-a-regresní-testy"></a>
 
@@ -125,8 +115,6 @@ python -m pytest tests -q
 U změn pouze v dokumentaci ověř fakta, odkazy, příklady a dotčenou konfiguraci; nevymýšlej testy kopírující text. Přesně uveď spuštěné kontroly, přeskočení/varování a důležité kontroly, které provést nešlo. Z lokálního hlášení samotného nevyvozuj úspěch GitHub CI ani výsledky nad skutečným korpusem.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-disciplína-retrievalu-a-evaluace"></a>
 
 ## Disciplína retrievalu a evaluace
@@ -139,8 +127,6 @@ U změn pouze v dokumentaci ověř fakta, odkazy, příklady a dotčenou konfigu
 - Neměň existující golden evidence, metriky ani historii baseline za účelem zvýšení skóre. Validace kandidátů neopravňuje k povýšení.
 - Rozlišuj naměřenou latenci `search()` od inicializace a ceny celé odpovědi/HTTP požadavku; uveď, kterou práci retrievalu či rerankingu měřená metoda zahrnuje. Neslučuj neslučitelná surová skóre relevance bez odůvodněné metody a naměřené evaluace.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-git-revize-a-integrace"></a>
 
@@ -167,8 +153,6 @@ python -m scripts.git_check
 Neuděluje oprávnění ani nedokládá kontrolu tajných údajů, rozsahu, závislostí a kvality retrievalu. Před pushem znej stav pracovního stromu, zkontroluj zamýšlené změny a splň platná pravidla AGENTS a repozitáře. Commit, push a merge prováděj pouze v rozsahu výslovného oprávnění; neobcházej povinné revize ani pravidla CI.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-bezpečnost-a-správa-závislostí"></a>
 
 ## Bezpečnost a správa závislostí
@@ -182,8 +166,6 @@ Pinování verzí a přijetí lock souboru zůstávají samostatnou revidovanou 
 Před doporučením či spuštěním `python -m scripts.ingest` vysvětli, že nakonfigurovanou Chroma kolekci **smaže a znovu vytvoří**. Dodrž zálohovací, konfigurační a schvalovací hranice v [OPERATIONS.md](OPERATIONS.md#cz).
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-spolupráce-a-učení"></a>
 
 ## Spolupráce a učení
@@ -196,10 +178,8 @@ Oprávnění určují globální a projektový AGENTS. Zvol režim odpovídajíc
 
 V LEARN používej úplné logické celky s cílem, odůvodněním, novými relevantními pojmy, rozsahem a jasným ověřením. Velkým/rizikovým komponentám věnuj samostatnou cílenou revizi; vyhni se konverzačnímu postupu import po importu. Používej idiomatický Python bez umělého zjednodušování a nepotřebných pokročilých mechanismů.
 
-Zaznamenávej významné milníky, obtíže, pomoc a testovací důkazy do [LEARNING_LOG.md](../../../LEARNING_LOG.cs.md#cz). Odděluj hotovou funkci od samostatně prokázané dovednosti. Bez požadovaných lidských důkazů/schválení neuděluj hodnocení zvládnutí ani neměň hodnocení učení.
+Zaznamenávej významné milníky, obtíže, pomoc a testovací důkazy do [LEARNING_LOG.md](LEARNING_LOG.md#cz). Odděluj hotovou funkci od samostatně prokázané dovednosti. Bez požadovaných lidských důkazů/schválení neuděluj hodnocení zvládnutí ani neměň hodnocení učení.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-dokončení-a-aktualizace-dokumentace"></a>
 
@@ -217,4 +197,4 @@ Při změně chování nebo schváleného rozhodnutí:
 
 Cíle nebo priority fáze se mění pouze schváleným rozhodnutím o roadmapě. Při úklidu dokumentace plán potichu nepřepracovávej.
 
-[↑ Nahoru](#top) · [Obsah / Contents](#obsah)
+[↑ Nahoru](#top)

@@ -2,7 +2,7 @@
 
 # RAG API — vyhledávání v dokumentech a evaluace retrievalu
 
-[Česky](#cz) · [English](README.md#en) · [Obsah / Contents](#obsah) · [Dokumentace](docs/README.md)
+[Česky](#cz) · [English](../en/PROJECT.md#en) · [Dokumentace](../README.md)
 
 <a id="obsah"></a>
 
@@ -37,16 +37,12 @@ Projekt Python/FastAPI pro odpovídání na otázky nad technickou PDF dokumenta
 **Stav:** aktivně vyvíjený výukový prototyp, nikoli produkční služba. Existující `/ask` pipeline používá Chroma retrieval, výběr kontextu, reranking a odpovědi podle pravidel nebo modelu. Vedle toho repozitář obsahuje vektorový retriever, lexikální BM25 retriever a nástroje offline evaluace retrievalu.
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="cz-technologie"></a>
 
 ## Technologie
 
 Python 3.11 · FastAPI · Pydantic · ChromaDB · Sentence Transformers · `rank-bm25` · Transformers/PyTorch · pypdf · pytest · Docker · GitHub Actions.
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="cz-architektura-a-moduly"></a>
 
@@ -65,8 +61,6 @@ Python 3.11 · FastAPI · Pydantic · ChromaDB · Sentence Transformers · `rank
 | Evaluace retrievalu | `evaluation/`, `scripts/evaluate_retrieval.py` | Kvalita pořadí, latence a původ výsledků |
 | Testy | `tests/` | Jednotkové a regresní testy |
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="cz-tok-dat"></a>
 
@@ -87,8 +81,6 @@ PDF documents --> text extraction / chunking --> ChromaDB + metadata
 **Hranice integrace:** BM25 je implementované a volitelné v **offline evaluačním CLI** společně s `legacy` a `vector`. HTTP `/ask` API nebylo přepnuto na BM25 ani hybridní režim. Hybridní RRF je rozpracované, nikoli zavedená vydaná funkce.
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="cz-hlavní-návrhová-rozhodnutí"></a>
 
 ## Hlavní návrhová rozhodnutí
@@ -99,8 +91,6 @@ PDF documents --> text extraction / chunking --> ChromaDB + metadata
 - Evaluace se dělí na vývojová, náhodně vybraná a oddělená testovací data s hashi datasetů a Git původem.
 - Modelové generování je záloha k odpovědím podle úlohových pravidel; systém není univerzální produkční QA engine.
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="cz-lokální-instalace"></a>
 
@@ -130,8 +120,6 @@ test -f .env || cp .env.example .env
 Verze závislostí nyní nejsou pinované; zatím nejde o plně reprodukovatelnou instalaci podle lock souboru.
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="cz-indexování-lokálních-pdf"></a>
 
 ### Indexování lokálních PDF
@@ -142,10 +130,8 @@ Vlož technická PDF do `data/` (ignorováno Gitem), potom spusť:
 python -m scripts.ingest
 ~~~
 
-Lokální Chroma kolekce je uložená v `chroma_db/`. Ukázková konfigurace používá název `ospf`. **Pozor: `scripts.ingest` existující kolekci tohoto jména smaže a znovu vytvoří**, místo průběžného doplňování. Pokud je nutné index zachovat, zálohuj jej. API potřebuje vhodná indexovaná data pro odpovědi nad korpusem. Úplný postup: [OPERATIONS.md](docs/cs/OPERATIONS.md#cz).
+Lokální Chroma kolekce je uložená v `chroma_db/`. Ukázková konfigurace používá název `ospf`. **Pozor: `scripts.ingest` existující kolekci tohoto jména smaže a znovu vytvoří**, místo průběžného doplňování. Pokud je nutné index zachovat, zálohuj jej. API potřebuje vhodná indexovaná data pro odpovědi nad korpusem. Úplný postup: [OPERATIONS.md](OPERATIONS.md#cz).
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="cz-spuštění-api"></a>
 
@@ -175,8 +161,6 @@ Invoke-RestMethod -Uri http://127.0.0.1:8000/ask -Method Post -ContentType 'appl
 ~~~
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="cz-testy"></a>
 
 ## Testy
@@ -187,12 +171,10 @@ Z `rag_api_project/`:
 python -m pytest -q tests
 ~~~
 
-Historický **lokálně hlášený** úplný běh po integraci BM25 ve fázi 3.3: **210 úspěšných testů, 1 přeskočený**. Přeskočení způsobila nedostupná oprávnění symlinků ve Windows; hlášena byla deprekační varování externích závislostí. Datované ověřené výsledky jsou v [deníku učení](../LEARNING_LOG.cs.md#cz-ověřený-stav-projektu); nové běhy ověř samostatně na [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
+Historický **lokálně hlášený** úplný běh po integraci BM25 ve fázi 3.3: **210 úspěšných testů, 1 přeskočený**. Přeskočení způsobila nedostupná oprávnění symlinků ve Windows; hlášena byla deprekační varování externích závislostí. Datované ověřené výsledky jsou v [deníku učení](LEARNING_LOG.md#cz-ověřený-stav-projektu); nové běhy ověř samostatně na [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
 
 BM25 testy používají syntetické Chroma fixtures a pokrývají stránkování, řazení, deterministické rozhodování při shodě skóre, soulad metadat, neplatné dotazy a záznamy i vadné dávky.
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="cz-offline-evaluace-retrievalu"></a>
 
@@ -210,10 +192,8 @@ python -m scripts.evaluate_retrieval --retriever vector --dataset random
 python -m scripts.evaluate_retrieval --retriever bm25 --dataset random
 ~~~
 
-CLI přijímá `legacy`, `vector`, `bm25` a `dev`/`random`. Zapisuje JSONL historii běhů, proto nejde o operaci pouze pro čtení. Oddělený TEST je vyhrazen závěrečnému hodnocení, nikoli iterativnímu ladění. Postup tvorby evidence a porovnávání viz [EVALUATION.md](docs/cs/EVALUATION.md#cz).
+CLI přijímá `legacy`, `vector`, `bm25` a `dev`/`random`. Zapisuje JSONL historii běhů, proto nejde o operaci pouze pro čtení. Oddělený TEST je vyhrazen závěrečnému hodnocení, nikoli iterativnímu ladění. Postup tvorby evidence a porovnávání viz [EVALUATION.md](EVALUATION.md#cz).
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="cz-samostatné-bm25-vyhledávání-v-pdf"></a>
 
@@ -228,8 +208,6 @@ python -m scripts.search_pdf "router ID" --top-k 5 --interactive
 Nástroj čte PDF v `data/` a liší se od `BM25Retriever`, který pracuje s Chroma chunky.
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="cz-docker-a-compose"></a>
 
 ## Docker a Compose
@@ -243,10 +221,8 @@ docker compose down
 
 Compose mapuje hostitelský port `8001` na kontejnerový `8000` a připojuje lokální adresáře Chroma/modelové cache. Jde o lokální kontejnerovou konfiguraci, nikoli hostovanou ukázku.
 
-**Známá omezení:** obraz kopíruje `app/` a `scripts/`, ale vynechává `document_search/`, `evaluation/`, `eval/` a zdrojová PDF. Compose nepředává hostitelský `.env` do kontejneru. Ingest a evaluaci spouštěj nativně; kontejnerové API vyžaduje kompatibilní připojený index. Konfigurační a balíčkové hranice viz [OPERATIONS.md](docs/cs/OPERATIONS.md#cz).
+**Známá omezení:** obraz kopíruje `app/` a `scripts/`, ale vynechává `document_search/`, `evaluation/`, `eval/` a zdrojová PDF. Compose nepředává hostitelský `.env` do kontejneru. Ingest a evaluaci spouštěj nativně; kontejnerové API vyžaduje kompatibilní připojený index. Konfigurační a balíčkové hranice viz [OPERATIONS.md](OPERATIONS.md#cz).
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="cz-současná-omezení-a-další-kroky"></a>
 
@@ -258,22 +234,18 @@ Compose mapuje hostitelský port `8001` na kontejnerový `8000` a připojuje lok
 - Pokračovat ve zlepšování robustnosti extrakce, hlášení chyb a evaluace na dosud neviděných otázkách.
 
 
-[↑ Obsah / Contents](#obsah)
-
 <a id="cz-vývoj-s-pomocí-ai-a-hranice-spolupráce"></a>
 
 ## Vývoj s pomocí AI a hranice spolupráce
 
 Tento výukový projekt používá ChatGPT a Codex pro vysvětlování, návrh, implementační pomoc, diagnostiku, testy a revize; ne každou komponentu vlastník repozitáře samostatně vymyslel nebo napsal.
 
-[Globální AGENTS.md](../AGENTS.cs.md#cz) popisuje režimy LEARN, IMPLEMENT a REVIEW a vyžaduje lidské schválení integrace. [Projektový AGENTS.md](AGENTS.cs.md#cz) přidává konkrétní pravidla kurátorství evaluačních datasetů včetně lidského schválení povýšení kandidátů. Důkazy dovedností a pokrok jsou v [LEARNING_LOG.md](../LEARNING_LOG.cs.md#cz).
+[Globální AGENTS.md](AGENTS.md#cz) popisuje režimy LEARN, IMPLEMENT a REVIEW a vyžaduje lidské schválení integrace. [Projektový AGENTS.md](PROJECT_AGENTS.md#cz) přidává konkrétní pravidla kurátorství evaluačních datasetů včetně lidského schválení povýšení kandidátů. Důkazy dovedností a pokrok jsou v [LEARNING_LOG.md](LEARNING_LOG.md#cz).
 
 Pro BM25 funkci napsal Codex syntetické regresní testy v izolovaném **lokálním** worktree (`agent/bm25-tests`); zkontrolované testy byly integrovány do veřejné vývojové větve spolu s implementací BM25.
 
 Průběžné experimenty Codexu používají samostatné **soukromé GitHub zrcadlo** (`jyenten/AI_roadmap_codex_mirror`). Jeho `main` uchovává schválený veřejný snapshot a `agent/bm25-tests` je izolovaná vzdálená větev pro práci agenta. Původní lokální worktree je od této nové vzdálené větve oddělený. Synchronizace a integrace jsou ruční a podléhají schvalovacím pravidlům v `AGENTS.md`.
 
-
-[↑ Obsah / Contents](#obsah)
 
 <a id="cz-rozcestník"></a>
 
@@ -281,11 +253,11 @@ Průběžné experimenty Codexu používají samostatné **soukromé GitHub zrca
 
 | Úkol | Dokument |
 | --- | --- |
-| Kompletní instalace, `.env`, ingest, kontrola Chroma, API, Docker, testy | [Provozní příručka (CZ/EN)](docs/cs/OPERATIONS.md#cz) |
-| Golden evidence, kandidáti, schvalování, validace, metriky | [Evaluace (CZ/EN)](docs/cs/EVALUATION.md#cz) |
-| Architektura současná i plánovaná | [ARCHITECTURE.md](docs/cs/ARCHITECTURE.md#cz) |
-| Stav a prioritizace vývoje | [ROADMAP.md](docs/cs/ROADMAP.md#cz) |
-| Vývoj, testy, Git | [DEVELOPMENT_GUIDE.md](docs/cs/DEVELOPMENT_GUIDE.md#cz) |
-| Pravidla Codex/ChatGPT | [AGENTS.md](AGENTS.cs.md#cz), [globální AGENTS.md](../AGENTS.cs.md#cz) |
+| Kompletní instalace, `.env`, ingest, kontrola Chroma, API, Docker, testy | [Provozní příručka (CZ/EN)](OPERATIONS.md#cz) |
+| Golden evidence, kandidáti, schvalování, validace, metriky | [Evaluace (CZ/EN)](EVALUATION.md#cz) |
+| Architektura současná i plánovaná | [ARCHITECTURE.md](ARCHITECTURE.md#cz) |
+| Stav a prioritizace vývoje | [ROADMAP.md](ROADMAP.md#cz) |
+| Vývoj, testy, Git | [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md#cz) |
+| Pravidla Codex/ChatGPT | [AGENTS.md](PROJECT_AGENTS.md#cz), [globální AGENTS.md](AGENTS.md#cz) |
 
-[↑ Nahoru / Back to top](#top) · [Obsah / Contents](#obsah)
+[↑ Nahoru / Back to top](#top)

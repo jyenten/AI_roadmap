@@ -2,7 +2,7 @@
 
 # Provozní příručka
 
-[Česky](#cz) · [English](../en/OPERATIONS.md#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](../README.md)
+[Česky](#cz) · [English](../en/OPERATIONS.md#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -28,8 +28,6 @@
 > **Rozsah:** Současný RAG projekt nad Chroma, Python 3.11. Příkazy spouštěj z `rag_api_project/`. Jde o lokální výukový prototyp.
 >
 > **Bezpečnost:** `python -m scripts.ingest` existující Chroma kolekci s nakonfigurovaným názvem **smaže a znovu vytvoří**. Před spuštěním ověř zálohu, korpus a konfiguraci; nejde o přírůstkový ingest.
-
-[↑ Obsah](#obsah)
 
 <a id="cz-1-předpoklady-a-instalace-windows-powershell"></a>
 
@@ -62,8 +60,6 @@ test -f .env || cp .env.example .env
 Před instalací zkontroluj použitý interpreter a kompatibilitu balíčků. Ve zveřejněné větvi je `requirements.txt` nepinovaný; lokálně vytvořené lockfily nelze automaticky pokládat za schválené ani přenositelné. Neměň verze závislostí jako součást dokumentační úpravy.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-1a-reprodukovatelnost-závislostí-windows-python-311"></a>
 
 ## 1a. Reprodukovatelnost závislostí (Windows Python 3.11)
@@ -72,8 +68,6 @@ Základní `requirements.txt` ve zveřejněné větvi obsahuje neomezené verze 
 
 Před případným přijetím lockfilu je nutné ověřit podporovaný Python/OS, metodu vytvoření, čisté instalace na Windows a CI, soulad s `requirements.txt` a proces aktualizace balíčků. Změny balíčků patří do samostatného commitu a nesmí se slučovat s revizí dokumentace.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-2-konfigurace-a-zdroje"></a>
 
@@ -97,8 +91,6 @@ Vlož zdrojová PDF **přímo do** `data/` (nikoli do podadresářů). Současn�
 
 Proměnné prostředí mají přednost před `.env`. Po změně konfigurace restartuj API (nastavení se cachuje). Ingest a vector/legacy retrieval musí používat stejný embedding model jako index. Page explorer a validátor čtou standardně relativní `data/`, nikoli `RAG_DATA_DIR`; vlastní cestu jim předej pomocí `--data-dir <adresář>`.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-3-ingest-pdf-do-chromadb"></a>
 
@@ -125,8 +117,6 @@ python -c "import chromadb; from app.config import get_settings; s=get_settings(
 Počet chunků závisí na přesné verzi PDF, chunkování a konfiguraci; historické počty nejsou univerzálním očekáváním. U změn korpusu zaznamenej názvy/identitu zdrojových PDF a konfiguraci, aby šlo výsledky evaluace reprodukovat.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-4-spuštění-api"></a>
 
 ## 4. Spuštění API
@@ -145,8 +135,6 @@ Invoke-RestMethod -Uri http://127.0.0.1:8000/ask -Method Post -ContentType 'appl
 `/ready` a `/stats` poskytují další diagnostiku prostředí a kolekce. **Důležitá hranice:** BM25 je volitelný v *offline evaluation CLI*, nikoliv automaticky jako možnost pro HTTP `/ask`. Rozpracovaný hybrid nepovažuj za implementovanou funkci API.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-5-vyhledání-podkladů-v-původních-pdf-page-explorer"></a>
 
 ## 5. Vyhledání podkladů v původních PDF (page explorer)
@@ -157,8 +145,6 @@ python -m scripts.search_pdf "OSPF router ID" --top-k 10 --interactive
 
 `scripts.search_pdf` používá samostatný BM25 index *PDF stránek* z `data/`. Není to totéž jako `app/retrievers/bm25.py`, který řadí chunky uložené v Chroma. Page explorer slouží k průzkumu a ručnímu ověření důkazů, nikoli k automatickému přepisování golden evidence.
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-6-testy-a-kontrola-commitu"></a>
 
@@ -182,8 +168,6 @@ python -m scripts.git_check
 Před prací použij `git status --short` a `git branch --show-current`. Výchozí integrační větev je `main`; změny připravuj na samostatné pracovní větvi a slučuj přes zkontrolovaný PR. Nepřepínej větev přes nesouvisející WIP. Po explicitním `git add <cesty>` přečti `git diff --cached` i seznam souborů. Helper nekontroluje tajemství, schválení ani věcný rozsah změn. Commit/push prováděj jen v autorizovaném rozsahu, bez automatického merge.
 
 
-[↑ Obsah](#obsah)
-
 <a id="cz-7-offline-evaluace"></a>
 
 ## 7. Offline evaluace
@@ -198,8 +182,6 @@ python -m scripts.evaluate_retrieval --retriever bm25 --dataset random
 
 Výstup: MRR, Hit@1/3/5/8, latence mean/P50/P95 a první pozice relevantního důkazu pro jednotlivé otázky. Běhy se zapisují do `eval/results/*_runs.jsonl` podle strategie a datasetu; obsahují hash datasetu, Git commit a příznak dirty worktree. Zápis do historie je vedlejší efekt: příkaz není čistě read-only. **TEST je held-out** a úmyslně není volbou tohoto CLI. Podrobnosti: [EVALUATION.md](EVALUATION.md).
 
-
-[↑ Obsah](#obsah)
 
 <a id="cz-8-docker-a-provozní-omezení"></a>
 
@@ -216,4 +198,4 @@ Compose nepředává hostitelský `.env` aplikaci: nemá `env_file` ani `environ
 
 **Diagnostika:** `No PDF files found` znamená zkontrolovat adresář `data/` a příponu souborů. Chybějící Chroma kolekce může znamenat nesprávnou cestu nebo neprovedený ingest. `ModuleNotFoundError` typicky znamená nesprávné prostředí či pracovní adresář. `FIRST_EVIDENCE_RANK=None` neznamená automaticky prázdný retrieval — pouze že žádný z hodnocených chunků neodpovídal golden evidence.
 
-[↑ Nahoru](#top) · [Obsah / Contents](#obsah)
+[↑ Nahoru](#top)

@@ -2,7 +2,7 @@
 
 # AI RAG Project Architecture
 
-[Česky](../cs/ARCHITECTURE.md#cz) · [English](#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](../README.md)
+[Česky](../cs/ARCHITECTURE.md#cz) · [English](#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -44,8 +44,6 @@
 
 <a id="en"></a>
 
-[↑ Contents](#obsah)
-
 <a id="en-current-implementation-snapshot-2026-10-28"></a>
 
 ## Current implementation snapshot (2026-10-28)
@@ -62,8 +60,6 @@ The sections marked **target** below describe planned design, not necessarily sh
 Architecture boundaries: the standalone page explorer is not the chunk-level BM25 retriever; retrieval evaluation is independent of the HTTP answer pipeline; no raw BM25 relevance score may be added directly to vector distances. The separate bilingual [OPERATIONS.md](OPERATIONS.md) and [EVALUATION.md](EVALUATION.md) contain verified commands and golden-evidence governance.
 
 
-[↑ Contents](#obsah)
-
 <a id="en-identity-and-evaluation-boundary"></a>
 
 ## Identity and evaluation boundary
@@ -73,8 +69,6 @@ A Chroma chunk has an `id` distinct from `chunk_index`. `source`, physical `page
 ---
 
 
-
-[↑ Contents](#obsah)
 
 <a id="en-1-purpose"></a>
 
@@ -100,8 +94,6 @@ evaluation, document loading, or infrastructure components.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-2-architectural-principles"></a>
 
@@ -260,8 +252,6 @@ comparison
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-3-high-level-system-architecture"></a>
 
 ## 3. High-Level System Architecture
@@ -304,8 +294,6 @@ system or the document explorer.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-4-offline-data-pipeline"></a>
 
 ## 4. Offline Data Pipeline
@@ -343,8 +331,6 @@ is not required until measurements or complexity justify it.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-5-runtime-application"></a>
 
@@ -467,8 +453,6 @@ retrieve(
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-6-target-retrieval-architecture"></a>
 
@@ -654,8 +638,6 @@ than individual retrieval internals.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-7-generation-architecture"></a>
 
 ## 7. Generation Architecture
@@ -692,8 +674,6 @@ This split should only be introduced if complexity justifies it.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-8-rag-orchestration"></a>
 
@@ -739,8 +719,6 @@ Its role is orchestration.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-9-api-architecture"></a>
 
@@ -880,8 +858,6 @@ logic.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-10-evaluation-architecture"></a>
 
 ## 10. Evaluation Architecture
@@ -933,8 +909,6 @@ evaluation
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-11-evaluation-dataset-roles"></a>
 
 ## 11. Evaluation Dataset Roles
@@ -977,8 +951,6 @@ reduce its value as an independent generalization check.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-12-evaluation-flow"></a>
 
 ## 12. Evaluation Flow
@@ -1019,8 +991,6 @@ This makes results reproducible and comparable.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-13-universal-document-explorer"></a>
 
@@ -1065,8 +1035,6 @@ scripts/search_pdf.py
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-14-document-explorer-data-flow"></a>
 
@@ -1128,8 +1096,6 @@ This separation reduces circular benchmark construction.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-15-document-search-models"></a>
 
@@ -1196,8 +1162,6 @@ independently.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-16-document-explorer-security-boundary"></a>
 
 ## 16. Document Explorer Security Boundary
@@ -1243,8 +1207,6 @@ be explicit.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-17-security-architecture"></a>
 
@@ -1320,8 +1282,6 @@ dependency vulnerabilities
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-18-observability-architecture"></a>
 
@@ -1407,8 +1367,6 @@ These measure different aspects of the system and should not be mixed.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-19-testing-architecture"></a>
 
 ## 19. Testing Architecture
@@ -1482,8 +1440,6 @@ Real corpus tests belong in integration or manual validation workflows.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-20-infrastructure-architecture"></a>
 
@@ -1567,8 +1523,6 @@ is stable enough to deploy reliably.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-21-dependency-direction"></a>
 
 ## 21. Dependency Direction
@@ -1615,8 +1569,6 @@ This reduces coupling.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-22-public-interfaces"></a>
 
@@ -1667,8 +1619,6 @@ change.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-23-current-technical-debt"></a>
 
@@ -1767,8 +1717,6 @@ Avoid refactoring ingestion only for architectural symmetry.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-24-target-project-structure"></a>
 
@@ -1885,8 +1833,6 @@ diagram.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-25-architecture-change-rule"></a>
 
 ## 25. Architecture Change Rule
@@ -1917,8 +1863,6 @@ preferred.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-26-historical-phase-2a-architectural-focus"></a>
 
@@ -1970,4 +1914,4 @@ PHASE 2A.1
 document_search/models.py
 ```
 
-[↑ Back to top](#top) · [Obsah / Contents](#obsah)
+[↑ Back to top](#top)

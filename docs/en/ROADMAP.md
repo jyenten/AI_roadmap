@@ -2,7 +2,7 @@
 
 # AI RAG Project Roadmap
 
-[Česky](../cs/ROADMAP.md#cz) · [English](#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](../README.md)
+[Česky](../cs/ROADMAP.md#cz) · [English](#en) · [Dokumentace / Documentation](../README.md)
 
 <a id="obsah"></a>
 
@@ -79,10 +79,8 @@
 This document owns **what to build, phase order, goals and acceptance criteria**.
 Use [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md) for how to implement/review work,
 [ARCHITECTURE.md](ARCHITECTURE.md) for component boundaries and
-[LEARNING_LOG.md](../../../LEARNING_LOG.md) for dated work and learning evidence.
+[LEARNING_LOG.md](LEARNING_LOG.md) for dated work and learning evidence.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-status-snapshot--2026-10-28"></a>
 
@@ -94,20 +92,18 @@ all acceptance criteria of its broader phase or production readiness.
 
 | Milestone | Observed status | Evidence / procedure |
 | --- | --- | --- |
-| RAG API, PDF ingestion and Chroma storage | Implemented prototype; hardening remains planned | [Project README](../../README.md), [architecture](ARCHITECTURE.md) |
+| RAG API, PDF ingestion and Chroma storage | Implemented prototype; hardening remains planned | [Project README](PROJECT.md), [architecture](ARCHITECTURE.md) |
 | Independent PDF page explorer | Implemented | `document_search/`, [operations](OPERATIONS.md) |
 | Evidence-based retrieval evaluation | Implemented: metrics, history, latency and provenance | `evaluation/`, [evaluation guide](EVALUATION.md) |
-| Chunk-level BM25 and Vector comparison | Implemented in the offline CLI on DEV/RANDOM | `app/retrievers/`, [recorded milestones](../../../LEARNING_LOG.md#en-project-and-learning-history) |
-| Hybrid lexical/semantic retrieval with RRF | Local work in progress; not a published CLI/API mode | [Uncommitted-work record](../../../LEARNING_LOG.md#en-uncommitted-work-observed-on-2026-10-28) |
+| Chunk-level BM25 and Vector comparison | Implemented in the offline CLI on DEV/RANDOM | `app/retrievers/`, [recorded milestones](LEARNING_LOG.md#en-project-and-learning-history) |
+| Hybrid lexical/semantic retrieval with RRF | Local work in progress; not a published CLI/API mode | [Uncommitted-work record](LEARNING_LOG.md#en-uncommitted-work-observed-on-2026-10-28) |
 | Held-out TEST evaluation | Reserved for final assessment, not iterative tuning | [Evaluation policy](EVALUATION.md) |
 | Bilingual runbooks and validator regressions | Integrated through [PR #3](https://github.com/jyenten/AI_roadmap/pull/3) | [Operations](OPERATIONS.md), [evaluation](EVALUATION.md) |
-| Dependency/security automation | Enabled; ChromaDB dependency findings remain open | `.github/workflows/`, [current project checkpoint](../../../LEARNING_LOG.md#en-current-project-checkpoint) |
+| Dependency/security automation | Enabled; ChromaDB dependency findings remain open | `.github/workflows/`, [current project checkpoint](LEARNING_LOG.md#en-current-project-checkpoint) |
 
 Detailed results and historical MRR/Hit@K belong to the evaluation guide and
 learning log; this roadmap does not maintain a second benchmark table.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-current-development-focus"></a>
 
@@ -126,8 +122,6 @@ labels are **not IDs in this roadmap**. Here, the original phase numbers and
 names remain authoritative: 3.3 Vector Search, 3.4 Query Processing and
 3.5 Reranker. Use the full milestone name when referring to journal work.
 
-
-[↑ Contents](#obsah)
 
 <a id="en-reading-and-updating-the-approved-plan"></a>
 
@@ -148,8 +142,6 @@ planning decision; editorial cleanup does not authorize them.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-1---functional-rag-skeleton"></a>
 
@@ -432,8 +424,6 @@ When these conditions are satisfied, PHASE 1 is frozen.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-2---evaluation-foundation"></a>
 
 # PHASE 2 - Evaluation Foundation
@@ -507,8 +497,6 @@ Its purpose is to estimate generalization after tuning is complete.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-2a---universal-document-explorer"></a>
 
@@ -588,8 +576,6 @@ tests/
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-2a0---architecture-freeze"></a>
 
 # PHASE 2A.0 - Architecture Freeze
@@ -619,8 +605,6 @@ it.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-2a1---data-models"></a>
 
@@ -712,8 +696,6 @@ completed search score
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-2a2---text-processing"></a>
 
 # PHASE 2A.2 - Text Processing
@@ -799,8 +781,6 @@ becomes approximately:
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-2a3---security-foundations"></a>
 
 # PHASE 2A.3 - Security Foundations
@@ -883,8 +863,6 @@ expected contract.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-2a4---pdf-loading-and-pdf-validation"></a>
 
@@ -991,8 +969,6 @@ explicit.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-2a5---bm25-index"></a>
 
 # PHASE 2A.5 - BM25 Index
@@ -1059,8 +1035,6 @@ domain-specific manual heuristics.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-2a6---search-engine"></a>
 
 # PHASE 2A.6 - Search Engine
@@ -1126,8 +1100,6 @@ caller.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-2a7---cli"></a>
 
 # PHASE 2A.7 - CLI
@@ -1176,8 +1148,6 @@ It should not contain:
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-2a8---integration"></a>
 
@@ -1229,8 +1199,6 @@ advanced UI
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-2b---evaluation-data-models"></a>
 
@@ -1376,8 +1344,6 @@ within the same accepted evidence variant.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-2c---retrieval-metrics"></a>
 
 # PHASE 2C - Retrieval Metrics
@@ -1453,8 +1419,6 @@ ranking.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-2d---evaluation-runner-and-history"></a>
 
 # PHASE 2D - Evaluation Runner and History
@@ -1529,8 +1493,6 @@ This allows retrieval changes to be compared with evidence.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-2e---random-evaluation"></a>
 
 # PHASE 2E - RANDOM Evaluation
@@ -1590,8 +1552,6 @@ That remains the role of TEST.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-2f---complete-evaluation-dataset"></a>
 
 # PHASE 2F - Complete Evaluation Dataset
@@ -1635,8 +1595,6 @@ measurement problem appears.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-3---retrieval-refactor"></a>
 
 # PHASE 3 - Retrieval Refactor
@@ -1674,8 +1632,6 @@ app/
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-31---retrieval-models"></a>
 
 # PHASE 3.1 - Retrieval Models
@@ -1701,8 +1657,6 @@ retrieval data types.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-32---embeddings"></a>
 
@@ -1735,8 +1689,6 @@ Must not:
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-33---vector-search"></a>
 
 # PHASE 3.3 - Vector Search
@@ -1765,8 +1717,6 @@ Higher layers should not depend directly on Chroma's response structure.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-34---query-processing"></a>
 
 # PHASE 3.4 - Query Processing
@@ -1790,8 +1740,6 @@ Domain-specific hardcoding should be removed.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-35---reranker"></a>
 
@@ -1824,8 +1772,6 @@ relevance score
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-36---scoring"></a>
 
@@ -1872,8 +1818,6 @@ It should only be introduced if evaluation justifies it.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-37---retrieval-service"></a>
 
@@ -1931,8 +1875,6 @@ Higher-level code should primarily call this public interface.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-4---api-hardening"></a>
 
 # PHASE 4 - API Hardening
@@ -1964,8 +1906,6 @@ app/
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-41---application-lifecycle"></a>
 
@@ -2014,8 +1954,6 @@ Benefits:
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-42---routes"></a>
 
 # PHASE 4.2 - Routes
@@ -2045,8 +1983,6 @@ They should not contain retrieval implementation.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-43---dependency-injection"></a>
 
@@ -2082,8 +2018,6 @@ Benefits:
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-44---errors"></a>
 
 # PHASE 4.4 - Errors
@@ -2114,8 +2048,6 @@ convert internal failures into controlled structured HTTP responses.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-45---middleware"></a>
 
@@ -2151,8 +2083,6 @@ Responsibilities may include:
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-5---production-engineering"></a>
 
 # PHASE 5 - Production Engineering
@@ -2169,8 +2099,6 @@ This phase includes Python code and infrastructure work.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-51---linux--wsl2"></a>
 
@@ -2203,8 +2131,6 @@ deployment.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-52---structured-logging"></a>
 
@@ -2264,8 +2190,6 @@ Structured logs are easier to:
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-53---runtime-metrics"></a>
 
@@ -2331,8 +2255,6 @@ Both dimensions matter.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-54---docker-hardening"></a>
 
 # PHASE 5.4 - Docker Hardening
@@ -2373,8 +2295,6 @@ Use only if it provides practical value for this project.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-55---cicd"></a>
 
@@ -2425,8 +2345,6 @@ Possible improvements:
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-6---security"></a>
 
 # PHASE 6 - Security
@@ -2456,8 +2374,6 @@ app/
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-61---threat-modeling"></a>
 
@@ -2500,8 +2416,6 @@ generation model
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-62---runtime-input-validation"></a>
 
 # PHASE 6.2 - Runtime Input Validation
@@ -2521,8 +2435,6 @@ validate_input_size(...)
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-63---runtime-limits"></a>
 
@@ -2548,8 +2460,6 @@ Future possible rate limiting may be evaluated here.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-64---secrets"></a>
 
 # PHASE 6.4 - Secrets
@@ -2565,8 +2475,6 @@ Tasks:
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-65---dependency-security"></a>
 
 # PHASE 6.5 - Dependency Security
@@ -2580,8 +2488,6 @@ Tasks may include:
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-66---container-security"></a>
 
@@ -2600,8 +2506,6 @@ Review:
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-67---http-security"></a>
 
 # PHASE 6.7 - HTTP Security
@@ -2616,8 +2520,6 @@ Review:
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-68---rag-specific-security"></a>
 
@@ -2660,8 +2562,6 @@ Security review should consider:
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-7---production-v1"></a>
 
 # PHASE 7 - Production v1
@@ -2689,8 +2589,6 @@ reasonably hardened
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-71---health-and-readiness"></a>
 
@@ -2735,8 +2633,6 @@ An application may be alive while its model or vector store is not ready.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-72---production-smoke-test"></a>
 
 # PHASE 7.2 - Production Smoke Test
@@ -2765,8 +2661,6 @@ record latency
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-73---documentation"></a>
 
@@ -2821,8 +2715,6 @@ Production v1
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-8---expansion"></a>
 
 # PHASE 8 - Expansion
@@ -2834,8 +2726,6 @@ destabilizing the core RAG project.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-8a---agent-exploration"></a>
 
@@ -2936,8 +2826,6 @@ final response
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-phase-8b---sql-and-etl"></a>
 
@@ -3056,8 +2944,6 @@ It represents a common data-engineering pipeline pattern.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-8c---mlops"></a>
 
 # PHASE 8C - MLOps
@@ -3159,8 +3045,6 @@ Possible responsibilities:
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-phase-8d---advanced-agents"></a>
 
 # PHASE 8D - Advanced Agents
@@ -3186,8 +3070,6 @@ This phase must not be designed prematurely.
 
 ---
 
-
-[↑ Contents](#obsah)
 
 <a id="en-original-planning-estimates--historical"></a>
 
@@ -3232,8 +3114,6 @@ They are not pure typing estimates.
 ---
 
 
-[↑ Contents](#obsah)
-
 <a id="en-planning-history"></a>
 
 ## Planning history
@@ -3241,7 +3121,7 @@ They are not pure typing estimates.
 The previous Phase 2A status and step-by-step immediate-task list are retained in
 [the pre-cleanup roadmap revision](https://github.com/jyenten/AI_roadmap/blob/d7c3b4f71711c798646bd0a878b96b9c46c92d93/rag_api_project/docs/ROADMAP.md#historical-project-status-original-phase-2a-plan).
 They describe an earlier checkpoint, not today's next steps. Completed work is
-recorded in [LEARNING_LOG.md](../../../LEARNING_LOG.md); the current focus belongs
+recorded in [LEARNING_LOG.md](LEARNING_LOG.md); the current focus belongs
 only to this roadmap's [current development focus](#en-current-development-focus).
 
-[↑ Back to top](#top) · [Obsah / Contents](#obsah)
+[↑ Back to top](#top)
