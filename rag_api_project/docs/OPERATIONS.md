@@ -13,8 +13,8 @@ Požadavky: Python 3.11, Git, přístup k potřebným Python balíčkům a model
 ```powershell
 # Z kořene klonovaného repozitáře (cd proveď pouze jednou):
 cd rag_api_project
-py -3.11 --version
-py -3.11 -m venv .venv
+python --version  # Musí být 3.11.x.
+python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 if (!(Test-Path .env)) { Copy-Item .env.example .env }
@@ -160,8 +160,8 @@ Use Python 3.11 and run commands from `rag_api_project/`. On Windows PowerShell:
 ```powershell
 # From the cloned repository root (change directory only once):
 cd rag_api_project
-py -3.11 --version
-py -3.11 -m venv .venv
+python --version  # Must be 3.11.x.
+python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 if (!(Test-Path .env)) { Copy-Item .env.example .env }

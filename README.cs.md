@@ -25,7 +25,8 @@
 ```powershell
 # Z kořene klonovaného repozitáře:
 cd rag_api_project
-py -3.11 -m venv .venv
+python --version  # Musí být 3.11.x.
+python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 if (!(Test-Path .env)) { Copy-Item .env.example .env }
