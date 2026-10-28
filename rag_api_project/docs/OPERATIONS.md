@@ -33,6 +33,12 @@ test -f .env || cp .env.example .env
 
 Před instalací zkontroluj použitý interpreter a kompatibilitu balíčků. Ve zveřejněné větvi je `requirements.txt` nepinovaný; lokálně vytvořené lockfily nelze automaticky pokládat za schválené ani přenositelné. Neměň verze závislostí jako součást dokumentační úpravy.
 
+### 1a. Reprodukovatelnost závislostí (Windows Python 3.11)
+
+Základní `requirements.txt` ve zveřejněné větvi obsahuje neomezené verze balíčků; lokálně může existovat `requirements-win-py311.lock.txt` s přesnými verzemi. Tento lockfile **není automaticky schválený ani verzovaný**. Nezacházej s ním jako s univerzálním instalačním návodem bez samostatné kontroly kompatibility a CI.
+
+Před případným přijetím lockfilu je nutné ověřit podporovaný Python/OS, metodu vytvoření, čisté instalace na Windows a CI, soulad s `requirements.txt` a proces aktualizace balíčků. Změny balíčků patří do samostatného commitu a nesmí se slučovat s revizí dokumentace.
+
 ### 2. Konfigurace a zdroje
 
 Aplikace čte `.env` z `rag_api_project/` přes `app/config.py`. Důležité proměnné:
@@ -156,6 +162,10 @@ test -f .env || cp .env.example .env
 ```
 
 The configuration lives in `.env` (see `.env.example` and `app/config.py`). Defaults include `data/`, `chroma_db/`, collection `ospf`, embedding model `all-MiniLM-L6-v2` and eight retrieval results. Verify your active Python environment before installing packages. This published branch does not yet provide an approved universal dependency lockfile.
+
+### 1a. Dependency reproducibility (Windows Python 3.11)
+
+The published `requirements.txt` does not pin versions. A locally generated `requirements-win-py311.lock.txt` may exist but is **not automatically approved, tracked or portable**. Before adopting such a lockfile, independently verify the generation method, Python/OS support, clean Windows installs, CI compatibility, consistency with the requirements file, and an update policy. Keep dependency changes in a separate reviewed commit.
 
 ### 2. Prepare and ingest PDF sources
 
