@@ -2,7 +2,7 @@
 
 # RAG API — Document Search & Retrieval Evaluation
 
-[Česky](README.cs.md#cz) · [English](#en) · [Obsah / Contents](#obsah)
+[Česky](README.cs.md#cz) · [English](#en) · [Obsah / Contents](#obsah) · [Documentation](docs/README.md)
 
 <a id="obsah"></a>
 
@@ -141,7 +141,7 @@ Put technical PDF files in `data/` (ignored by Git), then run:
 python -m scripts.ingest
 ~~~
 
-The local Chroma collection is stored under `chroma_db/`. The example configuration uses the collection named `ospf`. **Warning: `scripts.ingest` deletes and recreates an existing collection with that name**, rather than incrementally updating it. Back up the index if it must be preserved. The API requires suitable indexed data to answer corpus-specific questions. Full procedure: [OPERATIONS.md](docs/OPERATIONS.md).
+The local Chroma collection is stored under `chroma_db/`. The example configuration uses the collection named `ospf`. **Warning: `scripts.ingest` deletes and recreates an existing collection with that name**, rather than incrementally updating it. Back up the index if it must be preserved. The API requires suitable indexed data to answer corpus-specific questions. Full procedure: [OPERATIONS.md](docs/en/OPERATIONS.md).
 
 
 [↑ Obsah / Contents](#obsah)
@@ -186,7 +186,7 @@ From `rag_api_project/`:
 python -m pytest -q tests
 ~~~
 
-Historical **locally reported** full-suite run after Phase 3.3 BM25 integration: **210 passed, 1 skipped**. The skip was caused by unavailable Windows symlink privileges; external dependency deprecation warnings were reported. See the dated [verified checkpoint](../LEARNING_LOG.md#current-project-checkpoint); verify new runs independently on [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
+Historical **locally reported** full-suite run after Phase 3.3 BM25 integration: **210 passed, 1 skipped**. The skip was caused by unavailable Windows symlink privileges; external dependency deprecation warnings were reported. See the dated [verified checkpoint](../LEARNING_LOG.md#en-current-project-checkpoint); verify new runs independently on [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
 
 BM25 tests use synthetic Chroma fixtures and cover pagination, ranking, deterministic tie-breaking, metadata alignment, invalid queries and records, and malformed batches.
 
@@ -209,7 +209,7 @@ python -m scripts.evaluate_retrieval --retriever vector --dataset random
 python -m scripts.evaluate_retrieval --retriever bm25 --dataset random
 ~~~
 
-The CLI accepts `legacy`, `vector`, `bm25` and `dev`/`random`. It writes JSONL run history, so it is not read-only. The held-out TEST set is reserved for final assessment, not iterative tuning. See [EVALUATION.md](docs/EVALUATION.md) for evidence creation and comparison discipline.
+The CLI accepts `legacy`, `vector`, `bm25` and `dev`/`random`. It writes JSONL run history, so it is not read-only. The held-out TEST set is reserved for final assessment, not iterative tuning. See [EVALUATION.md](docs/en/EVALUATION.md) for evidence creation and comparison discipline.
 
 
 [↑ Obsah / Contents](#obsah)
@@ -242,7 +242,7 @@ docker compose down
 
 Compose maps host port `8001` to container port `8000` and mounts local Chroma/model-cache directories. This is a local container configuration, not a hosted demo.
 
-**Known limitations:** the image copies `app/` and `scripts/`, but omits `document_search/`, `evaluation/`, `eval/` and source PDFs. Compose does not pass the host `.env` into the container. Run ingestion and evaluation natively; the container API requires a compatible mounted index. See [OPERATIONS.md](docs/OPERATIONS.md) for configuration and packaging boundaries.
+**Known limitations:** the image copies `app/` and `scripts/`, but omits `document_search/`, `evaluation/`, `eval/` and source PDFs. Compose does not pass the host `.env` into the container. Run ingestion and evaluation natively; the container API requires a compatible mounted index. See [OPERATIONS.md](docs/en/OPERATIONS.md) for configuration and packaging boundaries.
 
 
 [↑ Obsah / Contents](#obsah)

@@ -2,7 +2,7 @@
 
 # AI Engineering Portfolio — Python, RAG & Retrieval Evaluation
 
-[Česky](README.cs.md#cz) · [English](#en) · [Obsah / Contents](#obsah)
+[Česky](README.cs.md#cz) · [English](#en) · [Obsah / Contents](#obsah) · [Documentation](rag_api_project/docs/README.md)
 
 <a id="obsah"></a>
 
@@ -62,7 +62,7 @@ The project processes technical PDF documentation into searchable chunks and pro
 
 ### Verification
 
-Historical *locally reported* full-suite run after BM25 integration: **210 passed, 1 skipped** (the skip was due to Windows symlink restrictions). This is not a current test count or a claim about GitHub Actions status; see the dated [verified checkpoint](LEARNING_LOG.md#current-project-checkpoint) and verify new runs on [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
+Historical *locally reported* full-suite run after BM25 integration: **210 passed, 1 skipped** (the skip was due to Windows symlink restrictions). This is not a current test count or a claim about GitHub Actions status; see the dated [verified checkpoint](LEARNING_LOG.md#en-current-project-checkpoint) and verify new runs on [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
 
 
 [↑ Obsah / Contents](#obsah)
@@ -138,7 +138,7 @@ For ongoing agent experiments, a **separate private GitHub repository** (`jyente
 
 ## Getting started
 
-Start with the [project README](rag_api_project/README.md) or [Czech project README](rag_api_project/README.cs.md). Use the bilingual [operations runbook](rag_api_project/docs/OPERATIONS.md) for setup/ingestion and the [golden evidence guide](rag_api_project/docs/EVALUATION.md) for curation, validation, approvals and evaluation.
+Start with the [project README](rag_api_project/README.md) or [Czech project README](rag_api_project/README.cs.md). Use the bilingual [operations runbook](rag_api_project/docs/en/OPERATIONS.md) for setup/ingestion and the [golden evidence guide](rag_api_project/docs/en/EVALUATION.md) for curation, validation, approvals and evaluation.
 
 > **Project status:** educational engineering portfolio / actively developed prototype, not a production SaaS or hosted demo.
 

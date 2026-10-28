@@ -2,7 +2,7 @@
 
 # RAG API — vyhledávání v dokumentech a evaluace retrievalu
 
-[Česky](#cz) · [English](README.md#en) · [Obsah / Contents](#obsah)
+[Česky](#cz) · [English](README.md#en) · [Obsah / Contents](#obsah) · [Dokumentace](docs/README.md)
 
 <a id="obsah"></a>
 
@@ -142,7 +142,7 @@ Vlož technická PDF do `data/` (ignorováno Gitem), potom spusť:
 python -m scripts.ingest
 ~~~
 
-Lokální Chroma kolekce je uložená v `chroma_db/`. Ukázková konfigurace používá název `ospf`. **Pozor: `scripts.ingest` existující kolekci tohoto jména smaže a znovu vytvoří**, místo průběžného doplňování. Pokud je nutné index zachovat, zálohuj jej. API potřebuje vhodná indexovaná data pro odpovědi nad korpusem. Úplný postup: [OPERATIONS.md](docs/OPERATIONS.md#cz).
+Lokální Chroma kolekce je uložená v `chroma_db/`. Ukázková konfigurace používá název `ospf`. **Pozor: `scripts.ingest` existující kolekci tohoto jména smaže a znovu vytvoří**, místo průběžného doplňování. Pokud je nutné index zachovat, zálohuj jej. API potřebuje vhodná indexovaná data pro odpovědi nad korpusem. Úplný postup: [OPERATIONS.md](docs/cs/OPERATIONS.md#cz).
 
 
 [↑ Obsah / Contents](#obsah)
@@ -187,7 +187,7 @@ Z `rag_api_project/`:
 python -m pytest -q tests
 ~~~
 
-Historický **lokálně hlášený** úplný běh po integraci BM25 ve fázi 3.3: **210 úspěšných testů, 1 přeskočený**. Přeskočení způsobila nedostupná oprávnění symlinků ve Windows; hlášena byla deprekační varování externích závislostí. Datované ověřené výsledky jsou v [deníku učení](../LEARNING_LOG.md#cz-ověřený-stav-projektu); nové běhy ověř samostatně na [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
+Historický **lokálně hlášený** úplný běh po integraci BM25 ve fázi 3.3: **210 úspěšných testů, 1 přeskočený**. Přeskočení způsobila nedostupná oprávnění symlinků ve Windows; hlášena byla deprekační varování externích závislostí. Datované ověřené výsledky jsou v [deníku učení](../LEARNING_LOG.cs.md#cz-ověřený-stav-projektu); nové běhy ověř samostatně na [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
 
 BM25 testy používají syntetické Chroma fixtures a pokrývají stránkování, řazení, deterministické rozhodování při shodě skóre, soulad metadat, neplatné dotazy a záznamy i vadné dávky.
 
@@ -210,7 +210,7 @@ python -m scripts.evaluate_retrieval --retriever vector --dataset random
 python -m scripts.evaluate_retrieval --retriever bm25 --dataset random
 ~~~
 
-CLI přijímá `legacy`, `vector`, `bm25` a `dev`/`random`. Zapisuje JSONL historii běhů, proto nejde o operaci pouze pro čtení. Oddělený TEST je vyhrazen závěrečnému hodnocení, nikoli iterativnímu ladění. Postup tvorby evidence a porovnávání viz [EVALUATION.md](docs/EVALUATION.md#cz).
+CLI přijímá `legacy`, `vector`, `bm25` a `dev`/`random`. Zapisuje JSONL historii běhů, proto nejde o operaci pouze pro čtení. Oddělený TEST je vyhrazen závěrečnému hodnocení, nikoli iterativnímu ladění. Postup tvorby evidence a porovnávání viz [EVALUATION.md](docs/cs/EVALUATION.md#cz).
 
 
 [↑ Obsah / Contents](#obsah)
@@ -243,7 +243,7 @@ docker compose down
 
 Compose mapuje hostitelský port `8001` na kontejnerový `8000` a připojuje lokální adresáře Chroma/modelové cache. Jde o lokální kontejnerovou konfiguraci, nikoli hostovanou ukázku.
 
-**Známá omezení:** obraz kopíruje `app/` a `scripts/`, ale vynechává `document_search/`, `evaluation/`, `eval/` a zdrojová PDF. Compose nepředává hostitelský `.env` do kontejneru. Ingest a evaluaci spouštěj nativně; kontejnerové API vyžaduje kompatibilní připojený index. Konfigurační a balíčkové hranice viz [OPERATIONS.md](docs/OPERATIONS.md#cz).
+**Známá omezení:** obraz kopíruje `app/` a `scripts/`, ale vynechává `document_search/`, `evaluation/`, `eval/` a zdrojová PDF. Compose nepředává hostitelský `.env` do kontejneru. Ingest a evaluaci spouštěj nativně; kontejnerové API vyžaduje kompatibilní připojený index. Konfigurační a balíčkové hranice viz [OPERATIONS.md](docs/cs/OPERATIONS.md#cz).
 
 
 [↑ Obsah / Contents](#obsah)
@@ -266,7 +266,7 @@ Compose mapuje hostitelský port `8001` na kontejnerový `8000` a připojuje lok
 
 Tento výukový projekt používá ChatGPT a Codex pro vysvětlování, návrh, implementační pomoc, diagnostiku, testy a revize; ne každou komponentu vlastník repozitáře samostatně vymyslel nebo napsal.
 
-[Globální AGENTS.md](../AGENTS.md#cz) popisuje režimy LEARN, IMPLEMENT a REVIEW a vyžaduje lidské schválení integrace. [Projektový AGENTS.md](AGENTS.md#cz) přidává konkrétní pravidla kurátorství evaluačních datasetů včetně lidského schválení povýšení kandidátů. Důkazy dovedností a pokrok jsou v [LEARNING_LOG.md](../LEARNING_LOG.md#cz).
+[Globální AGENTS.md](../AGENTS.cs.md#cz) popisuje režimy LEARN, IMPLEMENT a REVIEW a vyžaduje lidské schválení integrace. [Projektový AGENTS.md](AGENTS.cs.md#cz) přidává konkrétní pravidla kurátorství evaluačních datasetů včetně lidského schválení povýšení kandidátů. Důkazy dovedností a pokrok jsou v [LEARNING_LOG.md](../LEARNING_LOG.cs.md#cz).
 
 Pro BM25 funkci napsal Codex syntetické regresní testy v izolovaném **lokálním** worktree (`agent/bm25-tests`); zkontrolované testy byly integrovány do veřejné vývojové větve spolu s implementací BM25.
 
@@ -281,11 +281,11 @@ Průběžné experimenty Codexu používají samostatné **soukromé GitHub zrca
 
 | Úkol | Dokument |
 | --- | --- |
-| Kompletní instalace, `.env`, ingest, kontrola Chroma, API, Docker, testy | [Provozní příručka (CZ/EN)](docs/OPERATIONS.md#cz) |
-| Golden evidence, kandidáti, schvalování, validace, metriky | [Evaluace (CZ/EN)](docs/EVALUATION.md#cz) |
-| Architektura současná i plánovaná | [ARCHITECTURE.md](docs/ARCHITECTURE.md#cz) |
-| Stav a prioritizace vývoje | [ROADMAP.md](docs/ROADMAP.md#cz) |
-| Vývoj, testy, Git | [DEVELOPMENT_GUIDE.md](docs/DEVELOPMENT_GUIDE.md#cz) |
-| Pravidla Codex/ChatGPT | [AGENTS.md](AGENTS.md#cz), [globální AGENTS.md](../AGENTS.md#cz) |
+| Kompletní instalace, `.env`, ingest, kontrola Chroma, API, Docker, testy | [Provozní příručka (CZ/EN)](docs/cs/OPERATIONS.md#cz) |
+| Golden evidence, kandidáti, schvalování, validace, metriky | [Evaluace (CZ/EN)](docs/cs/EVALUATION.md#cz) |
+| Architektura současná i plánovaná | [ARCHITECTURE.md](docs/cs/ARCHITECTURE.md#cz) |
+| Stav a prioritizace vývoje | [ROADMAP.md](docs/cs/ROADMAP.md#cz) |
+| Vývoj, testy, Git | [DEVELOPMENT_GUIDE.md](docs/cs/DEVELOPMENT_GUIDE.md#cz) |
+| Pravidla Codex/ChatGPT | [AGENTS.md](AGENTS.cs.md#cz), [globální AGENTS.md](../AGENTS.cs.md#cz) |
 
 [↑ Nahoru / Back to top](#top) · [Obsah / Contents](#obsah)

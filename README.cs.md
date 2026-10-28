@@ -2,7 +2,7 @@
 
 # AI Engineering Portfolio — Python, RAG a evaluace retrievalu
 
-[Česky](#cz) · [English](README.md#en) · [Obsah / Contents](#obsah)
+[Česky](#cz) · [English](README.md#en) · [Obsah / Contents](#obsah) · [Dokumentace](rag_api_project/docs/README.md)
 
 <a id="obsah"></a>
 
@@ -63,7 +63,7 @@ Projekt zpracovává technickou PDF dokumentaci do prohledávatelných chunků a
 
 ### Ověření
 
-Historický *lokálně hlášený* úplný běh po integraci BM25: **210 úspěšných testů, 1 přeskočený** (omezení symlinků ve Windows). Nejde o aktuální počet testů ani tvrzení o současném GitHub Actions. Datované ověřené výsledky jsou v [deníku učení](LEARNING_LOG.md#cz-ověřený-stav-projektu); nové běhy ověř na [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
+Historický *lokálně hlášený* úplný běh po integraci BM25: **210 úspěšných testů, 1 přeskočený** (omezení symlinků ve Windows). Nejde o aktuální počet testů ani tvrzení o současném GitHub Actions. Datované ověřené výsledky jsou v [deníku učení](LEARNING_LOG.cs.md#cz-ověřený-stav-projektu); nové běhy ověř na [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
 
 
 [↑ Obsah / Contents](#obsah)
@@ -104,7 +104,7 @@ Technical PDF files
 
 Jde o praktický výukový projekt vyvíjený s výraznou pomocí AI. ChatGPT a Codex používám pro vysvětlování, návrhové diskuse, návrhy a generování kódu, diagnostiku, testy a revize. Také sám implementuji a upravuji kód, zkoumám selhání a ověřuji změny. Repozitář dokumentuje vývojový proces i výsledný systém; netvrdí, že jsem každou komponentu samostatně vymyslel či napsal.
 
-Pravidla spolupráce jsou ve dvou úrovních: [globální AGENTS.md](AGENTS.md#cz) určuje režimy LEARN / IMPLEMENT / REVIEW a hranice schvalování; [projektový AGENTS.md](rag_api_project/AGENTS.md#cz) přidává ochrany kurátorství evaluačních datasetů. Pokrok a doklady dovedností jsou v [LEARNING_LOG.md](LEARNING_LOG.md#cz).
+Pravidla spolupráce jsou ve dvou úrovních: [globální AGENTS.md](AGENTS.cs.md#cz) určuje režimy LEARN / IMPLEMENT / REVIEW a hranice schvalování; [projektový AGENTS.md](rag_api_project/AGENTS.cs.md#cz) přidává ochrany kurátorství evaluačních datasetů. Pokrok a doklady dovedností jsou v [LEARNING_LOG.md](LEARNING_LOG.cs.md#cz).
 
 Pro BM25 milník připravil Codex regresní testy v **izolovaném lokálním Git worktree** na `agent/bm25-tests`. Zkontrolované testy byly poté integrovány do veřejné vývojové větve.
 
@@ -139,7 +139,7 @@ Pro průběžné experimenty agentů zrcadlí **samostatný soukromý GitHub rep
 
 ## Jak začít
 
-Začni [českým projektovým README](rag_api_project/README.cs.md) ([English](rag_api_project/README.md)). Pro instalaci/ingest použij dvojjazyčný [provozní návod](rag_api_project/docs/OPERATIONS.md#cz); pro tvorbu evidence, validaci, schvalování a evaluaci [příručku golden evidence](rag_api_project/docs/EVALUATION.md#cz).
+Začni [českým projektovým README](rag_api_project/README.cs.md) ([English](rag_api_project/README.md)). Pro instalaci/ingest použij dvojjazyčný [provozní návod](rag_api_project/docs/cs/OPERATIONS.md#cz); pro tvorbu evidence, validaci, schvalování a evaluaci [příručku golden evidence](rag_api_project/docs/cs/EVALUATION.md#cz).
 
 > **Stav projektu:** výukové inženýrské portfolio / aktivně vyvíjený prototyp, nikoli produkční SaaS nebo hostovaná ukázka.
 
