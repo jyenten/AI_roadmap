@@ -1,231 +1,46 @@
+<a id="top"></a>
+
 # Evaluation Curator Agent
 
-## Goal
-
-Prepare high-quality candidate evaluation questions for the offline RAG retrieval evaluation dataset.
-
-Target dataset structure:
-
-- DEV: 20 questions
-- RANDOM: 25 questions
-- TEST: 15 questions
-
-Total target: 60 questions.
-
-The agent prepares candidates only.
-The agent must never promote candidates into the real evaluation datasets.
-
----
-
-## Allowed output
-
-Write candidate questions only to:
-
-eval/candidates/
-
-Example:
-
-eval/candidates/random_batch_001.json
-
-Do not modify:
-
-- eval/dev_questions.json
-- eval/random_questions.json
-- eval/test_questions.json
-- app/
-- document_search/
-- evaluation/
-- tests/
-
----
-
-## Existing datasets
-
-Before generating candidates, inspect DEV/RANDOM for duplicate facts and topic coverage:
-
-- eval/dev_questions.json
-- eval/random_questions.json
-
-Keep `eval/test_questions.json` held out. The validation script checks its IDs and normalized questions automatically, without requiring manual inspection of TEST contents during development. Ensure all three dataset files are present: the script skips missing files.
-
-Avoid duplicate questions, duplicate facts, and unnecessarily repeated topics.
-
----
-
-## Source material
-
-Use only the PDF documents in:
-
-data/
-
-Gold evidence must come from the actual PDF text.
-
-Use the existing document explorer for discovery:
-
-python -m scripts.search_pdf "<query>" --top-k 10 --interactive
-
-BM25 search is a discovery tool only.
-
-A high BM25 score does not mean that a passage is correct gold evidence.
-
----
-
-## Candidate creation method
-
-Always work in this direction:
-
-evidence -> question
-
-Never:
-
-question -> search until something approximately matches
-
-For every candidate:
-
-1. Find a clear factual passage in a source PDF.
-2. Record the physical PDF page number.
-3. Create one question that is directly answered by that evidence.
-4. Copy a stable exact evidence fragment into contains_any.
-5. Keep the question narrow enough that the evidence fully answers it.
-6. Avoid questions requiring several unrelated facts unless one evidence fragment supports all of them.
-
----
-
-## Candidate schema
-
-Output must be a JSON array.
-
-Each item must follow this structure:
-
-{
-  "id": "topic_random_001",
-  "topic": "descriptive-topic",
-  "question": "One clear question?",
-  "gold_evidence": [
-    {
-      "source": "Exact_Source_Filename.pdf",
-      "pages": [123],
-      "contains_any": [
-        "Exact supporting fragment from the source page"
-      ]
-    }
-  ]
-}
-
----
-
-## Gold evidence rules
-
-Gold evidence must:
-
-- use the exact PDF filename
-- use physical PDF page numbers
-- contain text actually present on the specified page
-- directly answer the question
-- use stable fragments rather than headers or navigation text
-
-Do not use printed page numbers from inside the PDF.
-
-Do not invent or paraphrase contains_any fragments.
-
-Multiple GoldEvidence objects are allowed when several independently valid passages answer the same question.
-
-contains_any has OR semantics.
-
-Do not place two fragments into contains_any when both are required together to answer the question.
-
----
-
-## Topic diversity
-
-Prefer coverage outside topics that are already overrepresented.
-
-Avoid producing a batch dominated by one protocol or one PDF.
-
-Useful areas may include, when supported by the corpus:
-
-- IPv4 / IPv6 addressing
-- DHCP / DHCPv6
-- NAT
-- routing fundamentals
-- BGP
-- EIGRP
-- RIP
-- OSPF
-- route redistribution
-- Neighbor Discovery
-- routing security or validation mechanisms
-- protocol-independent routing features
-
-Topic diversity is secondary to evidence quality.
-
-Never create a weak question just to improve topic balance.
-
----
-
-## Prohibited behavior
-
-Do not:
-
-- modify retrieval code
-- modify evaluation metrics
-- modify existing gold evidence
-- run retrieval and rewrite gold merely to improve a metric
-- copy an existing DEV or RANDOM question with different wording
-- invent source text
-- guess page numbers
-- use external internet sources
-- use knowledge not contained in the local PDFs as gold evidence
-- promote candidates into a real dataset
-
----
-
-## Batch size
-
-Generate exactly 5 candidates per batch unless instructed otherwise.
-
-For RANDOM use IDs consistent with the existing dataset, for example:
-
-bgp_random_002
-ipv6_random_002
-routing_random_002
-
-IDs must be unique across all evaluation datasets and the current candidate batch.
-
----
-
-## Validation
-
-After writing the candidate JSON, run:
-
-python -m scripts.validate_eval_candidates <candidate-file>
-
-If validation fails:
-
-1. diagnose the candidate
-2. correct only the candidate file
-3. rerun validation
-
-Do not weaken the validator.
-
-A batch is complete only when validation prints:
-
-VALID: 5 candidate(s)
-
----
-
-## Human approval boundary
-
-After validation, stop.
-
-Report:
-
-- candidate file path
-- the 5 candidate IDs
-- topic of each candidate
-- source PDF and page of each candidate
-- validation result
-
-Do not run promote_eval_candidates.
-
-Promotion requires explicit human approval.
+[Česky](cs/EVAL_CURATOR_AGENT.md#cz) · [English](en/EVAL_CURATOR_AGENT.md#en) · [Dokumentace / Documentation](README.md)
+
+Tento dokument má samostatnou [českou](cs/EVAL_CURATOR_AGENT.md#cz) a [anglickou](en/EVAL_CURATOR_AGENT.md#en) verzi. Otevři vybraný jazyk pro úplný text, obsah a příklady.
+
+This document has separate [Czech](cs/EVAL_CURATOR_AGENT.md#cz) and [English](en/EVAL_CURATOR_AGENT.md#en) versions. Open a language for the full text, contents and examples.
+
+<a id="obsah"></a>
+
+## Starší odkazy na kapitoly / Legacy chapter links
+
+Starší záložky vedou na příslušný řádek níže. Odkaz v řádku otevře úplnou kapitolu. / Older bookmarks lead to the matching row below; follow its link to the full chapter.
+
+| Jazyk / Language | Kapitola / Chapter |
+| --- | --- |
+| EN | <a id="en"></a><a id="en--english"></a>[EN — English](en/EVAL_CURATOR_AGENT.md#en) |
+| EN | <a id="en-goal"></a><a id="goal"></a>[Goal](en/EVAL_CURATOR_AGENT.md#en-goal) |
+| EN | <a id="en-allowed-output"></a><a id="allowed-output"></a>[Allowed output](en/EVAL_CURATOR_AGENT.md#en-allowed-output) |
+| EN | <a id="en-existing-datasets"></a><a id="existing-datasets"></a>[Existing datasets](en/EVAL_CURATOR_AGENT.md#en-existing-datasets) |
+| EN | <a id="en-source-material"></a><a id="source-material"></a>[Source material](en/EVAL_CURATOR_AGENT.md#en-source-material) |
+| EN | <a id="en-candidate-creation-method"></a><a id="candidate-creation-method"></a>[Candidate creation method](en/EVAL_CURATOR_AGENT.md#en-candidate-creation-method) |
+| EN | <a id="en-candidate-schema"></a><a id="candidate-schema"></a>[Candidate schema](en/EVAL_CURATOR_AGENT.md#en-candidate-schema) |
+| EN | <a id="en-gold-evidence-rules"></a><a id="gold-evidence-rules"></a>[Gold evidence rules](en/EVAL_CURATOR_AGENT.md#en-gold-evidence-rules) |
+| EN | <a id="en-topic-diversity"></a><a id="topic-diversity"></a>[Topic diversity](en/EVAL_CURATOR_AGENT.md#en-topic-diversity) |
+| EN | <a id="en-prohibited-behavior"></a><a id="prohibited-behavior"></a>[Prohibited behavior](en/EVAL_CURATOR_AGENT.md#en-prohibited-behavior) |
+| EN | <a id="en-batch-size"></a><a id="batch-size"></a>[Batch size](en/EVAL_CURATOR_AGENT.md#en-batch-size) |
+| EN | <a id="en-validation"></a><a id="validation"></a>[Validation](en/EVAL_CURATOR_AGENT.md#en-validation) |
+| EN | <a id="en-human-approval-boundary"></a><a id="human-approval-boundary"></a>[Human approval boundary](en/EVAL_CURATOR_AGENT.md#en-human-approval-boundary) |
+| CZ | <a id="cz"></a><a id="cz--česká-verze"></a>[CZ — Česká verze](cs/EVAL_CURATOR_AGENT.md#cz) |
+| CZ | <a id="cz-cíl"></a><a id="cíl"></a>[Cíl](cs/EVAL_CURATOR_AGENT.md#cz-cíl) |
+| CZ | <a id="cz-povolený-výstup"></a><a id="povolený-výstup"></a>[Povolený výstup](cs/EVAL_CURATOR_AGENT.md#cz-povolený-výstup) |
+| CZ | <a id="cz-existující-datasety"></a><a id="existující-datasety"></a>[Existující datasety](cs/EVAL_CURATOR_AGENT.md#cz-existující-datasety) |
+| CZ | <a id="cz-zdrojový-materiál"></a><a id="zdrojový-materiál"></a>[Zdrojový materiál](cs/EVAL_CURATOR_AGENT.md#cz-zdrojový-materiál) |
+| CZ | <a id="cz-postup-tvorby-kandidátů"></a><a id="postup-tvorby-kandidátů"></a>[Postup tvorby kandidátů](cs/EVAL_CURATOR_AGENT.md#cz-postup-tvorby-kandidátů) |
+| CZ | <a id="cz-schéma-kandidáta"></a><a id="schéma-kandidáta"></a>[Schéma kandidáta](cs/EVAL_CURATOR_AGENT.md#cz-schéma-kandidáta) |
+| CZ | <a id="cz-pravidla-gold-evidence"></a><a id="pravidla-gold-evidence"></a>[Pravidla gold evidence](cs/EVAL_CURATOR_AGENT.md#cz-pravidla-gold-evidence) |
+| CZ | <a id="cz-různorodost-témat"></a><a id="různorodost-témat"></a>[Různorodost témat](cs/EVAL_CURATOR_AGENT.md#cz-různorodost-témat) |
+| CZ | <a id="cz-zakázané-chování"></a><a id="zakázané-chování"></a>[Zakázané chování](cs/EVAL_CURATOR_AGENT.md#cz-zakázané-chování) |
+| CZ | <a id="cz-velikost-dávky"></a><a id="velikost-dávky"></a>[Velikost dávky](cs/EVAL_CURATOR_AGENT.md#cz-velikost-dávky) |
+| CZ | <a id="cz-validace"></a><a id="validace"></a>[Validace](cs/EVAL_CURATOR_AGENT.md#cz-validace) |
+| CZ | <a id="cz-hranice-lidského-schválení"></a><a id="hranice-lidského-schválení"></a>[Hranice lidského schválení](cs/EVAL_CURATOR_AGENT.md#cz-hranice-lidského-schválení) |
+
+[↑ Nahoru / Back to top](#top)

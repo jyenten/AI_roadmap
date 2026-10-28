@@ -1,14 +1,53 @@
+<a id="top"></a>
+
 # RAG API — Document Search & Retrieval Evaluation
 
-[**Český návod / Czech guide**](README.cs.md) · [Bilingual operations](docs/OPERATIONS.md) · [Bilingual evaluation](docs/EVALUATION.md)
+[Česky](README.cs.md#cz) · [English](#en) · [Obsah / Contents](#obsah) · [Documentation](docs/README.md)
+
+<a id="obsah"></a>
+
+<details>
+<summary>Obsah / Contents — kliknutím rozbalit / click to expand</summary>
+
+**English**
+
+- [Tech stack](#en-tech-stack)
+- [Architecture and modules](#en-architecture-and-modules)
+- [Data flow](#en-data-flow)
+- [Key engineering decisions](#en-key-engineering-decisions)
+- [Local setup](#en-local-setup)
+- [Index local PDFs](#en-index-local-pdfs)
+- [Running the API](#en-running-the-api)
+- [Tests](#en-tests)
+- [Offline retrieval evaluation](#en-offline-retrieval-evaluation)
+- [Standalone BM25 PDF search](#en-standalone-bm25-pdf-search)
+- [Docker and Compose](#en-docker-and-compose)
+- [Current limitations and next steps](#en-current-limitations-and-next-steps)
+- [AI-assisted development and contributor boundaries](#en-ai-assisted-development-and-contributor-boundaries)
+
+</details>
+
+---
+
+<a id="en"></a>
 
 A Python/FastAPI project for answering questions about technical PDF documentation, focusing on retrieval quality, source traceability, and regression testing.
 
 **Status:** actively developed educational prototype, not a production service. The existing `/ask` pipeline uses Chroma retrieval, context selection, reranking, and rule-based/model-generated responses. Separately, the repository includes a vector retriever, BM25 lexical retriever, and offline retrieval evaluation tools.
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-tech-stack"></a>
+
 ## Tech stack
 
 Python 3.11 · FastAPI · Pydantic · ChromaDB · Sentence Transformers · `rank-bm25` · Transformers/PyTorch · pypdf · pytest · Docker · GitHub Actions.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-architecture-and-modules"></a>
 
 ## Architecture and modules
 
@@ -24,6 +63,11 @@ Python 3.11 · FastAPI · Pydantic · ChromaDB · Sentence Transformers · `rank
 | PDF search CLI | `scripts/search_pdf.py` | Independent local BM25 page search |
 | Retrieval evaluation | `evaluation/`, `scripts/evaluate_retrieval.py` | Rank-based quality, latency and provenance |
 | Tests | `tests/` | Unit and regression tests |
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-data-flow"></a>
 
 ### Data flow
 
@@ -41,6 +85,11 @@ PDF documents --> text extraction / chunking --> ChromaDB + metadata
 
 **Integration boundary:** BM25 is implemented and selectable in the **offline evaluation CLI** together with `legacy` and `vector`. The HTTP `/ask` API has not been switched to a BM25 or hybrid retrieval mode. Hybrid RRF is work in progress, not an established released feature.
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-key-engineering-decisions"></a>
+
 ## Key engineering decisions
 
 - Indexed chunks carry source, physical PDF page, and chunk metadata for traceability.
@@ -48,6 +97,11 @@ PDF documents --> text extraction / chunking --> ChromaDB + metadata
 - Vector search returns distance-like scores (lower typically closer); BM25 returns ranking scores (higher ranks first). Raw scores should not be compared directly.
 - Evaluation is split into development, random-sample, and held-out test data, with dataset hashes and Git provenance.
 - Model-based generation is a fallback to task-specific answer logic; the system is not a general-purpose, production-grade QA engine.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-local-setup"></a>
 
 ## Local setup
 
@@ -74,6 +128,11 @@ test -f .env || cp .env.example .env
 
 Dependencies are currently unpinned; this is not yet a fully reproducible lockfile-based installation.
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-index-local-pdfs"></a>
+
 ### Index local PDFs
 
 Put technical PDF files in `data/` (ignored by Git), then run:
@@ -82,7 +141,12 @@ Put technical PDF files in `data/` (ignored by Git), then run:
 python -m scripts.ingest
 ~~~
 
-The local Chroma collection is stored under `chroma_db/`. The example configuration uses the collection named `ospf`. **Warning: `scripts.ingest` deletes and recreates an existing collection with that name**, rather than incrementally updating it. Back up the index if it must be preserved. The API requires suitable indexed data to answer corpus-specific questions. Full procedure: [OPERATIONS.md](docs/OPERATIONS.md).
+The local Chroma collection is stored under `chroma_db/`. The example configuration uses the collection named `ospf`. **Warning: `scripts.ingest` deletes and recreates an existing collection with that name**, rather than incrementally updating it. Back up the index if it must be preserved. The API requires suitable indexed data to answer corpus-specific questions. Full procedure: [OPERATIONS.md](docs/en/OPERATIONS.md).
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-running-the-api"></a>
 
 ## Running the API
 
@@ -109,6 +173,11 @@ On Windows PowerShell, use `Invoke-RestMethod` if shell-specific `curl` quoting 
 Invoke-RestMethod -Uri http://127.0.0.1:8000/ask -Method Post -ContentType 'application/json' -Body '{"question":"How does OSPF select the router ID?"}'
 ~~~
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-tests"></a>
+
 ## Tests
 
 From `rag_api_project/`:
@@ -117,9 +186,14 @@ From `rag_api_project/`:
 python -m pytest -q tests
 ~~~
 
-Historical **locally reported** full-suite run after Phase 3.3 BM25 integration: **210 passed, 1 skipped**. The skip was caused by unavailable Windows symlink privileges; external dependency deprecation warnings were reported. Remote CI results must be verified independently on the GitHub Actions tab.
+Historical **locally reported** full-suite run after Phase 3.3 BM25 integration: **210 passed, 1 skipped**. The skip was caused by unavailable Windows symlink privileges; external dependency deprecation warnings were reported. See the dated [verified checkpoint](../LEARNING_LOG.md#en-current-project-checkpoint); verify new runs independently on [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
 
 BM25 tests use synthetic Chroma fixtures and cover pagination, ranking, deterministic tie-breaking, metadata alignment, invalid queries and records, and malformed batches.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-offline-retrieval-evaluation"></a>
 
 ## Offline retrieval evaluation
 
@@ -135,7 +209,12 @@ python -m scripts.evaluate_retrieval --retriever vector --dataset random
 python -m scripts.evaluate_retrieval --retriever bm25 --dataset random
 ~~~
 
-The CLI accepts `legacy`, `vector`, `bm25` and `dev`/`random`. It writes JSONL run history, so it is not read-only. The held-out TEST set is reserved for final assessment, not iterative tuning. See [EVALUATION.md](docs/EVALUATION.md) for evidence creation and comparison discipline.
+The CLI accepts `legacy`, `vector`, `bm25` and `dev`/`random`. It writes JSONL run history, so it is not read-only. The held-out TEST set is reserved for final assessment, not iterative tuning. See [EVALUATION.md](docs/en/EVALUATION.md) for evidence creation and comparison discipline.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-standalone-bm25-pdf-search"></a>
 
 ## Standalone BM25 PDF search
 
@@ -146,6 +225,11 @@ python -m scripts.search_pdf "router ID" --top-k 5 --interactive
 ~~~
 
 This tool reads PDF files in `data/` and is distinct from the Chroma-backed `BM25Retriever`.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-docker-and-compose"></a>
 
 ## Docker and Compose
 
@@ -158,7 +242,12 @@ docker compose down
 
 Compose maps host port `8001` to container port `8000` and mounts local Chroma/model-cache directories. This is a local container configuration, not a hosted demo.
 
-**Known limitations:** the image copies `app/` and `scripts/`, but omits `document_search/`, `evaluation/`, `eval/` and source PDFs. Compose does not pass the host `.env` into the container. Run ingestion and evaluation natively; the container API requires a compatible mounted index. See [OPERATIONS.md](docs/OPERATIONS.md) for configuration and packaging boundaries.
+**Known limitations:** the image copies `app/` and `scripts/`, but omits `document_search/`, `evaluation/`, `eval/` and source PDFs. Compose does not pass the host `.env` into the container. Run ingestion and evaluation natively; the container API requires a compatible mounted index. See [OPERATIONS.md](docs/en/OPERATIONS.md) for configuration and packaging boundaries.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-current-limitations-and-next-steps"></a>
 
 ## Current limitations and next steps
 
@@ -166,6 +255,11 @@ Compose maps host port `8001` to container port `8000` and mounts local Chroma/m
 - Experiment with hybrid lexical + semantic retrieval (RRF), based on measured results, without tuning on held-out TEST.
 - Improve dependency pinning, Docker packaging coverage, and operational observability.
 - Continue improving extraction robustness, error reporting and evaluation on unseen questions.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-ai-assisted-development-and-contributor-boundaries"></a>
 
 ## AI-assisted development and contributor boundaries
 
@@ -176,3 +270,5 @@ The [repository-level AGENTS.md](../AGENTS.md) describes LEARN, IMPLEMENT and RE
 For the BM25 feature, Codex authored synthetic regression tests in an isolated **local** worktree (`agent/bm25-tests`); the reviewed tests were integrated into the public development branch alongside the BM25 implementation.
 
 Ongoing Codex experiments use a separate **private GitHub mirror** (`jyenten/AI_roadmap_codex_mirror`). Its `main` holds an approved public snapshot and `agent/bm25-tests` provides an isolated remote branch for agent work. The original local worktree is separate from this new remote branch. Synchronization and integration are manual, subject to the approval rules in `AGENTS.md`.
+
+[↑ Nahoru / Back to top](#top) · [Obsah / Contents](#obsah)

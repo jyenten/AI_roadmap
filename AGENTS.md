@@ -1,5 +1,33 @@
+<a id="top"></a>
 
 # AI Roadmap — Agent Collaboration Rules
+
+[Česky](AGENTS.cs.md#cz) · [English](#en) · [Obsah / Contents](#obsah) · [Dokumentace / Documentation](rag_api_project/docs/README.md)
+
+<a id="obsah"></a>
+
+<details>
+<summary>Contents — click to expand</summary>
+
+- [Objectives](#en-objectives)
+- [Collaboration modes](#en-collaboration-modes)
+- [LEARN — default](#en-learn--default)
+- [IMPLEMENT — explicit delegation](#en-implement--explicit-delegation)
+- [REVIEW — audit](#en-review--audit)
+- [Engineering workflow](#en-engineering-workflow)
+- [Learning governance](#en-learning-governance)
+- [Completion report](#en-completion-report)
+- [Operational documentation and safety](#en-operational-documentation-and-safety)
+
+</details>
+
+---
+
+<a id="en"></a>
+
+[↑ Contents](#obsah)
+
+<a id="en-objectives"></a>
 
 ## Objectives
 
@@ -11,7 +39,17 @@ This repository serves two purposes:
 
 Learning quality must not be sacrificed for coding speed.
 
+
+[↑ Contents](#obsah)
+
+<a id="en-collaboration-modes"></a>
+
 ## Collaboration modes
+
+
+[↑ Contents](#obsah)
+
+<a id="en-learn--default"></a>
 
 ### LEARN — default
 
@@ -24,6 +62,11 @@ Use for new concepts, algorithms and engineering skills.
 - Review the owner's implementation.
 - Include a practical understanding check.
 
+
+[↑ Contents](#obsah)
+
+<a id="en-implement--explicit-delegation"></a>
+
 ### IMPLEMENT — explicit delegation
 
 Use when the owner delegates a bounded implementation task.
@@ -35,6 +78,11 @@ Use when the owner delegates a bounded implementation task.
 - Avoid unrelated refactoring and overengineering.
 - Do not commit, push or merge without approval.
 
+
+[↑ Contents](#obsah)
+
+<a id="en-review--audit"></a>
+
 ### REVIEW — audit
 
 - Prefer read-only inspection.
@@ -42,6 +90,11 @@ Use when the owner delegates a bounded implementation task.
 - Distinguish verified bugs from potential risks.
 - Recommend minimal fixes and regression tests.
 - Do not modify files unless authorized.
+
+
+[↑ Contents](#obsah)
+
+<a id="en-engineering-workflow"></a>
 
 ## Engineering workflow
 
@@ -57,6 +110,11 @@ Complete -> Measure -> Improve
 - Respect nested AGENTS.md files.
 - Never use git add . for automatic staging.
 
+
+[↑ Contents](#obsah)
+
+<a id="en-learning-governance"></a>
+
 ## Learning governance
 
 Maintain LEARNING_LOG.md.
@@ -66,6 +124,11 @@ Maintain LEARNING_LOG.md.
 - Never mark a skill as mastered without practical evidence.
 - Prefer independent exercises and debugging tasks.
 - Do not alter learning assessments without human approval.
+
+
+[↑ Contents](#obsah)
+
+<a id="en-completion-report"></a>
 
 ## Completion report
 
@@ -78,9 +141,15 @@ For implementation work, report:
 5. Concepts the owner should understand.
 
 The human owner approves final integration and commits.
+
+
+[↑ Contents](#obsah)
+
+<a id="en-operational-documentation-and-safety"></a>
+
 ## Operational documentation and safety
 
-For work inside `rag_api_project/`, read the project [README](rag_api_project/README.md), [operations runbook](rag_api_project/docs/OPERATIONS.md) and [evaluation guide](rag_api_project/docs/EVALUATION.md) as applicable. The English and Czech instructions must describe the same implemented behavior.
+For work inside `rag_api_project/`, read the project [README](rag_api_project/README.md), [operations runbook](rag_api_project/docs/en/OPERATIONS.md) and [evaluation guide](rag_api_project/docs/en/EVALUATION.md) as applicable. The English and Czech instructions must describe the same implemented behavior.
 
 - Inspect the actual CLI and source code before documenting commands; never invent flags, paths or completed features.
 - Treat `python -m scripts.ingest` as **destructive**: it deletes and recreates an existing named Chroma collection. Never launch it or replace a user's local index without explicit authorization.
@@ -89,3 +158,5 @@ For work inside `rag_api_project/`, read the project [README](rag_api_project/RE
 - Preserve DEV/RANDOM baselines and the independence of held-out TEST; report dataset hash, Git provenance and configuration when claiming a comparison.
 - Keep documentation-only edits separate from validator fixes and dependency/version updates where practical.
 - In REVIEW mode, report verified defects separately from risks; do not modify files unless the owner approved the change.
+
+[↑ Back to top](#top) · [Obsah / Contents](#obsah)

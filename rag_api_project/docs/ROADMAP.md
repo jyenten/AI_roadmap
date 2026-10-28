@@ -1,2869 +1,402 @@
+<a id="top"></a>
+
 # AI RAG Project Roadmap
 
-This document owns **what to build, phase order, goals and acceptance criteria**.
-Use [DEVELOPMENT_GUIDE.md](DEVELOPMENT_GUIDE.md) for how to implement/review work,
-[ARCHITECTURE.md](ARCHITECTURE.md) for component boundaries and
-[LEARNING_LOG.md](../../LEARNING_LOG.md) for dated work and learning evidence.
-
-## Status snapshot — 2026-10-28
-
-This is the current planning checkpoint, not a renumbering or replacement of the
-approved phase specifications below. Completion of a milestone does not certify
-all acceptance criteria of its broader phase or production readiness.
-
-| Milestone | Observed status | Evidence / procedure |
-| --- | --- | --- |
-| RAG API, PDF ingestion and Chroma storage | Implemented prototype; hardening remains planned | [Project README](../README.md), [architecture](ARCHITECTURE.md) |
-| Independent PDF page explorer | Implemented | `document_search/`, [operations](OPERATIONS.md) |
-| Evidence-based retrieval evaluation | Implemented: metrics, history, latency and provenance | `evaluation/`, [evaluation guide](EVALUATION.md) |
-| Chunk-level BM25 and Vector comparison | Implemented in the offline CLI on DEV/RANDOM | `app/retrievers/`, [recorded milestones](../../LEARNING_LOG.md#project-and-learning-history) |
-| Hybrid lexical/semantic retrieval with RRF | Local work in progress; not a published CLI/API mode | [Uncommitted-work record](../../LEARNING_LOG.md#uncommitted-work-observed-on-2026-10-28) |
-| Held-out TEST evaluation | Reserved for final assessment, not iterative tuning | [Evaluation policy](EVALUATION.md) |
-| Bilingual runbooks and validator regressions | Integrated through [PR #3](https://github.com/jyenten/AI_roadmap/pull/3) | [Operations](OPERATIONS.md), [evaluation](EVALUATION.md) |
-| Dependency/security automation | Enabled; ChromaDB dependency findings remain open | `.github/workflows/`, [current project checkpoint](../../LEARNING_LOG.md#current-project-checkpoint) |
-
-Detailed results and historical MRR/Hit@K belong to the evaluation guide and
-learning log; this roadmap does not maintain a second benchmark table.
-
-## Current development focus
-
-The next recorded development milestone is hybrid BM25 + Vector retrieval with
-RRF. Complete and review the implementation, then measure DEV/RANDOM against the
-preserved baselines before deciding on improvements. Keep TEST held out.
-Separate local/backend experiments and unmerged dependency proposals remain
-subject to their own review; their presence is not integration into `main` or
-approval to replace the retrieval architecture.
-
-The learning journal historically used labels such as Phase 3.3 for BM25,
-Phase 3.4 for retrieval evaluation and Phase 3.5 for hybrid RRF. Those journal
-labels are **not IDs in this roadmap**. Here, the original phase numbers and
-names remain authoritative: 3.3 Vector Search, 3.4 Query Processing and
-3.5 Reranker. Use the full milestone name when referring to journal work.
-
-## Reading and updating the approved plan
-
-The phase specifications below preserve the approved order, planned modules,
-learning concepts and Definition of Done checklists. Their original **Status**,
-estimates and unchecked boxes are a planning baseline, not a second live status
-tracker. Use the snapshot above for observed progress; do not infer that an
-existing module is missing just because an original checkbox remains unchecked.
-Do not mark acceptance criteria satisfied without the necessary evidence.
-
-The working method is **Complete → Measure → Improve**. Shared scope, backlog,
-freeze, testing and review rules live in the
-[development workflow](DEVELOPMENT_GUIDE.md#development-workflow), not here.
-Changes to phase goals, priorities or acceptance criteria require an explicit
-planning decision; editorial cleanup does not authorize them.
-
----
-
-# PHASE 1 - Functional RAG Skeleton
-
-**Status:** Mostly complete
-
-**Estimated remaining work:** 2-4 hours
-
-## Goal
-
-Maintain a working end-to-end RAG application.
-
-Core runtime pipeline:
-
-```text
-PDF documents
-    ->
-ingestion
-    ->
-text preprocessing
-    ->
-chunking
-    ->
-embeddings
-    ->
-ChromaDB
-    ->
-retrieval
-    ->
-reranking
-    ->
-context construction
-    ->
-generation
-    ->
-FastAPI response
-```
-
-The purpose of PHASE 1 is not architectural perfection.
-
-The purpose is a working system that can later be measured and improved.
-
----
-
-## 1.1 `app/config.py`
-
-### Responsibilities
-
-- application configuration
-- model names
-- Chroma collection configuration
-- retrieval limits
-- generation limits
-- environment configuration
-
-### Important concepts
-
-- centralized configuration
-- environment variables
-- configuration validation
-- Pydantic Settings
-
-### Future direction
-
-Configuration should eventually be loaded through a validated settings
-object rather than duplicated constants.
-
-Possible public access:
-
-```python
-get_settings()
-```
-
----
-
-## 1.2 `app/schemas.py`
-
-### Current models
-
-- `QuestionRequest`
-- `SourceChunk`
-- `AnswerResponse`
-
-### Future possible models
-
-- `ErrorResponse`
-- `HealthResponse`
-
-### Important concept
-
-API schemas describe data crossing the HTTP boundary.
-
-They should remain separate from internal retrieval models.
-
----
-
-## 1.3 `app/retrieval.py`
-
-### Current responsibilities
-
-- embedding model loading
-- query preparation
-- Chroma retrieval
-- candidate selection
-- CrossEncoder reranking
-- heuristic scoring
-- result selection
-
-### Current technical debt
-
-This module currently contains multiple responsibilities and
-domain-specific logic.
-
-That is intentionally not refactored during PHASE 1.
-
-Major retrieval refactoring belongs to:
-
-```text
-PHASE 3
-```
-
----
-
-## 1.4 `app/generation.py`
-
-### Main responsibilities
-
-- generator model loading
-- prompt construction
-- model inference
-- answer generation
-
-Core flow:
-
-```text
-question
-+
-retrieved context
-    ->
-prompt
-    ->
-generation model
-    ->
-answer
-```
-
-Possible future separation:
-
-```text
-prompt construction
-model inference
-output processing
-```
-
-This split should only be introduced if complexity requires it.
-
----
-
-## 1.5 `app/rag.py`
-
-### Responsibility
-
-RAG orchestration.
-
-Target conceptual flow:
-
-```text
-question
-    ->
-retrieval
-    ->
-context selection
-    ->
-generation
-    ->
-sources
-    ->
-final response
-```
-
-### Current technical debt
-
-The current implementation contains OSPF-specific behavior.
-
-Removal belongs to:
-
-```text
-PHASE 3
-```
-
----
-
-## 1.6 `app/main.py`
-
-### Responsibility
-
-FastAPI application entry point.
-
-Current endpoints:
-
-```text
-GET /
-GET /health
-POST /ask
-```
-
-Target responsibility:
-
-```text
-HTTP request
-    ->
-validation
-    ->
-application service
-    ->
-HTTP response
-```
-
-Business logic should eventually move out of the API entry point.
-
----
-
-## 1.7 `scripts/ingest.py`
-
-### Current pipeline
-
-```text
-PDF
-    ->
-extract text
-    ->
-clean text
-    ->
-chunk
-    ->
-embed
-    ->
-store in ChromaDB
-```
-
-### Existing improvements
-
-- PDF text cleanup
-- URL protection/restoration
-- word-based chunking
-- chunk overlap
-- overlap validation
-
-### Important rule
-
-Do not refactor ingestion only for architectural symmetry.
-
-Refactor it only when:
-
-- testing becomes difficult
-- reuse is required
-- complexity grows significantly
-- evaluation exposes an ingestion problem
-
----
-
-## PHASE 1 Definition of Done
-
-- [x] PDF documents can be ingested
-- [x] text extraction works
-- [x] chunking works
-- [x] embeddings can be generated
-- [x] ChromaDB stores searchable chunks
-- [x] retrieval works
-- [x] reranking works
-- [x] generation works
-- [x] `POST /ask` works
-- [x] responses contain source information
-- [x] smoke tests pass
-- [ ] remaining technical debt is documented
-
-When these conditions are satisfied, PHASE 1 is frozen.
-
----
-
-# PHASE 2 - Evaluation Foundation
-
-**Status:** In progress
-
-**Estimated remaining work:** 8-12 hours
-
-## Goal
-
-Create a reliable evaluation framework before major retrieval changes.
-
-Retrieval should no longer be improved only by inspecting a few manually
-selected questions.
-
-Target development flow:
-
-```text
-baseline
-    ->
-evaluation
-    ->
-retrieval change
-    ->
-evaluation
-    ->
-comparison
-```
-
----
-
-## Evaluation Dataset Roles
-
-Three dataset categories have intentionally different purposes.
-
-### DEV
-
-Used during development and tuning.
-
-DEV results may influence implementation decisions.
-
-Target size:
-
-```text
-approximately 20 manually validated questions
-```
-
----
-
-### RANDOM
-
-Used for:
-
-- robustness exploration
-- unexpected failure discovery
-- corpus coverage exploration
-
-Random sampling must be reproducible through a stored seed.
-
-RANDOM is not a replacement for TEST.
-
----
-
-### TEST
-
-Held-out final evaluation.
-
-TEST should not be repeatedly inspected and tuned against.
-
-Its purpose is to estimate generalization after tuning is complete.
-
----
-
-# PHASE 2A - Universal Document Explorer
-
-**Status:** Current active subphase
-
-**Estimated work:** 3-4 hours
-
-## Goal
-
-Build a reusable, domain-independent lexical corpus explorer used for:
-
-- finding candidate evidence
-- inspecting PDF content
-- manually validating gold evidence
-- helping construct DEV / RANDOM / TEST datasets
-
-The explorer must continue to work if the entire PDF corpus is replaced.
-
-Example future domains:
-
-```text
-Kubernetes
-cybersecurity
-Linux
-law
-manufacturing
-accounting
-networking
-```
-
-The explorer must not contain OSPF-specific ranking logic.
-
----
-
-## Target Structure
-
-```text
-document_search/
-|
-+-- __init__.py
-+-- models.py
-+-- normalize.py
-+-- tokenize.py
-+-- load_pages.py
-+-- build_index.py
-+-- search.py
-|
-+-- security/
-    +-- __init__.py
-    +-- paths.py
-    +-- pdf_validation.py
-    +-- input_validation.py
-```
-
-CLI:
-
-```text
-scripts/
-+-- search_pdf.py
-```
-
-Tests:
-
-```text
-tests/
-+-- document_search/
-    +-- test_models.py
-    +-- test_normalize.py
-    +-- test_tokenize.py
-    +-- test_load_pages.py
-    +-- test_build_index.py
-    +-- test_search.py
-```
-
----
-
-# PHASE 2A.0 - Architecture Freeze
-
-## Goal
-
-Before implementation, define:
-
-- module responsibilities
-- data models
-- public interfaces
-- dependency direction
-- security boundaries
-- Definition of Done
-
-Documentation:
-
-```text
-docs/ROADMAP.md
-docs/ARCHITECTURE.md
-docs/DEVELOPMENT_GUIDE.md
-```
-
-No production code should be redesigned repeatedly while dependent modules
-are already being implemented unless a concrete technical issue requires
-it.
-
----
-
-# PHASE 2A.1 - Data Models
-
-## File
-
-```text
-document_search/models.py
-```
-
-## Planned models
-
-```python
-PageDocument
-SearchResult
-BM25SearchIndex
-```
-
-### `PageDocument`
-
-Conceptually:
-
-```python
-PageDocument(
-    source="manual.pdf",
-    page=26,
-    text="...",
-)
-```
-
-Represents one searchable source page.
-
----
-
-### `SearchResult`
-
-Conceptually:
-
-```python
-SearchResult(
-    document=document,
-    score=12.5,
-)
-```
-
-Represents one ranked BM25 result.
-
----
-
-### `BM25SearchIndex`
-
-Owns:
-
-```text
-page corpus
-+
-BM25 model
-```
-
-This prevents callers from manually keeping those objects synchronized.
-
----
-
-## New Concept - Immutable Dataclasses
-
-Preferred pattern:
-
-```python
-@dataclass(frozen=True)
-```
-
-Benefits:
-
-- prevents accidental mutation
-- improves reasoning about state
-- makes tests more predictable
-- clearly represents factual data
-
-Examples of immutable facts:
-
-```text
-source filename
-page number
-document text
-completed search score
-```
-
----
-
-# PHASE 2A.2 - Text Processing
-
-**Estimated work:** less than 1 hour
-
-Because these modules are small and closely related, they may be
-implemented together.
-
----
-
-## File
-
-```text
-document_search/normalize.py
-```
-
-Main function:
-
-```python
-normalize_text(
-    text: str,
-) -> str
-```
-
-Responsibilities:
-
-- lowercase normalization
-- whitespace normalization
-- generic text cleanup
-
-Must not contain:
-
-```text
-OSPF terminology
-Cisco rules
-manual ranking boosts
-domain-specific vocabulary
-```
-
----
-
-## File
-
-```text
-document_search/tokenize.py
-```
-
-Main function:
-
-```python
-tokenize(
-    text: str,
-) -> list[str]
-```
-
-Example:
-
-```text
-"OSPF calculates interface cost."
-```
-
-becomes approximately:
-
-```python
-[
-    "ospf",
-    "calculates",
-    "interface",
-    "cost",
-]
-```
-
----
-
-## Important Concepts
-
-- pure functions
-- deterministic preprocessing
-- reusable text processing
-- separation between normalization and retrieval
-
----
-
-# PHASE 2A.3 - Security Foundations
-
-**Estimated work:** approximately 1 hour
-
-## Goal
-
-Protect filesystem and user-controlled search inputs before PDF parsing
-and ranking.
-
----
-
-## File
-
-```text
-document_search/security/paths.py
-```
-
-Planned functions:
-
-```python
-resolve_safe_path(...)
-validate_data_directory(...)
-```
-
-Responsibilities:
-
-- allowed directory boundaries
-- path traversal prevention
-- resolved path validation
-- symlink-aware checks
-
----
-
-## New Concept - Path Traversal
-
-Unsafe input example:
-
-```text
-../../private_file
-```
-
-A path that appears to be inside a directory may also resolve outside it
-through a symbolic link.
-
-Security therefore must validate resolved filesystem paths, not only the
-original input string.
-
----
-
-## File
-
-```text
-document_search/security/input_validation.py
-```
-
-Planned functions:
-
-```python
-validate_query(...)
-validate_top_k(...)
-```
-
-Responsibilities:
-
-- reject empty queries
-- reject oversized queries
-- reject invalid `top_k`
-- prevent unreasonable resource requests
-
----
-
-## New Concept - Validation Boundary
-
-External input should be validated near the system boundary.
-
-Internal functions can then operate on values that already satisfy the
-expected contract.
-
----
-
-# PHASE 2A.4 - PDF Loading and PDF Validation
-
-**Estimated work:** 1-2 hours
-
-## File
-
-```text
-document_search/security/pdf_validation.py
-```
-
-Planned functions:
-
-```python
-validate_pdf_extension(...)
-validate_pdf_signature(...)
-validate_pdf_limits(...)
-```
-
-Responsibilities:
-
-- verify `.pdf` extension
-- verify that the file actually looks like a PDF
-- enforce file size limits
-- enforce page count limits
-
----
-
-## New Concept - File Signature
-
-A filename such as:
-
-```text
-document.pdf
-```
-
-does not prove that the file is actually a PDF.
-
-Validation should inspect the file header/signature as well as the file
-extension.
-
----
-
-## New Concept - Resource Exhaustion
-
-A valid-looking file may still consume unreasonable resources.
-
-Examples:
-
-```text
-multi-gigabyte file
-hundreds of thousands of pages
-extremely large extracted text
-```
-
-Resource limits protect:
-
-- RAM
-- CPU
-- latency
-- service availability
-
----
-
-## File
-
-```text
-document_search/load_pages.py
-```
-
-Main function:
-
-```python
-load_pdf_pages(
-    data_dir: Path,
-) -> list[PageDocument]
-```
-
-Core flow:
-
-```text
-data directory
-    ->
-discover PDF files
-    ->
-security validation
-    ->
-PdfReader
-    ->
-extract each page
-    ->
-PageDocument
-```
-
-Important rule:
-
-The loader must not silently truncate documents.
-
-If a file cannot be processed safely or completely, failure should be
-explicit.
-
----
-
-# PHASE 2A.5 - BM25 Index
-
-**Estimated work:** less than 1 hour
-
-## File
-
-```text
-document_search/build_index.py
-```
-
-Main function:
-
-```python
-build_bm25_index(
-    pages: list[PageDocument],
-) -> BM25SearchIndex
-```
-
-External dependency:
-
-```text
-rank-bm25
-```
-
----
-
-## New Concept - BM25
-
-BM25 is a standard lexical information retrieval algorithm.
-
-It considers:
-
-- term frequency
-- inverse document frequency
-- document length normalization
-
-Conceptually:
-
-```text
-query terms
-    +
-how often they appear in a page
-    +
-how rare they are across the corpus
-    +
-page/document length
-    ->
-relevance score
-```
-
-This is preferable to hand-written ranking such as:
-
-```text
-neighbor = +1
-DROTHER = +5
-distance below 200 chars = +3
-```
-
-because BM25 ranking is derived from corpus statistics rather than
-domain-specific manual heuristics.
-
----
-
-# PHASE 2A.6 - Search Engine
-
-**Estimated work:** approximately 1 hour
-
-## File
-
-```text
-document_search/search.py
-```
-
-Public function:
-
-```python
-search_pages(
-    index: BM25SearchIndex,
-    query: str,
-    top_k: int = 10,
-) -> list[SearchResult]
-```
-
-Core flow:
-
-```text
-query
-    ->
-validation
-    ->
-tokenization
-    ->
-BM25 scores
-    ->
-descending ranking
-    ->
-TOP K
-    ->
-SearchResult
-```
-
----
-
-## Important New Concept - Public API Boundary
-
-Other modules should use:
-
-```python
-search_pages(...)
-```
-
-without manually accessing:
-
-```text
-BM25 internals
-page arrays
-raw score arrays
-sorting logic
-```
-
-This allows internal implementation to change without changing every
-caller.
-
----
-
-# PHASE 2A.7 - CLI
-
-**Estimated work:** less than 1 hour
-
-## File
-
-```text
-scripts/search_pdf.py
-```
-
-Planned functions:
-
-```python
-build_parser()
-print_results()
-select_result()
-print_result_detail()
-main()
-```
-
-Target usage:
-
-```text
-python -m scripts.search_pdf "how does OSPF calculate interface cost"
-```
-
-Optional:
-
-```text
---top-k 5
-```
-
-The CLI should contain:
-
-- argument parsing
-- human-readable output
-- interactive selection
-
-It should not contain:
-
-- BM25 implementation
-- PDF parsing internals
-- ranking heuristics
-
----
-
-# PHASE 2A.8 - Integration
-
-## Tasks
-
-- add `rank-bm25` dependency
-- run document-search unit tests
-- run full project tests
-- search real Cisco corpus
-- inspect several result rankings manually
-- verify generic behavior
-- confirm no OSPF-specific ranking rules remain
-
----
-
-## PHASE 2A Definition of Done
-
-- [ ] arbitrary PDFs can be discovered
-- [ ] filesystem boundaries are validated
-- [ ] PDF extension is validated
-- [ ] PDF signature is validated
-- [ ] PDF resource limits exist
-- [ ] pages are represented by typed data models
-- [ ] normalization is domain-independent
-- [ ] tokenization works
-- [ ] BM25 index can be created
-- [ ] arbitrary text queries can be ranked
-- [ ] results expose source, page, score, and text
-- [ ] CLI works
-- [ ] relevant unit tests pass
-- [ ] complete project tests pass
-- [ ] no OSPF-specific ranking heuristics exist
-
-Once these conditions are satisfied, PHASE 2A is frozen.
-
-Out of scope:
-
-```text
-fuzzy retrieval
-semantic document explorer
-LLM reranking
-query rewriting
-synonym dictionaries
-hybrid BM25 + embedding explorer
-advanced UI
-```
-
----
-
-# PHASE 2B - Evaluation Data Models
-
-**Estimated work:** 1-2 hours
-
-## Goal
-
-Move reusable evaluation logic out of loose scripts and dictionaries into
-typed project modules.
-
-Target structure:
-
-```text
-evaluation/
-|
-+-- __init__.py
-+-- models.py
-+-- dataset.py
-+-- evidence.py
-+-- metrics.py
-+-- runner.py
-+-- history.py
-+-- random_eval.py
-```
-
----
-
-## File
-
-```text
-evaluation/models.py
-```
-
-Planned models:
-
-```python
-GoldEvidence
-EvaluationQuestion
-QuestionResult
-EvaluationMetrics
-EvaluationRun
-```
-
----
-
-## New Concept - Typed Evaluation Models
-
-Instead of:
-
-```python
-question["gold_evidence"][0]["source"]
-```
-
-prefer:
-
-```python
-question.gold_evidence
-```
-
-Benefits:
-
-- clearer code
-- better IDE support
-- fewer key-name errors
-- easier validation
-- safer refactoring
-
----
-
-## File
-
-```text
-evaluation/dataset.py
-```
-
-Planned functions:
-
-```python
-load_dataset(...)
-validate_dataset(...)
-calculate_dataset_hash(...)
-```
-
-Responsibilities:
-
-- load DEV / TEST datasets
-- schema validation
-- dataset identity
-- reproducibility
-
----
-
-## New Concept - Dataset Hashing
-
-A SHA256 hash can identify the exact dataset version used for an
-evaluation run.
-
-This prevents ambiguity such as:
-
-```text
-"MRR was 0.82 on the DEV dataset"
-```
-
-when the DEV dataset may have changed since the run.
-
-Instead:
-
-```text
-dataset_hash = abc123...
-MRR = 0.82
-```
-
----
-
-## File
-
-```text
-evaluation/evidence.py
-```
-
-Planned functions:
-
-```python
-normalize_evidence_text(...)
-matches_gold_evidence(...)
-find_gold_rank(...)
-```
-
-A valid evidence match should require:
-
-```text
-source
-AND
-page
-AND
-expected text fragment
-```
-
-within the same accepted evidence variant.
-
----
-
-# PHASE 2C - Retrieval Metrics
-
-**Estimated work:** approximately 1 hour
-
-## File
-
-```text
-evaluation/metrics.py
-```
-
-Planned functions:
-
-```python
-reciprocal_rank(...)
-mean_reciprocal_rank(...)
-hit_at_k(...)
-aggregate_metrics(...)
-```
-
----
-
-## Metric - Hit@K
-
-Question:
-
-```text
-Did the correct evidence appear in the first K results?
-```
-
-Examples:
-
-```text
-Hit@1
-Hit@3
-Hit@5
-Hit@8
-```
-
----
-
-## Metric - Reciprocal Rank
-
-If correct evidence appears at:
-
-```text
-rank 1 -> 1.0
-rank 2 -> 0.5
-rank 4 -> 0.25
-```
-
-Formula conceptually:
-
-```text
-1 / rank
-```
-
----
-
-## Metric - MRR
-
-Mean Reciprocal Rank:
-
-```text
-average reciprocal rank
-across all evaluation questions
-```
-
-MRR rewards systems that place relevant evidence near the top of the
-ranking.
-
----
-
-# PHASE 2D - Evaluation Runner and History
-
-**Estimated work:** approximately 1 hour
-
-## File
-
-```text
-evaluation/runner.py
-```
-
-Planned functions:
-
-```python
-evaluate_question(...)
-evaluate_dataset(...)
-build_run_metadata(...)
-```
-
-Conceptual flow:
-
-```text
-EvaluationQuestion
-    ->
-retrieval
-    ->
-ranked results
-    ->
-gold evidence matching
-    ->
-question metrics
-```
-
----
-
-## File
-
-```text
-evaluation/history.py
-```
-
-Planned functions:
-
-```python
-load_history(...)
-append_run(...)
-save_history(...)
-```
-
-Stored metadata should include:
-
-- Git commit SHA
-- dirty working-tree state
-- dataset SHA256
-- timestamp
-- configuration
-- evaluation metrics
-
-Example:
-
-```text
-commit A
-MRR = 0.71
-
-commit B
-MRR = 0.82
-```
-
-This allows retrieval changes to be compared with evidence.
-
----
-
-# PHASE 2E - RANDOM Evaluation
-
-**Estimated work:** 2-3 hours
-
-## File
-
-```text
-evaluation/random_eval.py
-```
-
-Possible functions:
-
-```python
-sample_pages(...)
-build_random_sample(...)
-save_seed(...)
-```
-
----
-
-## New Concept - Reproducible Randomness
-
-Use a dedicated seeded random generator.
-
-Example:
-
-```python
-random.Random(seed)
-```
-
-The same seed should produce the same sample.
-
-This allows a surprising RANDOM failure to be reproduced later.
-
----
-
-## RANDOM Purpose
-
-RANDOM is intended for:
-
-```text
-robustness
-coverage
-failure discovery
-```
-
-It is not intended for:
-
-```text
-final generalization claims
-```
-
-That remains the role of TEST.
-
----
-
-# PHASE 2F - Complete Evaluation Dataset
-
-**Estimated work:** included in PHASE 2 estimate
-
-## Tasks
-
-- expand DEV to approximately 20 questions
-- manually validate gold evidence
-- diversify question topics
-- implement RANDOM workflow
-- create TEST dataset
-- freeze TEST dataset
-- document dataset roles
-
----
-
-## PHASE 2 Definition of Done
-
-- [ ] universal BM25 document explorer complete
-- [ ] DEV dataset sufficiently broad
-- [ ] DEV gold evidence manually validated
-- [ ] RANDOM workflow implemented
-- [ ] RANDOM runs reproducible
-- [ ] TEST dataset created
-- [ ] TEST dataset frozen
-- [ ] MRR implemented
-- [ ] Hit@1 implemented
-- [ ] Hit@3 implemented
-- [ ] Hit@5 implemented
-- [ ] Hit@8 implemented
-- [ ] dataset hashing implemented
-- [ ] Git metadata recorded
-- [ ] evaluation history available
-- [ ] evaluation tests pass
-
-After PHASE 2, evaluation infrastructure is frozen unless a concrete
-measurement problem appears.
-
----
-
-# PHASE 3 - Retrieval Refactor
-
-**Status:** Planned
-
-**Estimated work:** 8-14 hours
-
-## Goal
-
-Refactor the main RAG retrieval system only after reliable evaluation is
-available.
-
-Current large module:
-
-```text
-app/retrieval.py
-```
-
-Target structure:
-
-```text
-app/
-+-- retrieval/
-    +-- __init__.py
-    +-- models.py
-    +-- embeddings.py
-    +-- vector_search.py
-    +-- query.py
-    +-- reranker.py
-    +-- scoring.py
-    +-- service.py
-```
-
----
-
-# PHASE 3.1 - Retrieval Models
-
-## File
-
-```text
-app/retrieval/models.py
-```
-
-Planned models:
-
-```python
-RetrievedChunk
-ScoredChunk
-RetrievalResult
-```
-
-Purpose:
-
-replace loosely structured dictionaries/tuples with explicit internal
-retrieval data types.
-
----
-
-# PHASE 3.2 - Embeddings
-
-## File
-
-```text
-app/retrieval/embeddings.py
-```
-
-Planned functions:
-
-```python
-load_embedding_model(...)
-embed_query(...)
-embed_documents(...)
-```
-
-Responsibility:
-
-embedding operations only.
-
-Must not:
-
-- communicate with FastAPI
-- decide ranking
-- format API responses
-
----
-
-# PHASE 3.3 - Vector Search
-
-## File
-
-```text
-app/retrieval/vector_search.py
-```
-
-Planned functions:
-
-```python
-search_vector_store(...)
-convert_chroma_results(...)
-```
-
-Responsibility:
-
-communication with ChromaDB.
-
-Important architectural rule:
-
-Higher layers should not depend directly on Chroma's response structure.
-
----
-
-# PHASE 3.4 - Query Processing
-
-## File
-
-```text
-app/retrieval/query.py
-```
-
-Possible function:
-
-```python
-normalize_query(...)
-```
-
-Potential future query expansion is allowed only if DEV evaluation shows
-a measurable benefit.
-
-Domain-specific hardcoding should be removed.
-
----
-
-# PHASE 3.5 - Reranker
-
-## File
-
-```text
-app/retrieval/reranker.py
-```
-
-Planned functions:
-
-```python
-load_reranker(...)
-rerank(...)
-```
-
-Core flow:
-
-```text
-query
-+
-candidate chunk
-    ->
-CrossEncoder
-    ->
-relevance score
-```
-
----
-
-# PHASE 3.6 - Scoring
-
-## File
-
-```text
-app/retrieval/scoring.py
-```
-
-Goal:
-
-remove pathological score combinations.
-
-Current known issue:
-
-```text
-raw CrossEncoder score
-+
-large heuristic bonus
-```
-
-can cause the heuristic scale to dominate model relevance.
-
-Possible approaches to evaluate:
-
-- pure CrossEncoder ranking
-- normalized score combination
-- rank fusion
-
-Choice must be driven by DEV metrics.
-
----
-
-## New Concept - Rank Fusion
-
-Instead of directly adding incompatible raw scores, ranking systems may
-combine relative rank positions.
-
-This avoids some score-scale problems.
-
-It should only be introduced if evaluation justifies it.
-
----
-
-# PHASE 3.7 - Retrieval Service
-
-## File
-
-```text
-app/retrieval/service.py
-```
-
-Target public API:
-
-```python
-retrieve(
-    query: str,
-) -> list[RetrievalResult]
-```
-
-Pipeline:
-
-```text
-query
-    ->
-vector search
-    ->
-candidate set
-    ->
-reranking
-    ->
-score handling
-    ->
-TOP K
-```
-
-Higher-level code should primarily call this public interface.
-
----
-
-## PHASE 3 Definition of Done
-
-- [ ] OSPF-specific retrieval hardcoding removed
-- [ ] retrieval data models exist
-- [ ] embedding responsibility separated
-- [ ] Chroma responsibility separated
-- [ ] reranking separated
-- [ ] scoring isolated
-- [ ] stable retrieval public API exists
-- [ ] baseline metrics recorded
-- [ ] refactored retrieval evaluated on DEV
-- [ ] retrieval regression tests pass
-- [ ] TEST is not used during tuning
-- [ ] final TEST run performed after tuning
-
----
-
-# PHASE 4 - API Hardening
-
-**Status:** Planned
-
-**Estimated work:** 5-8 hours
-
-## Goal
-
-Turn the existing FastAPI wrapper into a more production-like application
-boundary.
-
-Target structure:
-
-```text
-app/
-|
-+-- main.py
-+-- lifecycle.py
-|
-+-- api/
-    +-- __init__.py
-    +-- routes.py
-    +-- dependencies.py
-    +-- errors.py
-    +-- middleware.py
-```
-
----
-
-# PHASE 4.1 - Application Lifecycle
-
-## File
-
-```text
-app/lifecycle.py
-```
-
-Main function:
-
-```python
-lifespan(...)
-```
-
-Responsibilities:
-
-```text
-startup
-->
-load models
-load vector store
-initialize services
-
-shutdown
-->
-release resources
-```
-
----
-
-## New Concept - FastAPI Lifespan
-
-Expensive models should normally be initialized once during application
-startup rather than independently for every request.
-
-Benefits:
-
-- lower latency
-- lower memory overhead
-- clearer resource lifecycle
-- easier startup failure detection
-
----
-
-# PHASE 4.2 - Routes
-
-## File
-
-```text
-app/api/routes.py
-```
-
-Responsibilities:
-
-```text
-GET /health
-POST /ask
-```
-
-Routes translate:
-
-```text
-HTTP
-<->
-application services
-```
-
-They should not contain retrieval implementation.
-
----
-
-# PHASE 4.3 - Dependency Injection
-
-## File
-
-```text
-app/api/dependencies.py
-```
-
-Possible functions:
-
-```python
-get_settings(...)
-get_rag_service(...)
-```
-
----
-
-## New Concept - Dependency Injection
-
-Instead of creating dependencies inside every endpoint, FastAPI can
-provide them.
-
-Benefits:
-
-- easier testing
-- reduced global state
-- replaceable services
-- clearer ownership
-
----
-
-# PHASE 4.4 - Errors
-
-## File
-
-```text
-app/api/errors.py
-```
-
-Possible exceptions:
-
-```python
-InvalidQueryError
-RetrievalError
-GenerationError
-```
-
-Also:
-
-```text
-FastAPI exception handlers
-```
-
-Goal:
-
-convert internal failures into controlled structured HTTP responses.
-
----
-
-# PHASE 4.5 - Middleware
-
-## File
-
-```text
-app/api/middleware.py
-```
-
-Responsibilities may include:
-
-- request ID
-- request timing
-- basic HTTP logging
-
----
-
-## PHASE 4 Definition of Done
-
-- [ ] models initialize once
-- [ ] application lifecycle defined
-- [ ] routes separated from business logic
-- [ ] dependency injection used where appropriate
-- [ ] structured application errors exist
-- [ ] request IDs exist
-- [ ] API timing available
-- [ ] health endpoint defined
-- [ ] readiness semantics defined
-- [ ] API integration tests pass
-
----
-
-# PHASE 5 - Production Engineering
-
-**Status:** Planned
-
-**Estimated work:** 10-16 hours
-
-## Goal
-
-Make the system reproducible, observable, containerized, and deployable.
-
-This phase includes Python code and infrastructure work.
-
----
-
-# PHASE 5.1 - Linux / WSL2
-
-## Goal
-
-Validate that the application works outside the Windows development
-environment.
-
-Tasks:
-
-- create Linux/WSL2 environment
-- install dependencies
-- run unit tests
-- run ingestion
-- run API
-- verify filesystem assumptions
-- verify model loading
-
----
-
-## New Concept - Environment Portability
-
-A system that only runs in one local development environment is not yet
-reproducible.
-
-Linux compatibility also prepares the project for Docker and cloud
-deployment.
-
----
-
-# PHASE 5.2 - Structured Logging
-
-Target structure:
-
-```text
-app/
-+-- observability/
-    +-- __init__.py
-    +-- logging.py
-    +-- metrics.py
-    +-- middleware.py
-```
-
----
-
-## File
-
-```text
-app/observability/logging.py
-```
-
-Planned functions:
-
-```python
-configure_logging(...)
-get_logger(...)
-```
-
----
-
-## New Concept - Structured Logging
-
-Instead of only:
-
-```text
-"Retrieval finished"
-```
-
-a structured event may contain:
-
-```text
-event = retrieval_complete
-request_id = ...
-latency_ms = 143
-candidate_count = 30
-```
-
-Structured logs are easier to:
-
-- search
-- aggregate
-- monitor
-- analyze automatically
-
----
-
-# PHASE 5.3 - Runtime Metrics
-
-## File
-
-```text
-app/observability/metrics.py
-```
-
-Possible functions:
-
-```python
-record_request(...)
-record_latency(...)
-record_retrieval_latency(...)
-record_generation_latency(...)
-record_error(...)
-```
-
-Operational metrics should include:
-
-- request count
-- error count
-- response latency
-- retrieval latency
-- reranking latency
-- generation latency
-
-Where applicable later:
-
-- token usage
-- model usage
-- API cost
-
----
-
-## New Concept - Quality vs Operational Metrics
-
-Quality metrics:
-
-```text
-MRR
-Hit@K
-answer groundedness
-```
-
-Operational metrics:
-
-```text
-latency
-request count
-error rate
-resource usage
-cost
-```
-
-A system can have high retrieval quality but poor production latency.
-
-Both dimensions matter.
-
----
-
-# PHASE 5.4 - Docker Hardening
-
-Files:
-
-```text
-Dockerfile
-compose.yaml
-.dockerignore
-```
-
-Tasks:
-
-- reproducible build
-- correct dependency installation
-- explicit configuration
-- healthcheck
-- non-root user
-- reduce unnecessary image contents
-
----
-
-## New Concept - Multi-stage Docker Build
-
-A build stage can contain tools required only to build dependencies.
-
-The final runtime image can contain only what is needed to run the
-application.
-
-Potential benefits:
-
-- smaller image
-- smaller attack surface
-- cleaner runtime
-
-Use only if it provides practical value for this project.
-
----
-
-# PHASE 5.5 - CI/CD
-
-Current CI already runs project tests.
-
-Future flow may become:
-
-```text
-push
-    ->
-tests
-    ->
-static checks
-    ->
-security checks
-    ->
-Docker build
-    ->
-deployment
-```
-
-Possible improvements:
-
-- formatter check
-- Ruff
-- type checking
-- coverage
-- dependency scan
-
----
-
-## PHASE 5 Definition of Done
-
-- [ ] application works under Linux / WSL2
-- [ ] Docker build is reproducible
-- [ ] container starts successfully
-- [ ] container healthcheck works
-- [ ] non-root execution configured
-- [ ] CI runs project tests
-- [ ] structured logging exists
-- [ ] request latency can be measured
-- [ ] retrieval latency can be measured
-- [ ] generation latency can be measured
-- [ ] deployment process is defined
-
----
-
-# PHASE 6 - Security
-
-**Status:** Planned
-
-**Estimated work:** 6-10 hours
-
-## Goal
-
-Perform a dedicated security hardening review after the production
-architecture exists.
-
-Security is also considered during earlier phases, but PHASE 6 performs
-the deeper review.
-
-Target structure may include:
-
-```text
-app/
-+-- security/
-    +-- __init__.py
-    +-- validation.py
-    +-- limits.py
-    +-- headers.py
-```
-
----
-
-# PHASE 6.1 - Threat Modeling
-
-## New Concept - Threat Model
-
-Explicitly identify:
-
-```text
-assets
-trust boundaries
-attack surfaces
-possible attackers
-failure modes
-impact
-mitigations
-```
-
-Example system boundaries:
-
-```text
-user
-->
-FastAPI
-
-PDF corpus
-->
-PDF parser
-
-environment variables
-->
-application configuration
-
-RAG context
-->
-generation model
-```
-
----
-
-# PHASE 6.2 - Runtime Input Validation
-
-## File
-
-```text
-app/security/validation.py
-```
-
-Possible functions:
-
-```python
-validate_query(...)
-validate_input_size(...)
-```
-
----
-
-# PHASE 6.3 - Runtime Limits
-
-## File
-
-```text
-app/security/limits.py
-```
-
-Possible limits:
-
-```text
-maximum query length
-maximum context size
-maximum top_k
-maximum request size
-```
-
-Future possible rate limiting may be evaluated here.
-
----
-
-# PHASE 6.4 - Secrets
-
-Tasks:
-
-- verify no secrets committed to Git
-- use environment variables
-- define production secret strategy
-- review `.env.example`
-- avoid logging secrets
-
----
-
-# PHASE 6.5 - Dependency Security
-
-Tasks may include:
-
-- vulnerability scanning
-- dependency review
-- version pinning strategy
-- security update process
-
----
-
-# PHASE 6.6 - Container Security
-
-Review:
-
-- non-root execution
-- filesystem permissions
-- exposed ports
-- unnecessary packages
-- writable directories
-- secret injection
-- attack surface
-
----
-
-# PHASE 6.7 - HTTP Security
-
-Review:
-
-- CORS
-- security headers
-- request limits
-- error information leakage
-- authentication requirements if introduced
-
----
-
-# PHASE 6.8 - RAG-Specific Security
-
-## New Concept - Indirect Prompt Injection
-
-A retrieved document may contain text such as:
-
-```text
-Ignore previous instructions...
-```
-
-The document itself becomes an untrusted model input.
-
-Security review should consider:
-
-- separation between instructions and retrieved data
-- prompt construction
-- source trust
-- model behavior
-- tool access in future agent systems
-
----
-
-## PHASE 6 Definition of Done
-
-- [ ] threat model documented
-- [ ] input limits reviewed
-- [ ] filesystem boundaries reviewed
-- [ ] PDF handling reviewed
-- [ ] dependency security reviewed
-- [ ] secret handling reviewed
-- [ ] container permissions reviewed
-- [ ] non-root execution verified
-- [ ] HTTP controls reviewed
-- [ ] indirect prompt injection reviewed
-- [ ] major mitigations documented
-
----
-
-# PHASE 7 - Production v1
-
-**Status:** Planned
-
-**Estimated work:** 4-6 hours
-
-## Goal
-
-Integrate all completed layers into the first production-style release.
-
-Production v1 does not mean enterprise completeness.
-
-It means the project is:
-
-```text
-reproducible
-tested
-deployable
-observable
-documented
-reasonably hardened
-```
-
----
-
-# PHASE 7.1 - Health and Readiness
-
-Possible file:
-
-```text
-app/health.py
-```
-
-Possible functions:
-
-```python
-check_vector_store(...)
-check_models(...)
-build_readiness_status(...)
-```
-
----
-
-## New Concept - Liveness vs Readiness
-
-### Liveness
-
-Question:
-
-```text
-Is the process alive?
-```
-
-### Readiness
-
-Question:
-
-```text
-Can the application actually serve a valid RAG request?
-```
-
-An application may be alive while its model or vector store is not ready.
-
----
-
-# PHASE 7.2 - Production Smoke Test
-
-## File
-
-```text
-scripts/production_smoke.py
-```
-
-Possible flow:
-
-```text
-health check
-    ->
-known question
-    ->
-validate HTTP response
-    ->
-validate answer structure
-    ->
-validate sources
-    ->
-record latency
-```
-
----
-
-# PHASE 7.3 - Documentation
-
-README should explain:
-
-- project purpose
-- architecture summary
-- installation
-- environment setup
-- ingestion
-- running API
-- running tests
-- Docker usage
-- evaluation usage
-- security considerations
-
-Links:
-
-```text
-docs/ROADMAP.md
-docs/ARCHITECTURE.md
-docs/DEVELOPMENT_GUIDE.md
-```
-
----
-
-## PHASE 7 Definition of Done
-
-A fresh environment can:
-
-- [ ] clone the repository
-- [ ] configure environment variables
-- [ ] install/build dependencies
-- [ ] start the application
-- [ ] ingest a corpus
-- [ ] query the API
-- [ ] receive a grounded answer with sources
-- [ ] run tests
-- [ ] run evaluation
-- [ ] produce structured logs
-- [ ] expose runtime metrics
-- [ ] follow documented setup instructions
-
-At this point the project reaches:
-
-```text
-Production v1
-```
-
----
-
-# PHASE 8 - Expansion
-
-PHASE 8 begins only after Production v1.
-
-The purpose is to expand skills and system capabilities without
-destabilizing the core RAG project.
-
----
-
-# PHASE 8A - Agent Exploration
-
-**Estimated work:** 4-6 hours
-
-## Goal
-
-Demonstrate the transition from a normal RAG application to an agentic
-workflow.
-
-The first agent should use the existing RAG system as a tool.
-
-Target structure:
-
-```text
-agent/
-|
-+-- __init__.py
-+-- models.py
-+-- tools.py
-+-- agent.py
-```
-
----
-
-## File
-
-```text
-agent/tools.py
-```
-
-Example function:
-
-```python
-search_knowledge_base(
-    question: str,
-)
-```
-
-Possible implementation:
-
-```text
-agent
-    ->
-FastAPI /ask
-```
-
-or:
-
-```text
-agent
-    ->
-RAG service
-```
-
----
-
-## New Concept - Tool Calling
-
-A language model no longer only generates text.
-
-It can decide:
-
-```text
-which tool to use
-which arguments to provide
-how to use the tool result
-```
-
-Example flow:
-
-```text
-user request
-    ->
-model decision
-    ->
-tool call
-    ->
-RAG system
-    ->
-tool result
-    ->
-final response
-```
-
----
-
-## PHASE 8A Definition of Done
-
-- [ ] one agent exists
-- [ ] agent can call the existing RAG system
-- [ ] tool arguments are structured
-- [ ] tool result returns to the model
-- [ ] agent behavior is testable
-- [ ] scope remains intentionally small
-
----
-
-# PHASE 8B - SQL and ETL
-
-**Estimated work:** 6-10 hours
-
-## Goal
-
-Add practical data-engineering foundations after the production RAG
-system is complete.
-
-Target structure:
-
-```text
-data_pipeline/
-|
-+-- __init__.py
-+-- database.py
-+-- extract.py
-+-- transform.py
-+-- load.py
-+-- pipeline.py
-```
-
----
-
-## File
-
-```text
-data_pipeline/database.py
-```
-
-Concepts:
-
-```text
-database connections
-SELECT
-JOIN
-GROUP BY
-indexes
-transactions
-```
-
----
-
-## File
-
-```text
-data_pipeline/extract.py
-```
-
-Possible function:
-
-```python
-extract_from_source(...)
-```
-
----
-
-## File
-
-```text
-data_pipeline/transform.py
-```
-
-Possible functions:
-
-```python
-clean_records(...)
-transform_records(...)
-validate_records(...)
-```
-
----
-
-## File
-
-```text
-data_pipeline/load.py
-```
-
-Possible function:
-
-```python
-load_to_database(...)
-```
-
----
-
-## New Concept - ETL
-
-ETL means:
-
-```text
-Extract
-    ->
-Transform
-    ->
-Load
-```
-
-It represents a common data-engineering pipeline pattern.
-
----
-
-## PHASE 8B Definition of Done
-
-- [ ] basic SQL workflow implemented
-- [ ] data can be extracted
-- [ ] data can be transformed
-- [ ] validation exists
-- [ ] transformed data can be loaded
-- [ ] simple end-to-end ETL pipeline works
-
----
-
-# PHASE 8C - MLOps
-
-**Estimated work:** 8-12 hours
-
-## Goal
-
-Introduce systematic experiment and model tracking.
-
-Possible structure:
-
-```text
-mlops/
-|
-+-- __init__.py
-+-- experiment.py
-+-- artifacts.py
-+-- model_metadata.py
-```
-
----
-
-## File
-
-```text
-mlops/experiment.py
-```
-
-Experiment records should contain:
-
-- model
-- model parameters
-- retrieval configuration
-- dataset hash
-- Git commit
-- timestamp
-- quality metrics
-- operational metrics
-- cost metrics where applicable
-
----
-
-## New Concept - Experiment Tracking
-
-Instead of:
-
-```text
-"This version seemed better."
-```
-
-store:
-
-```text
-commit = abc123
-dataset_hash = xyz456
-embedding_model = ...
-reranker = ...
-MRR = 0.84
-Hit@3 = 0.93
-latency = 190 ms
-```
-
-Possible future technology:
-
-```text
-MLflow
-```
-
-A simpler local experiment tracker may be implemented first.
-
----
-
-## File
-
-```text
-mlops/artifacts.py
-```
-
-Possible responsibilities:
-
-- evaluation artifacts
-- model metadata
-- configuration snapshots
-- run outputs
-
----
-
-## PHASE 8C Definition of Done
-
-- [ ] experiments have unique identity
-- [ ] dataset version is recorded
-- [ ] Git commit is recorded
-- [ ] model configuration is recorded
-- [ ] quality metrics are recorded
-- [ ] operational metrics are recorded
-- [ ] runs can be compared
-
----
-
-# PHASE 8D - Advanced Agents
-
-**Status:** Future
-
-Detailed architecture is intentionally deferred.
-
-Possible topics:
-
-- multiple tools
-- persistent state
-- planning
-- workflow graphs
-- human approval
-- agent evaluation
-- multi-agent coordination
-
-Potential technologies should be selected only after the simpler agent
-workflow is understood.
-
-This phase must not be designed prematurely.
-
----
-
-# Original planning estimates — historical
-
-These values are preserved from the original plan. They are not a current
-remaining-work forecast or a delivery commitment; reassessment requires a
-separate planning decision.
-
-Original active-development estimates (not recalculated):
-
-| Phase | Estimated time |
-|---|---:|
-| PHASE 1 completion | 2-4 h |
-| PHASE 2 evaluation foundation | 8-12 h |
-| PHASE 3 retrieval refactor | 8-14 h |
-| PHASE 4 API hardening | 5-8 h |
-| PHASE 5 production engineering | 10-16 h |
-| PHASE 6 security | 6-10 h |
-| PHASE 7 Production v1 | 4-6 h |
-| PHASE 8A agent exploration | 4-6 h |
-| PHASE 8B SQL / ETL | 6-10 h |
-| PHASE 8C MLOps | 8-12 h |
-
-Original estimate of remaining effort to Production v1:
-
-```text
-43-70 hours
-```
-
-These estimates include:
-
-- implementation
-- explanation
-- manual code entry
-- testing
-- debugging
-- integration
-
-They are not pure typing estimates.
-
----
-
-## Planning history
-
-The previous Phase 2A status and step-by-step immediate-task list are retained in
-[the pre-cleanup roadmap revision](https://github.com/jyenten/AI_roadmap/blob/d7c3b4f71711c798646bd0a878b96b9c46c92d93/rag_api_project/docs/ROADMAP.md#historical-project-status-original-phase-2a-plan).
-They describe an earlier checkpoint, not today's next steps. Completed work is
-recorded in [LEARNING_LOG.md](../../LEARNING_LOG.md); the current focus belongs
-only to this roadmap's [current development focus](#current-development-focus).
+[Česky](cs/ROADMAP.md#cz) · [English](en/ROADMAP.md#en) · [Dokumentace / Documentation](README.md)
+
+Tento dokument má samostatnou [českou](cs/ROADMAP.md#cz) a [anglickou](en/ROADMAP.md#en) verzi. Otevři vybraný jazyk pro úplný text, obsah a příklady.
+
+This document has separate [Czech](cs/ROADMAP.md#cz) and [English](en/ROADMAP.md#en) versions. Open a language for the full text, contents and examples.
+
+<a id="obsah"></a>
+
+## Starší odkazy na kapitoly / Legacy chapter links
+
+Starší záložky vedou na příslušný řádek níže. Odkaz v řádku otevře úplnou kapitolu. / Older bookmarks lead to the matching row below; follow its link to the full chapter.
+
+| Jazyk / Language | Kapitola / Chapter |
+| --- | --- |
+| EN | <a id="en"></a><a id="en--english"></a>[EN — English](en/ROADMAP.md#en) |
+| EN | <a id="en-status-snapshot--2026-10-28"></a><a id="status-snapshot--2026-10-28"></a>[Status snapshot — 2026-10-28](en/ROADMAP.md#en-status-snapshot--2026-10-28) |
+| EN | <a id="en-current-development-focus"></a><a id="current-development-focus"></a>[Current development focus](en/ROADMAP.md#en-current-development-focus) |
+| EN | <a id="en-reading-and-updating-the-approved-plan"></a><a id="reading-and-updating-the-approved-plan"></a>[Reading and updating the approved plan](en/ROADMAP.md#en-reading-and-updating-the-approved-plan) |
+| EN | <a id="en-phase-1---functional-rag-skeleton"></a><a id="phase-1---functional-rag-skeleton"></a>[PHASE 1 - Functional RAG Skeleton](en/ROADMAP.md#en-phase-1---functional-rag-skeleton) |
+| EN | <a id="goal"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="11-appconfigpy"></a>[1.1 `app/config.py`](en/ROADMAP.md#en) |
+| EN | <a id="responsibilities"></a>[Responsibilities](en/ROADMAP.md#en) |
+| EN | <a id="important-concepts"></a>[Important concepts](en/ROADMAP.md#en) |
+| EN | <a id="future-direction"></a>[Future direction](en/ROADMAP.md#en) |
+| EN | <a id="12-appschemaspy"></a>[1.2 `app/schemas.py`](en/ROADMAP.md#en) |
+| EN | <a id="current-models"></a>[Current models](en/ROADMAP.md#en) |
+| EN | <a id="future-possible-models"></a>[Future possible models](en/ROADMAP.md#en) |
+| EN | <a id="important-concept"></a>[Important concept](en/ROADMAP.md#en) |
+| EN | <a id="13-appretrievalpy"></a>[1.3 `app/retrieval.py`](en/ROADMAP.md#en) |
+| EN | <a id="current-responsibilities"></a>[Current responsibilities](en/ROADMAP.md#en) |
+| EN | <a id="current-technical-debt"></a>[Current technical debt](en/ROADMAP.md#en) |
+| EN | <a id="14-appgenerationpy"></a>[1.4 `app/generation.py`](en/ROADMAP.md#en) |
+| EN | <a id="main-responsibilities"></a>[Main responsibilities](en/ROADMAP.md#en) |
+| EN | <a id="15-appragpy"></a>[1.5 `app/rag.py`](en/ROADMAP.md#en) |
+| EN | <a id="responsibility"></a>[Responsibility](en/ROADMAP.md#en) |
+| EN | <a id="current-technical-debt-1"></a>[Current technical debt](en/ROADMAP.md#en) |
+| EN | <a id="16-appmainpy"></a>[1.6 `app/main.py`](en/ROADMAP.md#en) |
+| EN | <a id="responsibility-1"></a>[Responsibility](en/ROADMAP.md#en) |
+| EN | <a id="17-scriptsingestpy"></a>[1.7 `scripts/ingest.py`](en/ROADMAP.md#en) |
+| EN | <a id="current-pipeline"></a>[Current pipeline](en/ROADMAP.md#en) |
+| EN | <a id="existing-improvements"></a>[Existing improvements](en/ROADMAP.md#en) |
+| EN | <a id="important-rule"></a>[Important rule](en/ROADMAP.md#en) |
+| EN | <a id="phase-1-definition-of-done"></a>[PHASE 1 Definition of Done](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2---evaluation-foundation"></a><a id="phase-2---evaluation-foundation"></a>[PHASE 2 - Evaluation Foundation](en/ROADMAP.md#en-phase-2---evaluation-foundation) |
+| EN | <a id="goal-1"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="evaluation-dataset-roles"></a>[Evaluation Dataset Roles](en/ROADMAP.md#en) |
+| EN | <a id="dev"></a>[DEV](en/ROADMAP.md#en) |
+| EN | <a id="random"></a>[RANDOM](en/ROADMAP.md#en) |
+| EN | <a id="test"></a>[TEST](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2a---universal-document-explorer"></a><a id="phase-2a---universal-document-explorer"></a>[PHASE 2A - Universal Document Explorer](en/ROADMAP.md#en-phase-2a---universal-document-explorer) |
+| EN | <a id="goal-2"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="target-structure"></a>[Target Structure](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2a0---architecture-freeze"></a><a id="phase-2a0---architecture-freeze"></a>[PHASE 2A.0 - Architecture Freeze](en/ROADMAP.md#en-phase-2a0---architecture-freeze) |
+| EN | <a id="goal-3"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2a1---data-models"></a><a id="phase-2a1---data-models"></a>[PHASE 2A.1 - Data Models](en/ROADMAP.md#en-phase-2a1---data-models) |
+| EN | <a id="file"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="planned-models"></a>[Planned models](en/ROADMAP.md#en) |
+| EN | <a id="pagedocument"></a>[`PageDocument`](en/ROADMAP.md#en) |
+| EN | <a id="searchresult"></a>[`SearchResult`](en/ROADMAP.md#en) |
+| EN | <a id="bm25searchindex"></a>[`BM25SearchIndex`](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---immutable-dataclasses"></a>[New Concept - Immutable Dataclasses](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2a2---text-processing"></a><a id="phase-2a2---text-processing"></a>[PHASE 2A.2 - Text Processing](en/ROADMAP.md#en-phase-2a2---text-processing) |
+| EN | <a id="file-1"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="file-2"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="important-concepts-1"></a>[Important Concepts](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2a3---security-foundations"></a><a id="phase-2a3---security-foundations"></a>[PHASE 2A.3 - Security Foundations](en/ROADMAP.md#en-phase-2a3---security-foundations) |
+| EN | <a id="goal-4"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="file-3"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---path-traversal"></a>[New Concept - Path Traversal](en/ROADMAP.md#en) |
+| EN | <a id="file-4"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---validation-boundary"></a>[New Concept - Validation Boundary](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2a4---pdf-loading-and-pdf-validation"></a><a id="phase-2a4---pdf-loading-and-pdf-validation"></a>[PHASE 2A.4 - PDF Loading and PDF Validation](en/ROADMAP.md#en-phase-2a4---pdf-loading-and-pdf-validation) |
+| EN | <a id="file-5"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---file-signature"></a>[New Concept - File Signature](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---resource-exhaustion"></a>[New Concept - Resource Exhaustion](en/ROADMAP.md#en) |
+| EN | <a id="file-6"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2a5---bm25-index"></a><a id="phase-2a5---bm25-index"></a>[PHASE 2A.5 - BM25 Index](en/ROADMAP.md#en-phase-2a5---bm25-index) |
+| EN | <a id="file-7"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---bm25"></a>[New Concept - BM25](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2a6---search-engine"></a><a id="phase-2a6---search-engine"></a>[PHASE 2A.6 - Search Engine](en/ROADMAP.md#en-phase-2a6---search-engine) |
+| EN | <a id="file-8"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="important-new-concept---public-api-boundary"></a>[Important New Concept - Public API Boundary](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2a7---cli"></a><a id="phase-2a7---cli"></a>[PHASE 2A.7 - CLI](en/ROADMAP.md#en-phase-2a7---cli) |
+| EN | <a id="file-9"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2a8---integration"></a><a id="phase-2a8---integration"></a>[PHASE 2A.8 - Integration](en/ROADMAP.md#en-phase-2a8---integration) |
+| EN | <a id="tasks"></a>[Tasks](en/ROADMAP.md#en) |
+| EN | <a id="phase-2a-definition-of-done"></a>[PHASE 2A Definition of Done](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2b---evaluation-data-models"></a><a id="phase-2b---evaluation-data-models"></a>[PHASE 2B - Evaluation Data Models](en/ROADMAP.md#en-phase-2b---evaluation-data-models) |
+| EN | <a id="goal-5"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="file-10"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---typed-evaluation-models"></a>[New Concept - Typed Evaluation Models](en/ROADMAP.md#en) |
+| EN | <a id="file-11"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---dataset-hashing"></a>[New Concept - Dataset Hashing](en/ROADMAP.md#en) |
+| EN | <a id="file-12"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2c---retrieval-metrics"></a><a id="phase-2c---retrieval-metrics"></a>[PHASE 2C - Retrieval Metrics](en/ROADMAP.md#en-phase-2c---retrieval-metrics) |
+| EN | <a id="file-13"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="metric---hitk"></a>[Metric - Hit@K](en/ROADMAP.md#en) |
+| EN | <a id="metric---reciprocal-rank"></a>[Metric - Reciprocal Rank](en/ROADMAP.md#en) |
+| EN | <a id="metric---mrr"></a>[Metric - MRR](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2d---evaluation-runner-and-history"></a><a id="phase-2d---evaluation-runner-and-history"></a>[PHASE 2D - Evaluation Runner and History](en/ROADMAP.md#en-phase-2d---evaluation-runner-and-history) |
+| EN | <a id="file-14"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="file-15"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2e---random-evaluation"></a><a id="phase-2e---random-evaluation"></a>[PHASE 2E - RANDOM Evaluation](en/ROADMAP.md#en-phase-2e---random-evaluation) |
+| EN | <a id="file-16"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---reproducible-randomness"></a>[New Concept - Reproducible Randomness](en/ROADMAP.md#en) |
+| EN | <a id="random-purpose"></a>[RANDOM Purpose](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-2f---complete-evaluation-dataset"></a><a id="phase-2f---complete-evaluation-dataset"></a>[PHASE 2F - Complete Evaluation Dataset](en/ROADMAP.md#en-phase-2f---complete-evaluation-dataset) |
+| EN | <a id="tasks-1"></a>[Tasks](en/ROADMAP.md#en) |
+| EN | <a id="phase-2-definition-of-done"></a>[PHASE 2 Definition of Done](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-3---retrieval-refactor"></a><a id="phase-3---retrieval-refactor"></a>[PHASE 3 - Retrieval Refactor](en/ROADMAP.md#en-phase-3---retrieval-refactor) |
+| EN | <a id="goal-6"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-31---retrieval-models"></a><a id="phase-31---retrieval-models"></a>[PHASE 3.1 - Retrieval Models](en/ROADMAP.md#en-phase-31---retrieval-models) |
+| EN | <a id="file-17"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-32---embeddings"></a><a id="phase-32---embeddings"></a>[PHASE 3.2 - Embeddings](en/ROADMAP.md#en-phase-32---embeddings) |
+| EN | <a id="file-18"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-33---vector-search"></a><a id="phase-33---vector-search"></a>[PHASE 3.3 - Vector Search](en/ROADMAP.md#en-phase-33---vector-search) |
+| EN | <a id="file-19"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-34---query-processing"></a><a id="phase-34---query-processing"></a>[PHASE 3.4 - Query Processing](en/ROADMAP.md#en-phase-34---query-processing) |
+| EN | <a id="file-20"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-35---reranker"></a><a id="phase-35---reranker"></a>[PHASE 3.5 - Reranker](en/ROADMAP.md#en-phase-35---reranker) |
+| EN | <a id="file-21"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-36---scoring"></a><a id="phase-36---scoring"></a>[PHASE 3.6 - Scoring](en/ROADMAP.md#en-phase-36---scoring) |
+| EN | <a id="file-22"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---rank-fusion"></a>[New Concept - Rank Fusion](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-37---retrieval-service"></a><a id="phase-37---retrieval-service"></a>[PHASE 3.7 - Retrieval Service](en/ROADMAP.md#en-phase-37---retrieval-service) |
+| EN | <a id="file-23"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="phase-3-definition-of-done"></a>[PHASE 3 Definition of Done](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-4---api-hardening"></a><a id="phase-4---api-hardening"></a>[PHASE 4 - API Hardening](en/ROADMAP.md#en-phase-4---api-hardening) |
+| EN | <a id="goal-7"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-41---application-lifecycle"></a><a id="phase-41---application-lifecycle"></a>[PHASE 4.1 - Application Lifecycle](en/ROADMAP.md#en-phase-41---application-lifecycle) |
+| EN | <a id="file-24"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---fastapi-lifespan"></a>[New Concept - FastAPI Lifespan](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-42---routes"></a><a id="phase-42---routes"></a>[PHASE 4.2 - Routes](en/ROADMAP.md#en-phase-42---routes) |
+| EN | <a id="file-25"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-43---dependency-injection"></a><a id="phase-43---dependency-injection"></a>[PHASE 4.3 - Dependency Injection](en/ROADMAP.md#en-phase-43---dependency-injection) |
+| EN | <a id="file-26"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---dependency-injection"></a>[New Concept - Dependency Injection](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-44---errors"></a><a id="phase-44---errors"></a>[PHASE 4.4 - Errors](en/ROADMAP.md#en-phase-44---errors) |
+| EN | <a id="file-27"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-45---middleware"></a><a id="phase-45---middleware"></a>[PHASE 4.5 - Middleware](en/ROADMAP.md#en-phase-45---middleware) |
+| EN | <a id="file-28"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="phase-4-definition-of-done"></a>[PHASE 4 Definition of Done](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-5---production-engineering"></a><a id="phase-5---production-engineering"></a>[PHASE 5 - Production Engineering](en/ROADMAP.md#en-phase-5---production-engineering) |
+| EN | <a id="goal-8"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-51---linux--wsl2"></a><a id="phase-51---linux--wsl2"></a>[PHASE 5.1 - Linux / WSL2](en/ROADMAP.md#en-phase-51---linux--wsl2) |
+| EN | <a id="goal-9"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---environment-portability"></a>[New Concept - Environment Portability](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-52---structured-logging"></a><a id="phase-52---structured-logging"></a>[PHASE 5.2 - Structured Logging](en/ROADMAP.md#en-phase-52---structured-logging) |
+| EN | <a id="file-29"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---structured-logging"></a>[New Concept - Structured Logging](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-53---runtime-metrics"></a><a id="phase-53---runtime-metrics"></a>[PHASE 5.3 - Runtime Metrics](en/ROADMAP.md#en-phase-53---runtime-metrics) |
+| EN | <a id="file-30"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---quality-vs-operational-metrics"></a>[New Concept - Quality vs Operational Metrics](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-54---docker-hardening"></a><a id="phase-54---docker-hardening"></a>[PHASE 5.4 - Docker Hardening](en/ROADMAP.md#en-phase-54---docker-hardening) |
+| EN | <a id="new-concept---multi-stage-docker-build"></a>[New Concept - Multi-stage Docker Build](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-55---cicd"></a><a id="phase-55---cicd"></a>[PHASE 5.5 - CI/CD](en/ROADMAP.md#en-phase-55---cicd) |
+| EN | <a id="phase-5-definition-of-done"></a>[PHASE 5 Definition of Done](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-6---security"></a><a id="phase-6---security"></a>[PHASE 6 - Security](en/ROADMAP.md#en-phase-6---security) |
+| EN | <a id="goal-10"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-61---threat-modeling"></a><a id="phase-61---threat-modeling"></a>[PHASE 6.1 - Threat Modeling](en/ROADMAP.md#en-phase-61---threat-modeling) |
+| EN | <a id="new-concept---threat-model"></a>[New Concept - Threat Model](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-62---runtime-input-validation"></a><a id="phase-62---runtime-input-validation"></a>[PHASE 6.2 - Runtime Input Validation](en/ROADMAP.md#en-phase-62---runtime-input-validation) |
+| EN | <a id="file-31"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-63---runtime-limits"></a><a id="phase-63---runtime-limits"></a>[PHASE 6.3 - Runtime Limits](en/ROADMAP.md#en-phase-63---runtime-limits) |
+| EN | <a id="file-32"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-64---secrets"></a><a id="phase-64---secrets"></a>[PHASE 6.4 - Secrets](en/ROADMAP.md#en-phase-64---secrets) |
+| EN | <a id="en-phase-65---dependency-security"></a><a id="phase-65---dependency-security"></a>[PHASE 6.5 - Dependency Security](en/ROADMAP.md#en-phase-65---dependency-security) |
+| EN | <a id="en-phase-66---container-security"></a><a id="phase-66---container-security"></a>[PHASE 6.6 - Container Security](en/ROADMAP.md#en-phase-66---container-security) |
+| EN | <a id="en-phase-67---http-security"></a><a id="phase-67---http-security"></a>[PHASE 6.7 - HTTP Security](en/ROADMAP.md#en-phase-67---http-security) |
+| EN | <a id="en-phase-68---rag-specific-security"></a><a id="phase-68---rag-specific-security"></a>[PHASE 6.8 - RAG-Specific Security](en/ROADMAP.md#en-phase-68---rag-specific-security) |
+| EN | <a id="new-concept---indirect-prompt-injection"></a>[New Concept - Indirect Prompt Injection](en/ROADMAP.md#en) |
+| EN | <a id="phase-6-definition-of-done"></a>[PHASE 6 Definition of Done](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-7---production-v1"></a><a id="phase-7---production-v1"></a>[PHASE 7 - Production v1](en/ROADMAP.md#en-phase-7---production-v1) |
+| EN | <a id="goal-11"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-71---health-and-readiness"></a><a id="phase-71---health-and-readiness"></a>[PHASE 7.1 - Health and Readiness](en/ROADMAP.md#en-phase-71---health-and-readiness) |
+| EN | <a id="new-concept---liveness-vs-readiness"></a>[New Concept - Liveness vs Readiness](en/ROADMAP.md#en) |
+| EN | <a id="liveness"></a>[Liveness](en/ROADMAP.md#en) |
+| EN | <a id="readiness"></a>[Readiness](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-72---production-smoke-test"></a><a id="phase-72---production-smoke-test"></a>[PHASE 7.2 - Production Smoke Test](en/ROADMAP.md#en-phase-72---production-smoke-test) |
+| EN | <a id="file-33"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-73---documentation"></a><a id="phase-73---documentation"></a>[PHASE 7.3 - Documentation](en/ROADMAP.md#en-phase-73---documentation) |
+| EN | <a id="phase-7-definition-of-done"></a>[PHASE 7 Definition of Done](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-8---expansion"></a><a id="phase-8---expansion"></a>[PHASE 8 - Expansion](en/ROADMAP.md#en-phase-8---expansion) |
+| EN | <a id="en-phase-8a---agent-exploration"></a><a id="phase-8a---agent-exploration"></a>[PHASE 8A - Agent Exploration](en/ROADMAP.md#en-phase-8a---agent-exploration) |
+| EN | <a id="goal-12"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="file-34"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---tool-calling"></a>[New Concept - Tool Calling](en/ROADMAP.md#en) |
+| EN | <a id="phase-8a-definition-of-done"></a>[PHASE 8A Definition of Done](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-8b---sql-and-etl"></a><a id="phase-8b---sql-and-etl"></a>[PHASE 8B - SQL and ETL](en/ROADMAP.md#en-phase-8b---sql-and-etl) |
+| EN | <a id="goal-13"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="file-35"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="file-36"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="file-37"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="file-38"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---etl"></a>[New Concept - ETL](en/ROADMAP.md#en) |
+| EN | <a id="phase-8b-definition-of-done"></a>[PHASE 8B Definition of Done](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-8c---mlops"></a><a id="phase-8c---mlops"></a>[PHASE 8C - MLOps](en/ROADMAP.md#en-phase-8c---mlops) |
+| EN | <a id="goal-14"></a>[Goal](en/ROADMAP.md#en) |
+| EN | <a id="file-39"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="new-concept---experiment-tracking"></a>[New Concept - Experiment Tracking](en/ROADMAP.md#en) |
+| EN | <a id="file-40"></a>[File](en/ROADMAP.md#en) |
+| EN | <a id="phase-8c-definition-of-done"></a>[PHASE 8C Definition of Done](en/ROADMAP.md#en) |
+| EN | <a id="en-phase-8d---advanced-agents"></a><a id="phase-8d---advanced-agents"></a>[PHASE 8D - Advanced Agents](en/ROADMAP.md#en-phase-8d---advanced-agents) |
+| EN | <a id="en-original-planning-estimates--historical"></a><a id="original-planning-estimates--historical"></a>[Original planning estimates — historical](en/ROADMAP.md#en-original-planning-estimates--historical) |
+| EN | <a id="en-planning-history"></a><a id="planning-history"></a>[Planning history](en/ROADMAP.md#en-planning-history) |
+| CZ | <a id="cz"></a><a id="cz--česká-verze"></a>[CZ — Česká verze](cs/ROADMAP.md#cz) |
+| CZ | <a id="cz-stavový-přehled--2026-10-28"></a><a id="stavový-přehled--2026-10-28"></a>[Stavový přehled — 2026-10-28](cs/ROADMAP.md#cz-stavový-přehled--2026-10-28) |
+| CZ | <a id="cz-aktuální-zaměření-vývoje"></a><a id="aktuální-zaměření-vývoje"></a>[Aktuální zaměření vývoje](cs/ROADMAP.md#cz-aktuální-zaměření-vývoje) |
+| CZ | <a id="cz-jak-číst-a-aktualizovat-schválený-plán"></a><a id="jak-číst-a-aktualizovat-schválený-plán"></a>[Jak číst a aktualizovat schválený plán](cs/ROADMAP.md#cz-jak-číst-a-aktualizovat-schválený-plán) |
+| CZ | <a id="cz-fáze-1---funkční-kostra-rag"></a><a id="fáze-1---funkční-kostra-rag"></a>[FÁZE 1 - Funkční kostra RAG](cs/ROADMAP.md#cz-fáze-1---funkční-kostra-rag) |
+| CZ | <a id="cz-cíl"></a><a id="cíl"></a>[Cíl](cs/ROADMAP.md#cz-cíl) |
+| CZ | <a id="cz-11-appconfigpy"></a><a id="11-appconfigpy-1"></a>[1.1 `app/config.py`](cs/ROADMAP.md#cz-11-appconfigpy) |
+| CZ | <a id="cz-odpovědnosti"></a><a id="odpovědnosti"></a>[Odpovědnosti](cs/ROADMAP.md#cz-odpovědnosti) |
+| CZ | <a id="cz-důležité-koncepty"></a><a id="důležité-koncepty"></a>[Důležité koncepty](cs/ROADMAP.md#cz-důležité-koncepty) |
+| CZ | <a id="cz-budoucí-směr"></a><a id="budoucí-směr"></a>[Budoucí směr](cs/ROADMAP.md#cz-budoucí-směr) |
+| CZ | <a id="cz-12-appschemaspy"></a><a id="12-appschemaspy-1"></a>[1.2 `app/schemas.py`](cs/ROADMAP.md#cz-12-appschemaspy) |
+| CZ | <a id="cz-současné-modely"></a><a id="současné-modely"></a>[Současné modely](cs/ROADMAP.md#cz-současné-modely) |
+| CZ | <a id="cz-možné-budoucí-modely"></a><a id="možné-budoucí-modely"></a>[Možné budoucí modely](cs/ROADMAP.md#cz-možné-budoucí-modely) |
+| CZ | <a id="cz-důležitý-koncept"></a><a id="důležitý-koncept"></a>[Důležitý koncept](cs/ROADMAP.md#cz-důležitý-koncept) |
+| CZ | <a id="cz-13-appretrievalpy"></a><a id="13-appretrievalpy-1"></a>[1.3 `app/retrieval.py`](cs/ROADMAP.md#cz-13-appretrievalpy) |
+| CZ | <a id="cz-současné-odpovědnosti"></a><a id="současné-odpovědnosti"></a>[Současné odpovědnosti](cs/ROADMAP.md#cz-současné-odpovědnosti) |
+| CZ | <a id="cz-současný-technický-dluh"></a><a id="současný-technický-dluh"></a>[Současný technický dluh](cs/ROADMAP.md#cz-současný-technický-dluh) |
+| CZ | <a id="cz-14-appgenerationpy"></a><a id="14-appgenerationpy-1"></a>[1.4 `app/generation.py`](cs/ROADMAP.md#cz-14-appgenerationpy) |
+| CZ | <a id="cz-hlavní-odpovědnosti"></a><a id="hlavní-odpovědnosti"></a>[Hlavní odpovědnosti](cs/ROADMAP.md#cz-hlavní-odpovědnosti) |
+| CZ | <a id="cz-15-appragpy"></a><a id="15-appragpy-1"></a>[1.5 `app/rag.py`](cs/ROADMAP.md#cz-15-appragpy) |
+| CZ | <a id="cz-odpovědnost"></a><a id="odpovědnost"></a>[Odpovědnost](cs/ROADMAP.md#cz-odpovědnost) |
+| CZ | <a id="cz-současný-technický-dluh-1"></a><a id="současný-technický-dluh-1"></a>[Současný technický dluh](cs/ROADMAP.md#cz-současný-technický-dluh-1) |
+| CZ | <a id="cz-16-appmainpy"></a><a id="16-appmainpy-1"></a>[1.6 `app/main.py`](cs/ROADMAP.md#cz-16-appmainpy) |
+| CZ | <a id="cz-odpovědnost-1"></a><a id="odpovědnost-1"></a>[Odpovědnost](cs/ROADMAP.md#cz-odpovědnost-1) |
+| CZ | <a id="cz-17-scriptsingestpy"></a><a id="17-scriptsingestpy-1"></a>[1.7 `scripts/ingest.py`](cs/ROADMAP.md#cz-17-scriptsingestpy) |
+| CZ | <a id="cz-současná-pipeline"></a><a id="současná-pipeline"></a>[Současná pipeline](cs/ROADMAP.md#cz-současná-pipeline) |
+| CZ | <a id="cz-dosavadní-zlepšení"></a><a id="dosavadní-zlepšení"></a>[Dosavadní zlepšení](cs/ROADMAP.md#cz-dosavadní-zlepšení) |
+| CZ | <a id="cz-důležité-pravidlo"></a><a id="důležité-pravidlo"></a>[Důležité pravidlo](cs/ROADMAP.md#cz-důležité-pravidlo) |
+| CZ | <a id="cz-fáze-1--podmínky-dokončení"></a><a id="fáze-1--podmínky-dokončení"></a>[FÁZE 1 — Podmínky dokončení](cs/ROADMAP.md#cz-fáze-1--podmínky-dokončení) |
+| CZ | <a id="cz-fáze-2---základ-evaluace"></a><a id="fáze-2---základ-evaluace"></a>[FÁZE 2 - Základ evaluace](cs/ROADMAP.md#cz-fáze-2---základ-evaluace) |
+| CZ | <a id="cz-cíl-1"></a><a id="cíl-1"></a>[Cíl](cs/ROADMAP.md#cz-cíl-1) |
+| CZ | <a id="cz-úlohy-evaluačních-datasetů"></a><a id="úlohy-evaluačních-datasetů"></a>[Úlohy evaluačních datasetů](cs/ROADMAP.md#cz-úlohy-evaluačních-datasetů) |
+| CZ | <a id="cz-dev"></a><a id="dev-1"></a>[DEV](cs/ROADMAP.md#cz-dev) |
+| CZ | <a id="cz-random"></a><a id="random-1"></a>[RANDOM](cs/ROADMAP.md#cz-random) |
+| CZ | <a id="cz-test"></a><a id="test-1"></a>[TEST](cs/ROADMAP.md#cz-test) |
+| CZ | <a id="cz-fáze-2a---univerzální-průzkumník-dokumentů"></a><a id="fáze-2a---univerzální-průzkumník-dokumentů"></a>[FÁZE 2A - Univerzální průzkumník dokumentů](cs/ROADMAP.md#cz-fáze-2a---univerzální-průzkumník-dokumentů) |
+| CZ | <a id="cz-cíl-2"></a><a id="cíl-2"></a>[Cíl](cs/ROADMAP.md#cz-cíl-2) |
+| CZ | <a id="cz-cílová-struktura"></a><a id="cílová-struktura"></a>[Cílová struktura](cs/ROADMAP.md#cz-cílová-struktura) |
+| CZ | <a id="cz-fáze-2a0---zmrazení-architektury"></a><a id="fáze-2a0---zmrazení-architektury"></a>[FÁZE 2A.0 - Zmrazení architektury](cs/ROADMAP.md#cz-fáze-2a0---zmrazení-architektury) |
+| CZ | <a id="cz-cíl-3"></a><a id="cíl-3"></a>[Cíl](cs/ROADMAP.md#cz-cíl-3) |
+| CZ | <a id="cz-fáze-2a1---datové-modely"></a><a id="fáze-2a1---datové-modely"></a>[FÁZE 2A.1 - Datové modely](cs/ROADMAP.md#cz-fáze-2a1---datové-modely) |
+| CZ | <a id="cz-soubor"></a><a id="soubor"></a>[Soubor](cs/ROADMAP.md#cz-soubor) |
+| CZ | <a id="cz-plánované-modely"></a><a id="plánované-modely"></a>[Plánované modely](cs/ROADMAP.md#cz-plánované-modely) |
+| CZ | <a id="cz-pagedocument"></a><a id="pagedocument-1"></a>[`PageDocument`](cs/ROADMAP.md#cz-pagedocument) |
+| CZ | <a id="cz-searchresult"></a><a id="searchresult-1"></a>[`SearchResult`](cs/ROADMAP.md#cz-searchresult) |
+| CZ | <a id="cz-bm25searchindex"></a><a id="bm25searchindex-1"></a>[`BM25SearchIndex`](cs/ROADMAP.md#cz-bm25searchindex) |
+| CZ | <a id="cz-nový-koncept---neměnné-datové-třídy"></a><a id="nový-koncept---neměnné-datové-třídy"></a>[Nový koncept - Neměnné datové třídy](cs/ROADMAP.md#cz-nový-koncept---neměnné-datové-třídy) |
+| CZ | <a id="cz-fáze-2a2---zpracování-textu"></a><a id="fáze-2a2---zpracování-textu"></a>[FÁZE 2A.2 - Zpracování textu](cs/ROADMAP.md#cz-fáze-2a2---zpracování-textu) |
+| CZ | <a id="cz-soubor-1"></a><a id="soubor-1"></a>[Soubor](cs/ROADMAP.md#cz-soubor-1) |
+| CZ | <a id="cz-soubor-2"></a><a id="soubor-2"></a>[Soubor](cs/ROADMAP.md#cz-soubor-2) |
+| CZ | <a id="cz-důležité-koncepty-1"></a><a id="důležité-koncepty-1"></a>[Důležité koncepty](cs/ROADMAP.md#cz-důležité-koncepty-1) |
+| CZ | <a id="cz-fáze-2a3---základy-bezpečnosti"></a><a id="fáze-2a3---základy-bezpečnosti"></a>[FÁZE 2A.3 - Základy bezpečnosti](cs/ROADMAP.md#cz-fáze-2a3---základy-bezpečnosti) |
+| CZ | <a id="cz-cíl-4"></a><a id="cíl-4"></a>[Cíl](cs/ROADMAP.md#cz-cíl-4) |
+| CZ | <a id="cz-soubor-3"></a><a id="soubor-3"></a>[Soubor](cs/ROADMAP.md#cz-soubor-3) |
+| CZ | <a id="cz-nový-koncept---path-traversal"></a><a id="nový-koncept---path-traversal"></a>[Nový koncept - Path traversal](cs/ROADMAP.md#cz-nový-koncept---path-traversal) |
+| CZ | <a id="cz-soubor-4"></a><a id="soubor-4"></a>[Soubor](cs/ROADMAP.md#cz-soubor-4) |
+| CZ | <a id="cz-nový-koncept---validační-hranice"></a><a id="nový-koncept---validační-hranice"></a>[Nový koncept - Validační hranice](cs/ROADMAP.md#cz-nový-koncept---validační-hranice) |
+| CZ | <a id="cz-fáze-2a4---načítání-pdf-a-validace-pdf"></a><a id="fáze-2a4---načítání-pdf-a-validace-pdf"></a>[FÁZE 2A.4 - Načítání PDF a validace PDF](cs/ROADMAP.md#cz-fáze-2a4---načítání-pdf-a-validace-pdf) |
+| CZ | <a id="cz-soubor-5"></a><a id="soubor-5"></a>[Soubor](cs/ROADMAP.md#cz-soubor-5) |
+| CZ | <a id="cz-nový-koncept---signatura-souboru"></a><a id="nový-koncept---signatura-souboru"></a>[Nový koncept - Signatura souboru](cs/ROADMAP.md#cz-nový-koncept---signatura-souboru) |
+| CZ | <a id="cz-nový-koncept---vyčerpání-prostředků"></a><a id="nový-koncept---vyčerpání-prostředků"></a>[Nový koncept - Vyčerpání prostředků](cs/ROADMAP.md#cz-nový-koncept---vyčerpání-prostředků) |
+| CZ | <a id="cz-soubor-6"></a><a id="soubor-6"></a>[Soubor](cs/ROADMAP.md#cz-soubor-6) |
+| CZ | <a id="cz-fáze-2a5---bm25-index"></a><a id="fáze-2a5---bm25-index"></a>[FÁZE 2A.5 - BM25 index](cs/ROADMAP.md#cz-fáze-2a5---bm25-index) |
+| CZ | <a id="cz-soubor-7"></a><a id="soubor-7"></a>[Soubor](cs/ROADMAP.md#cz-soubor-7) |
+| CZ | <a id="cz-nový-koncept---bm25"></a><a id="nový-koncept---bm25"></a>[Nový koncept - BM25](cs/ROADMAP.md#cz-nový-koncept---bm25) |
+| CZ | <a id="cz-fáze-2a6---vyhledávací-modul"></a><a id="fáze-2a6---vyhledávací-modul"></a>[FÁZE 2A.6 - Vyhledávací modul](cs/ROADMAP.md#cz-fáze-2a6---vyhledávací-modul) |
+| CZ | <a id="cz-soubor-8"></a><a id="soubor-8"></a>[Soubor](cs/ROADMAP.md#cz-soubor-8) |
+| CZ | <a id="cz-důležitý-nový-koncept---hranice-veřejného-api"></a><a id="důležitý-nový-koncept---hranice-veřejného-api"></a>[Důležitý nový koncept - Hranice veřejného API](cs/ROADMAP.md#cz-důležitý-nový-koncept---hranice-veřejného-api) |
+| CZ | <a id="cz-fáze-2a7---cli"></a><a id="fáze-2a7---cli"></a>[FÁZE 2A.7 - CLI](cs/ROADMAP.md#cz-fáze-2a7---cli) |
+| CZ | <a id="cz-soubor-9"></a><a id="soubor-9"></a>[Soubor](cs/ROADMAP.md#cz-soubor-9) |
+| CZ | <a id="cz-fáze-2a8---integrace"></a><a id="fáze-2a8---integrace"></a>[FÁZE 2A.8 - Integrace](cs/ROADMAP.md#cz-fáze-2a8---integrace) |
+| CZ | <a id="cz-úkoly"></a><a id="úkoly"></a>[Úkoly](cs/ROADMAP.md#cz-úkoly) |
+| CZ | <a id="cz-fáze-2a--podmínky-dokončení"></a><a id="fáze-2a--podmínky-dokončení"></a>[FÁZE 2A — Podmínky dokončení](cs/ROADMAP.md#cz-fáze-2a--podmínky-dokončení) |
+| CZ | <a id="cz-fáze-2b---evaluační-datové-modely"></a><a id="fáze-2b---evaluační-datové-modely"></a>[FÁZE 2B - Evaluační datové modely](cs/ROADMAP.md#cz-fáze-2b---evaluační-datové-modely) |
+| CZ | <a id="cz-cíl-5"></a><a id="cíl-5"></a>[Cíl](cs/ROADMAP.md#cz-cíl-5) |
+| CZ | <a id="cz-soubor-10"></a><a id="soubor-10"></a>[Soubor](cs/ROADMAP.md#cz-soubor-10) |
+| CZ | <a id="cz-nový-koncept---typované-evaluační-modely"></a><a id="nový-koncept---typované-evaluační-modely"></a>[Nový koncept - Typované evaluační modely](cs/ROADMAP.md#cz-nový-koncept---typované-evaluační-modely) |
+| CZ | <a id="cz-soubor-11"></a><a id="soubor-11"></a>[Soubor](cs/ROADMAP.md#cz-soubor-11) |
+| CZ | <a id="cz-nový-koncept---hashování-datasetu"></a><a id="nový-koncept---hashování-datasetu"></a>[Nový koncept - Hashování datasetu](cs/ROADMAP.md#cz-nový-koncept---hashování-datasetu) |
+| CZ | <a id="cz-soubor-12"></a><a id="soubor-12"></a>[Soubor](cs/ROADMAP.md#cz-soubor-12) |
+| CZ | <a id="cz-fáze-2c---metriky-retrievalu"></a><a id="fáze-2c---metriky-retrievalu"></a>[FÁZE 2C - Metriky retrievalu](cs/ROADMAP.md#cz-fáze-2c---metriky-retrievalu) |
+| CZ | <a id="cz-soubor-13"></a><a id="soubor-13"></a>[Soubor](cs/ROADMAP.md#cz-soubor-13) |
+| CZ | <a id="cz-metrika---hitk"></a><a id="metrika---hitk"></a>[Metrika - Hit@K](cs/ROADMAP.md#cz-metrika---hitk) |
+| CZ | <a id="cz-metrika---reciproční-pořadí"></a><a id="metrika---reciproční-pořadí"></a>[Metrika - Reciproční pořadí](cs/ROADMAP.md#cz-metrika---reciproční-pořadí) |
+| CZ | <a id="cz-metrika---mrr"></a><a id="metrika---mrr"></a>[Metrika - MRR](cs/ROADMAP.md#cz-metrika---mrr) |
+| CZ | <a id="cz-fáze-2d---evaluační-runner-a-historie"></a><a id="fáze-2d---evaluační-runner-a-historie"></a>[FÁZE 2D - Evaluační runner a historie](cs/ROADMAP.md#cz-fáze-2d---evaluační-runner-a-historie) |
+| CZ | <a id="cz-soubor-14"></a><a id="soubor-14"></a>[Soubor](cs/ROADMAP.md#cz-soubor-14) |
+| CZ | <a id="cz-soubor-15"></a><a id="soubor-15"></a>[Soubor](cs/ROADMAP.md#cz-soubor-15) |
+| CZ | <a id="cz-fáze-2e---evaluace-random"></a><a id="fáze-2e---evaluace-random"></a>[FÁZE 2E - Evaluace RANDOM](cs/ROADMAP.md#cz-fáze-2e---evaluace-random) |
+| CZ | <a id="cz-soubor-16"></a><a id="soubor-16"></a>[Soubor](cs/ROADMAP.md#cz-soubor-16) |
+| CZ | <a id="cz-nový-koncept---reprodukovatelná-náhodnost"></a><a id="nový-koncept---reprodukovatelná-náhodnost"></a>[Nový koncept - Reprodukovatelná náhodnost](cs/ROADMAP.md#cz-nový-koncept---reprodukovatelná-náhodnost) |
+| CZ | <a id="cz-účel-random"></a><a id="účel-random"></a>[Účel RANDOM](cs/ROADMAP.md#cz-účel-random) |
+| CZ | <a id="cz-fáze-2f---kompletní-evaluační-dataset"></a><a id="fáze-2f---kompletní-evaluační-dataset"></a>[FÁZE 2F - Kompletní evaluační dataset](cs/ROADMAP.md#cz-fáze-2f---kompletní-evaluační-dataset) |
+| CZ | <a id="cz-úkoly-1"></a><a id="úkoly-1"></a>[Úkoly](cs/ROADMAP.md#cz-úkoly-1) |
+| CZ | <a id="cz-fáze-2--podmínky-dokončení"></a><a id="fáze-2--podmínky-dokončení"></a>[FÁZE 2 — Podmínky dokončení](cs/ROADMAP.md#cz-fáze-2--podmínky-dokončení) |
+| CZ | <a id="cz-fáze-3---refaktoring-retrievalu"></a><a id="fáze-3---refaktoring-retrievalu"></a>[FÁZE 3 - Refaktoring retrievalu](cs/ROADMAP.md#cz-fáze-3---refaktoring-retrievalu) |
+| CZ | <a id="cz-cíl-6"></a><a id="cíl-6"></a>[Cíl](cs/ROADMAP.md#cz-cíl-6) |
+| CZ | <a id="cz-fáze-31---retrieval-modely"></a><a id="fáze-31---retrieval-modely"></a>[FÁZE 3.1 - Retrieval modely](cs/ROADMAP.md#cz-fáze-31---retrieval-modely) |
+| CZ | <a id="cz-soubor-17"></a><a id="soubor-17"></a>[Soubor](cs/ROADMAP.md#cz-soubor-17) |
+| CZ | <a id="cz-fáze-32---embeddingy"></a><a id="fáze-32---embeddingy"></a>[FÁZE 3.2 - Embeddingy](cs/ROADMAP.md#cz-fáze-32---embeddingy) |
+| CZ | <a id="cz-soubor-18"></a><a id="soubor-18"></a>[Soubor](cs/ROADMAP.md#cz-soubor-18) |
+| CZ | <a id="cz-fáze-33---vektorové-vyhledávání"></a><a id="fáze-33---vektorové-vyhledávání"></a>[FÁZE 3.3 - Vektorové vyhledávání](cs/ROADMAP.md#cz-fáze-33---vektorové-vyhledávání) |
+| CZ | <a id="cz-soubor-19"></a><a id="soubor-19"></a>[Soubor](cs/ROADMAP.md#cz-soubor-19) |
+| CZ | <a id="cz-fáze-34---zpracování-dotazu"></a><a id="fáze-34---zpracování-dotazu"></a>[FÁZE 3.4 - Zpracování dotazu](cs/ROADMAP.md#cz-fáze-34---zpracování-dotazu) |
+| CZ | <a id="cz-soubor-20"></a><a id="soubor-20"></a>[Soubor](cs/ROADMAP.md#cz-soubor-20) |
+| CZ | <a id="cz-fáze-35---reranker"></a><a id="fáze-35---reranker"></a>[FÁZE 3.5 - Reranker](cs/ROADMAP.md#cz-fáze-35---reranker) |
+| CZ | <a id="cz-soubor-21"></a><a id="soubor-21"></a>[Soubor](cs/ROADMAP.md#cz-soubor-21) |
+| CZ | <a id="cz-fáze-36---skórování"></a><a id="fáze-36---skórování"></a>[FÁZE 3.6 - Skórování](cs/ROADMAP.md#cz-fáze-36---skórování) |
+| CZ | <a id="cz-soubor-22"></a><a id="soubor-22"></a>[Soubor](cs/ROADMAP.md#cz-soubor-22) |
+| CZ | <a id="cz-nový-koncept---slučování-pořadí"></a><a id="nový-koncept---slučování-pořadí"></a>[Nový koncept - Slučování pořadí](cs/ROADMAP.md#cz-nový-koncept---slučování-pořadí) |
+| CZ | <a id="cz-fáze-37---retrieval-služba"></a><a id="fáze-37---retrieval-služba"></a>[FÁZE 3.7 - Retrieval služba](cs/ROADMAP.md#cz-fáze-37---retrieval-služba) |
+| CZ | <a id="cz-soubor-23"></a><a id="soubor-23"></a>[Soubor](cs/ROADMAP.md#cz-soubor-23) |
+| CZ | <a id="cz-fáze-3--podmínky-dokončení"></a><a id="fáze-3--podmínky-dokončení"></a>[FÁZE 3 — Podmínky dokončení](cs/ROADMAP.md#cz-fáze-3--podmínky-dokončení) |
+| CZ | <a id="cz-fáze-4---zodolnění-api"></a><a id="fáze-4---zodolnění-api"></a>[FÁZE 4 - Zodolnění API](cs/ROADMAP.md#cz-fáze-4---zodolnění-api) |
+| CZ | <a id="cz-cíl-7"></a><a id="cíl-7"></a>[Cíl](cs/ROADMAP.md#cz-cíl-7) |
+| CZ | <a id="cz-fáze-41---životní-cyklus-aplikace"></a><a id="fáze-41---životní-cyklus-aplikace"></a>[FÁZE 4.1 - Životní cyklus aplikace](cs/ROADMAP.md#cz-fáze-41---životní-cyklus-aplikace) |
+| CZ | <a id="cz-soubor-24"></a><a id="soubor-24"></a>[Soubor](cs/ROADMAP.md#cz-soubor-24) |
+| CZ | <a id="cz-nový-koncept---fastapi-lifespan"></a><a id="nový-koncept---fastapi-lifespan"></a>[Nový koncept - FastAPI lifespan](cs/ROADMAP.md#cz-nový-koncept---fastapi-lifespan) |
+| CZ | <a id="cz-fáze-42---routy"></a><a id="fáze-42---routy"></a>[FÁZE 4.2 - Routy](cs/ROADMAP.md#cz-fáze-42---routy) |
+| CZ | <a id="cz-soubor-25"></a><a id="soubor-25"></a>[Soubor](cs/ROADMAP.md#cz-soubor-25) |
+| CZ | <a id="cz-fáze-43---vkládání-závislostí"></a><a id="fáze-43---vkládání-závislostí"></a>[FÁZE 4.3 - Vkládání závislostí](cs/ROADMAP.md#cz-fáze-43---vkládání-závislostí) |
+| CZ | <a id="cz-soubor-26"></a><a id="soubor-26"></a>[Soubor](cs/ROADMAP.md#cz-soubor-26) |
+| CZ | <a id="cz-nový-koncept---dependency-injection"></a><a id="nový-koncept---dependency-injection"></a>[Nový koncept - Dependency injection](cs/ROADMAP.md#cz-nový-koncept---dependency-injection) |
+| CZ | <a id="cz-fáze-44---chyby"></a><a id="fáze-44---chyby"></a>[FÁZE 4.4 - Chyby](cs/ROADMAP.md#cz-fáze-44---chyby) |
+| CZ | <a id="cz-soubor-27"></a><a id="soubor-27"></a>[Soubor](cs/ROADMAP.md#cz-soubor-27) |
+| CZ | <a id="cz-fáze-45---middleware"></a><a id="fáze-45---middleware"></a>[FÁZE 4.5 - Middleware](cs/ROADMAP.md#cz-fáze-45---middleware) |
+| CZ | <a id="cz-soubor-28"></a><a id="soubor-28"></a>[Soubor](cs/ROADMAP.md#cz-soubor-28) |
+| CZ | <a id="cz-fáze-4--podmínky-dokončení"></a><a id="fáze-4--podmínky-dokončení"></a>[FÁZE 4 — Podmínky dokončení](cs/ROADMAP.md#cz-fáze-4--podmínky-dokončení) |
+| CZ | <a id="cz-fáze-5---produkční-inženýrství"></a><a id="fáze-5---produkční-inženýrství"></a>[FÁZE 5 - Produkční inženýrství](cs/ROADMAP.md#cz-fáze-5---produkční-inženýrství) |
+| CZ | <a id="cz-cíl-8"></a><a id="cíl-8"></a>[Cíl](cs/ROADMAP.md#cz-cíl-8) |
+| CZ | <a id="cz-fáze-51---linux--wsl2"></a><a id="fáze-51---linux--wsl2"></a>[FÁZE 5.1 - Linux / WSL2](cs/ROADMAP.md#cz-fáze-51---linux--wsl2) |
+| CZ | <a id="cz-cíl-9"></a><a id="cíl-9"></a>[Cíl](cs/ROADMAP.md#cz-cíl-9) |
+| CZ | <a id="cz-nový-koncept---přenositelnost-prostředí"></a><a id="nový-koncept---přenositelnost-prostředí"></a>[Nový koncept - Přenositelnost prostředí](cs/ROADMAP.md#cz-nový-koncept---přenositelnost-prostředí) |
+| CZ | <a id="cz-fáze-52---strukturované-logování"></a><a id="fáze-52---strukturované-logování"></a>[FÁZE 5.2 - Strukturované logování](cs/ROADMAP.md#cz-fáze-52---strukturované-logování) |
+| CZ | <a id="cz-soubor-29"></a><a id="soubor-29"></a>[Soubor](cs/ROADMAP.md#cz-soubor-29) |
+| CZ | <a id="cz-nový-koncept---strukturované-logování"></a><a id="nový-koncept---strukturované-logování"></a>[Nový koncept - Strukturované logování](cs/ROADMAP.md#cz-nový-koncept---strukturované-logování) |
+| CZ | <a id="cz-fáze-53---běhové-metriky"></a><a id="fáze-53---běhové-metriky"></a>[FÁZE 5.3 - Běhové metriky](cs/ROADMAP.md#cz-fáze-53---běhové-metriky) |
+| CZ | <a id="cz-soubor-30"></a><a id="soubor-30"></a>[Soubor](cs/ROADMAP.md#cz-soubor-30) |
+| CZ | <a id="cz-nový-koncept---kvalitativní-a-provozní-metriky"></a><a id="nový-koncept---kvalitativní-a-provozní-metriky"></a>[Nový koncept - Kvalitativní a provozní metriky](cs/ROADMAP.md#cz-nový-koncept---kvalitativní-a-provozní-metriky) |
+| CZ | <a id="cz-fáze-54---zodolnění-dockeru"></a><a id="fáze-54---zodolnění-dockeru"></a>[FÁZE 5.4 - Zodolnění Dockeru](cs/ROADMAP.md#cz-fáze-54---zodolnění-dockeru) |
+| CZ | <a id="cz-nový-koncept---vícestupňový-docker-build"></a><a id="nový-koncept---vícestupňový-docker-build"></a>[Nový koncept - Vícestupňový Docker build](cs/ROADMAP.md#cz-nový-koncept---vícestupňový-docker-build) |
+| CZ | <a id="cz-fáze-55---cicd"></a><a id="fáze-55---cicd"></a>[FÁZE 5.5 - CI/CD](cs/ROADMAP.md#cz-fáze-55---cicd) |
+| CZ | <a id="cz-fáze-5--podmínky-dokončení"></a><a id="fáze-5--podmínky-dokončení"></a>[FÁZE 5 — Podmínky dokončení](cs/ROADMAP.md#cz-fáze-5--podmínky-dokončení) |
+| CZ | <a id="cz-fáze-6---bezpečnost"></a><a id="fáze-6---bezpečnost"></a>[FÁZE 6 - Bezpečnost](cs/ROADMAP.md#cz-fáze-6---bezpečnost) |
+| CZ | <a id="cz-cíl-10"></a><a id="cíl-10"></a>[Cíl](cs/ROADMAP.md#cz-cíl-10) |
+| CZ | <a id="cz-fáze-61---modelování-hrozeb"></a><a id="fáze-61---modelování-hrozeb"></a>[FÁZE 6.1 - Modelování hrozeb](cs/ROADMAP.md#cz-fáze-61---modelování-hrozeb) |
+| CZ | <a id="cz-nový-koncept---model-hrozeb"></a><a id="nový-koncept---model-hrozeb"></a>[Nový koncept - Model hrozeb](cs/ROADMAP.md#cz-nový-koncept---model-hrozeb) |
+| CZ | <a id="cz-fáze-62---validace-běhových-vstupů"></a><a id="fáze-62---validace-běhových-vstupů"></a>[FÁZE 6.2 - Validace běhových vstupů](cs/ROADMAP.md#cz-fáze-62---validace-běhových-vstupů) |
+| CZ | <a id="cz-soubor-31"></a><a id="soubor-31"></a>[Soubor](cs/ROADMAP.md#cz-soubor-31) |
+| CZ | <a id="cz-fáze-63---běhové-limity"></a><a id="fáze-63---běhové-limity"></a>[FÁZE 6.3 - Běhové limity](cs/ROADMAP.md#cz-fáze-63---běhové-limity) |
+| CZ | <a id="cz-soubor-32"></a><a id="soubor-32"></a>[Soubor](cs/ROADMAP.md#cz-soubor-32) |
+| CZ | <a id="cz-fáze-64---tajemství"></a><a id="fáze-64---tajemství"></a>[FÁZE 6.4 - Tajemství](cs/ROADMAP.md#cz-fáze-64---tajemství) |
+| CZ | <a id="cz-fáze-65---bezpečnost-závislostí"></a><a id="fáze-65---bezpečnost-závislostí"></a>[FÁZE 6.5 - Bezpečnost závislostí](cs/ROADMAP.md#cz-fáze-65---bezpečnost-závislostí) |
+| CZ | <a id="cz-fáze-66---bezpečnost-kontejneru"></a><a id="fáze-66---bezpečnost-kontejneru"></a>[FÁZE 6.6 - Bezpečnost kontejneru](cs/ROADMAP.md#cz-fáze-66---bezpečnost-kontejneru) |
+| CZ | <a id="cz-fáze-67---bezpečnost-http"></a><a id="fáze-67---bezpečnost-http"></a>[FÁZE 6.7 - Bezpečnost HTTP](cs/ROADMAP.md#cz-fáze-67---bezpečnost-http) |
+| CZ | <a id="cz-fáze-68---bezpečnost-specifická-pro-rag"></a><a id="fáze-68---bezpečnost-specifická-pro-rag"></a>[FÁZE 6.8 - Bezpečnost specifická pro RAG](cs/ROADMAP.md#cz-fáze-68---bezpečnost-specifická-pro-rag) |
+| CZ | <a id="cz-nový-koncept---nepřímá-prompt-injection"></a><a id="nový-koncept---nepřímá-prompt-injection"></a>[Nový koncept - Nepřímá prompt injection](cs/ROADMAP.md#cz-nový-koncept---nepřímá-prompt-injection) |
+| CZ | <a id="cz-fáze-6--podmínky-dokončení"></a><a id="fáze-6--podmínky-dokončení"></a>[FÁZE 6 — Podmínky dokončení](cs/ROADMAP.md#cz-fáze-6--podmínky-dokončení) |
+| CZ | <a id="cz-fáze-7---produkční-verze-v1"></a><a id="fáze-7---produkční-verze-v1"></a>[FÁZE 7 - Produkční verze v1](cs/ROADMAP.md#cz-fáze-7---produkční-verze-v1) |
+| CZ | <a id="cz-cíl-11"></a><a id="cíl-11"></a>[Cíl](cs/ROADMAP.md#cz-cíl-11) |
+| CZ | <a id="cz-fáze-71---health-a-readiness"></a><a id="fáze-71---health-a-readiness"></a>[FÁZE 7.1 - Health a readiness](cs/ROADMAP.md#cz-fáze-71---health-a-readiness) |
+| CZ | <a id="cz-nový-koncept---liveness-a-readiness"></a><a id="nový-koncept---liveness-a-readiness"></a>[Nový koncept - Liveness a readiness](cs/ROADMAP.md#cz-nový-koncept---liveness-a-readiness) |
+| CZ | <a id="cz-liveness--běh-procesu"></a><a id="liveness--běh-procesu"></a>[Liveness — běh procesu](cs/ROADMAP.md#cz-liveness--běh-procesu) |
+| CZ | <a id="cz-readiness--připravenost-služby"></a><a id="readiness--připravenost-služby"></a>[Readiness — připravenost služby](cs/ROADMAP.md#cz-readiness--připravenost-služby) |
+| CZ | <a id="cz-fáze-72---produkční-smoke-test"></a><a id="fáze-72---produkční-smoke-test"></a>[FÁZE 7.2 - Produkční smoke test](cs/ROADMAP.md#cz-fáze-72---produkční-smoke-test) |
+| CZ | <a id="cz-soubor-33"></a><a id="soubor-33"></a>[Soubor](cs/ROADMAP.md#cz-soubor-33) |
+| CZ | <a id="cz-fáze-73---dokumentace"></a><a id="fáze-73---dokumentace"></a>[FÁZE 7.3 - Dokumentace](cs/ROADMAP.md#cz-fáze-73---dokumentace) |
+| CZ | <a id="cz-fáze-7--podmínky-dokončení"></a><a id="fáze-7--podmínky-dokončení"></a>[FÁZE 7 — Podmínky dokončení](cs/ROADMAP.md#cz-fáze-7--podmínky-dokončení) |
+| CZ | <a id="cz-fáze-8---rozšíření"></a><a id="fáze-8---rozšíření"></a>[FÁZE 8 - Rozšíření](cs/ROADMAP.md#cz-fáze-8---rozšíření) |
+| CZ | <a id="cz-fáze-8a---průzkum-agentů"></a><a id="fáze-8a---průzkum-agentů"></a>[FÁZE 8A - Průzkum agentů](cs/ROADMAP.md#cz-fáze-8a---průzkum-agentů) |
+| CZ | <a id="cz-cíl-12"></a><a id="cíl-12"></a>[Cíl](cs/ROADMAP.md#cz-cíl-12) |
+| CZ | <a id="cz-soubor-34"></a><a id="soubor-34"></a>[Soubor](cs/ROADMAP.md#cz-soubor-34) |
+| CZ | <a id="cz-nový-koncept---volání-nástrojů"></a><a id="nový-koncept---volání-nástrojů"></a>[Nový koncept - Volání nástrojů](cs/ROADMAP.md#cz-nový-koncept---volání-nástrojů) |
+| CZ | <a id="cz-fáze-8a--podmínky-dokončení"></a><a id="fáze-8a--podmínky-dokončení"></a>[FÁZE 8A — Podmínky dokončení](cs/ROADMAP.md#cz-fáze-8a--podmínky-dokončení) |
+| CZ | <a id="cz-fáze-8b---sql-a-etl"></a><a id="fáze-8b---sql-a-etl"></a>[FÁZE 8B - SQL a ETL](cs/ROADMAP.md#cz-fáze-8b---sql-a-etl) |
+| CZ | <a id="cz-cíl-13"></a><a id="cíl-13"></a>[Cíl](cs/ROADMAP.md#cz-cíl-13) |
+| CZ | <a id="cz-soubor-35"></a><a id="soubor-35"></a>[Soubor](cs/ROADMAP.md#cz-soubor-35) |
+| CZ | <a id="cz-soubor-36"></a><a id="soubor-36"></a>[Soubor](cs/ROADMAP.md#cz-soubor-36) |
+| CZ | <a id="cz-soubor-37"></a><a id="soubor-37"></a>[Soubor](cs/ROADMAP.md#cz-soubor-37) |
+| CZ | <a id="cz-soubor-38"></a><a id="soubor-38"></a>[Soubor](cs/ROADMAP.md#cz-soubor-38) |
+| CZ | <a id="cz-nový-koncept---etl"></a><a id="nový-koncept---etl"></a>[Nový koncept - ETL](cs/ROADMAP.md#cz-nový-koncept---etl) |
+| CZ | <a id="cz-fáze-8b--podmínky-dokončení"></a><a id="fáze-8b--podmínky-dokončení"></a>[FÁZE 8B — Podmínky dokončení](cs/ROADMAP.md#cz-fáze-8b--podmínky-dokončení) |
+| CZ | <a id="cz-fáze-8c---mlops"></a><a id="fáze-8c---mlops"></a>[FÁZE 8C - MLOps](cs/ROADMAP.md#cz-fáze-8c---mlops) |
+| CZ | <a id="cz-cíl-14"></a><a id="cíl-14"></a>[Cíl](cs/ROADMAP.md#cz-cíl-14) |
+| CZ | <a id="cz-soubor-39"></a><a id="soubor-39"></a>[Soubor](cs/ROADMAP.md#cz-soubor-39) |
+| CZ | <a id="cz-nový-koncept---sledování-experimentů"></a><a id="nový-koncept---sledování-experimentů"></a>[Nový koncept - Sledování experimentů](cs/ROADMAP.md#cz-nový-koncept---sledování-experimentů) |
+| CZ | <a id="cz-soubor-40"></a><a id="soubor-40"></a>[Soubor](cs/ROADMAP.md#cz-soubor-40) |
+| CZ | <a id="cz-fáze-8c--podmínky-dokončení"></a><a id="fáze-8c--podmínky-dokončení"></a>[FÁZE 8C — Podmínky dokončení](cs/ROADMAP.md#cz-fáze-8c--podmínky-dokončení) |
+| CZ | <a id="cz-fáze-8d---pokročilí-agenti"></a><a id="fáze-8d---pokročilí-agenti"></a>[FÁZE 8D - Pokročilí agenti](cs/ROADMAP.md#cz-fáze-8d---pokročilí-agenti) |
+| CZ | <a id="cz-původní-plánovací-odhady--historické"></a><a id="původní-plánovací-odhady--historické"></a>[Původní plánovací odhady — historické](cs/ROADMAP.md#cz-původní-plánovací-odhady--historické) |
+| CZ | <a id="cz-historie-plánování"></a><a id="historie-plánování"></a>[Historie plánování](cs/ROADMAP.md#cz-historie-plánování) |
+
+[↑ Nahoru / Back to top](#top)
