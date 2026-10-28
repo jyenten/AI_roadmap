@@ -23,7 +23,7 @@ The project processes technical PDF documentation into searchable chunks and pro
 
 ### Verification
 
-Latest *locally reported* full-suite run after BM25 integration: **210 passed, 1 skipped** (the skip was due to Windows symlink restrictions). This is not a claim about GitHub Actions status; see the Actions tab for remote CI runs.
+Historical *locally reported* full-suite run after BM25 integration: **210 passed, 1 skipped** (the skip was due to Windows symlink restrictions). This is not a current test count or a claim about GitHub Actions status; see the [PR #3 checks](https://github.com/jyenten/AI_roadmap/pull/3/checks) for this revision.
 
 ### Architecture at a glance
 

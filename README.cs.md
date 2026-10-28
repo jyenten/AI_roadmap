@@ -23,8 +23,9 @@
 ## Rychlý start na Windows
 
 ```powershell
-cd D:\AI_roadmap\rag_api_project
-python -m venv .venv
+# Z kořene klonovaného repozitáře:
+cd rag_api_project
+py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 if (!(Test-Path .env)) { Copy-Item .env.example .env }

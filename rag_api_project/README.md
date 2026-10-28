@@ -56,10 +56,10 @@ Run from `rag_api_project/` using Python 3.11.
 **Windows PowerShell**
 
 ~~~powershell
-python -m venv .venv
+py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-Copy-Item .env.example .env
+if (!(Test-Path .env)) { Copy-Item .env.example .env }
 ~~~
 
 **macOS/Linux**
@@ -68,7 +68,7 @@ Copy-Item .env.example .env
 python3.11 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
-cp .env.example .env
+test -f .env || cp .env.example .env
 ~~~
 
 Dependencies are currently unpinned; this is not yet a fully reproducible lockfile-based installation.
@@ -157,7 +157,7 @@ docker compose down
 
 Compose maps host port `8001` to container port `8000` and mounts local Chroma/model-cache directories. This is a local container configuration, not a hosted demo.
 
-**Known limitation:** review the Docker build context and copied modules before relying on newer retrieval/evaluation functionality inside the image. The current Dockerfile copies `app/` and `scripts/` rather than every newer top-level package.
+**Known limitations:** the image copies `app/` and `scripts/`, but omits `document_search/`, `evaluation/`, `eval/` and source PDFs. Compose does not pass the host `.env` into the container. Run ingestion and evaluation natively; the container API requires a compatible mounted index. See [OPERATIONS.md](docs/OPERATIONS.md) for configuration and packaging boundaries.
 
 ## Current limitations and next steps
 

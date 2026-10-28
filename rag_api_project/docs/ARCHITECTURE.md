@@ -356,9 +356,9 @@ heuristic scoring
 result selection
 ```
 
-This file is intentionally left operational until PHASE 3.
+This file remains operational alongside the experiment retrievers in `app/retrievers/`.
 
-During PHASE 3 it will be decomposed into:
+The approved PHASE 3 target proposes decomposition into:
 
 ```text
 app/
@@ -1544,37 +1544,13 @@ PHASE 3
 
 ---
 
-### 23.3 Evaluation
+### 23.3 Evaluation — foundation implemented
 
-Current evaluation scripts exist primarily under:
-
-```text
-scripts/
-```
-
-Target:
-
-move reusable evaluation logic into:
-
-```text
-evaluation/
-```
-
-while leaving CLI and orchestration scripts under:
-
-```text
-scripts/
-```
-
-Resolution:
-
-```text
-PHASE 2
-```
+Reusable dataset loading, evidence matching, metrics, latency and history already live in `evaluation/`; CLI orchestration remains in `scripts/`. The older `scripts.evaluate_random` still contains history-path, Git-status and metric-output defects. The supported comparison workflow is `scripts.evaluate_retrieval` on DEV/RANDOM; see [EVALUATION.md](EVALUATION.md).
 
 ---
 
-### 23.4 Document Search
+### 23.4 Document Search — historical prototype replaced
 
 The previous heuristic search prototype experimented with:
 
@@ -1586,9 +1562,9 @@ anchor terms
 manual exclusions
 ```
 
-That implementation is not the target architecture.
+That historical prototype has been replaced by the generic page-based BM25 implementation in `document_search/`.
 
-Target:
+Current discovery workflow:
 
 ```text
 generic BM25 search
@@ -1596,11 +1572,7 @@ generic BM25 search
 human evidence validation
 ```
 
-Resolution:
-
-```text
-PHASE 2A
-```
+Source-PDF evidence still requires human validation, independently of search ranking.
 
 ---
 
@@ -1767,7 +1739,9 @@ preferred.
 
 ---
 
-## 26. Current Architectural Focus
+## 26. Historical Phase 2A Architectural Focus
+
+The sequence below preserves the original plan. It is no longer the active step; see the [current implementation snapshot](#current-implementation-snapshot-2026-10-28) and [development guide](DEVELOPMENT_GUIDE.md#61-current-workflow-verified-snapshot-2026-10-28). The current work is the hybrid RRF experiment described in the development log; this does not renumber the approved roadmap.
 
 Current development phase:
 

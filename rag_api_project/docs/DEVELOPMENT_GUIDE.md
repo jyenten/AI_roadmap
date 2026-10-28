@@ -890,15 +890,17 @@ lexical BM25 corpus explorer
 human validation
 ```
 
-System being evaluated:
+Systems being evaluated:
 
 ```text
-embedding retrieval
-+
-CrossEncoder reranking
+legacy retrieval
+vector retrieval
+chunk-level BM25 retrieval
 ```
 
 This separation reduces circular benchmark construction.
+
+The page explorer and chunk retriever both use BM25, so independent human evidence review remains necessary; discovery ranking alone is not independent ground truth.
 
 ---
 
@@ -1129,6 +1131,9 @@ Primary documents:
 ROADMAP.md
 ARCHITECTURE.md
 DEVELOPMENT_GUIDE.md
+OPERATIONS.md
+EVALUATION.md
+EVAL_CURATOR_AGENT.md
 ```
 
 ---
@@ -1513,6 +1518,8 @@ Completed milestones:
 - Phase 3.4: CLI registry supporting `legacy`, `vector`, `bm25`; DEV/RANDOM comparisons completed. DEV MRR: BM25 0.7171 vs Vector 0.8321; RANDOM MRR: BM25 0.8133 vs Vector 0.6050.
 
 Current development: **Phase 3.5 — Hybrid Retrieval / Reciprocal Rank Fusion**. RRF learning code and retriever-ID interface changes may exist locally but are **not** considered published until reviewed, tested and integrated. Do not conflate local WIP with released implementation.
+
+These milestone labels follow the development log, not a renumbering of the original approved roadmap (whose Phase 3.5 is Reranker). The next recorded milestone is hybrid RRF; preserve the roadmap's original priorities and phase definitions.
 
 The working method remains:
 

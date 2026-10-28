@@ -18,8 +18,9 @@ Tento projekt přijímá technická PDF, extrahuje jejich text do chunků, index
 ## Základní spuštění (PowerShell)
 
 ```powershell
-cd D:\AI_roadmap\rag_api_project
-python -m venv .venv
+# Z kořene klonovaného repozitáře:
+cd rag_api_project
+py -3.11 -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
 if (!(Test-Path .env)) { Copy-Item .env.example .env }
@@ -69,4 +70,4 @@ Předchozí hlášená regresní sada po Phase 3.4 prošla; počet testů se po 
 
 **Dostupné:** standalone RAG API, chunkový Vector a BM25 retriever, offline CLI pro `legacy`, `vector`, `bm25` na DEV/RANDOM. **Zatím nepovažuj za dokončené:** integraci BM25/hybrid do `/ask` a hybridní RRF evaluaci. Rozpracovaná lokální změna nemusí být součástí zveřejněné větve.
 
-Docker: `docker compose up --build` (host port 8001). Před provozem ověř kompatibilitu build contextu s aktuálními moduly. Projekt je výukový prototyp.
+Docker: `docker compose up --build` (host port 8001). Obraz neobsahuje `document_search/`, `evaluation/`, `eval/` ani PDF; Compose nepředává hostitelský `.env`. Ingest a evaluaci prováděj nativně, API v kontejneru vyžaduje kompatibilní připojený index. Podrobnosti viz [provozní příručka](docs/OPERATIONS.md). Projekt je výukový prototyp.

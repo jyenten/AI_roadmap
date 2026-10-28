@@ -4,6 +4,8 @@
 
 This is an observed milestone snapshot, **not** a change to the approved phase priorities. Older phase descriptions below may be historical plans; use this section and the implementation for current state.
 
+The Phase 3.3/3.4 milestone names below follow [LEARNING_LOG.md](../../LEARNING_LOG.md), whose later numbering differs from the original roadmap headings (Vector Search / Query Processing / Reranker). They do not rename or replace those approved phases. Hybrid RRF is the next development milestone, not evidence that the original Phase 3.5 Reranker plan is complete.
+
 | Milestone | Status | Evidence |
 | --- | --- | --- |
 | Chunk-level BM25 retriever (Phase 3.3) | Completed | Regression tests and historical commit `c101680` |
@@ -2906,7 +2908,9 @@ They are not pure typing estimates.
 
 ---
 
-# Current Project Status
+# Historical Project Status (original Phase 2A plan)
+
+Preserved for planning history. This section and its immediate steps are not the current status; see the [2026-10-28 snapshot](#status-snapshot--2026-10-28). Original estimates and checklists below have not been recalculated or reapproved.
 
 ## Completed or largely completed
 
@@ -2958,7 +2962,7 @@ docs/DEVELOPMENT_GUIDE.md
 
 ---
 
-# Immediate Next Steps
+# Historical Immediate Next Steps
 
 After documentation is committed:
 
