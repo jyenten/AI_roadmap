@@ -78,3 +78,14 @@ For implementation work, report:
 5. Concepts the owner should understand.
 
 The human owner approves final integration and commits.
+## Operational documentation and safety
+
+For work inside `rag_api_project/`, read the project [README](rag_api_project/README.md), [operations runbook](rag_api_project/docs/OPERATIONS.md) and [evaluation guide](rag_api_project/docs/EVALUATION.md) as applicable. The English and Czech instructions must describe the same implemented behavior.
+
+- Inspect the actual CLI and source code before documenting commands; never invent flags, paths or completed features.
+- Treat `python -m scripts.ingest` as **destructive**: it deletes and recreates an existing named Chroma collection. Never launch it or replace a user's local index without explicit authorization.
+- Do not expose or commit source PDFs, `.env`, private corpora, model caches or local Chroma data.
+- Do not modify golden evidence, benchmark metrics or protected evaluation datasets to raise a retrieval score.
+- Preserve DEV/RANDOM baselines and the independence of held-out TEST; report dataset hash, Git provenance and configuration when claiming a comparison.
+- Keep documentation-only edits separate from validator fixes and dependency/version updates where practical.
+- In REVIEW mode, report verified defects separately from risks; do not modify files unless the owner approved the change.

@@ -1,5 +1,26 @@
 # AI RAG Project Roadmap
 
+## Status snapshot — 2026-10-28
+
+This is an observed milestone snapshot, **not** a change to the approved phase priorities. Older phase descriptions below may be historical plans; use this section and the implementation for current state.
+
+The Phase 3.3/3.4 milestone names below follow [LEARNING_LOG.md](../../LEARNING_LOG.md), whose later numbering differs from the original roadmap headings (Vector Search / Query Processing / Reranker). They do not rename or replace those approved phases. Hybrid RRF is the next development milestone, not evidence that the original Phase 3.5 Reranker plan is complete.
+
+| Milestone | Status | Evidence |
+| --- | --- | --- |
+| Chunk-level BM25 retriever (Phase 3.3) | Completed | Regression tests and historical commit `c101680` |
+| BM25 evaluation CLI + DEV/RANDOM comparison (Phase 3.4) | Completed | CLI regression tests; 20 DEV and 25 RANDOM questions |
+| Hybrid BM25 + Vector with RRF (Phase 3.5) | In progress | Learning-stage RRF algorithm; not released as CLI/API mode |
+| Held-out TEST evaluation | Reserved | Do not tune on TEST |
+| Documentation runbooks and gold governance | Being updated | `docs/OPERATIONS.md`, `docs/EVALUATION.md` |
+
+**Historical MRR (Phase 3.4):** DEV BM25 0.7171 vs Vector 0.8321; RANDOM BM25 0.8133 vs Vector 0.6050. These are locally reported baseline measurements, not universal performance results. Measure latency, usage and cost where applicable, in addition to retrieval quality. The approved workflow remains **Complete → Measure → Improve**.
+
+Refer to [OPERATIONS.md](OPERATIONS.md) for reproducible local commands and [EVALUATION.md](EVALUATION.md) for evidence creation, validation and protection.
+
+---
+
+
 ## 1. Purpose
 
 This document defines the development roadmap of the AI RAG project.
@@ -2887,7 +2908,9 @@ They are not pure typing estimates.
 
 ---
 
-# Current Project Status
+# Historical Project Status (original Phase 2A plan)
+
+Preserved for planning history. This section and its immediate steps are not the current status; see the [2026-10-28 snapshot](#status-snapshot--2026-10-28). Original estimates and checklists below have not been recalculated or reapproved.
 
 ## Completed or largely completed
 
@@ -2939,7 +2962,7 @@ docs/DEVELOPMENT_GUIDE.md
 
 ---
 
-# Immediate Next Steps
+# Historical Immediate Next Steps
 
 After documentation is committed:
 

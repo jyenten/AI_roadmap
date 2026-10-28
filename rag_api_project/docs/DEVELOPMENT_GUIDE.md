@@ -890,15 +890,17 @@ lexical BM25 corpus explorer
 human validation
 ```
 
-System being evaluated:
+Systems being evaluated:
 
 ```text
-embedding retrieval
-+
-CrossEncoder reranking
+legacy retrieval
+vector retrieval
+chunk-level BM25 retrieval
 ```
 
 This separation reduces circular benchmark construction.
+
+The page explorer and chunk retriever both use BM25, so independent human evidence review remains necessary; discovery ranking alone is not independent ground truth.
 
 ---
 
@@ -1129,6 +1131,9 @@ Primary documents:
 ROADMAP.md
 ARCHITECTURE.md
 DEVELOPMENT_GUIDE.md
+OPERATIONS.md
+EVALUATION.md
+EVAL_CURATOR_AGENT.md
 ```
 
 ---
@@ -1503,53 +1508,35 @@ This is a central project rule.
 
 ---
 
-## 61. Current Workflow
+## 61. Current Workflow (verified snapshot, 2026-10-28)
 
-Current project phase:
+The previous Phase 2A sequence is **historical**, not the current active work.
+
+Completed milestones:
+
+- Phase 3.3: Chroma chunk-level BM25 retriever and regression tests.
+- Phase 3.4: CLI registry supporting `legacy`, `vector`, `bm25`; DEV/RANDOM comparisons completed. DEV MRR: BM25 0.7171 vs Vector 0.8321; RANDOM MRR: BM25 0.8133 vs Vector 0.6050.
+
+Current development: **Phase 3.5 — Hybrid Retrieval / Reciprocal Rank Fusion**. RRF learning code and retriever-ID interface changes may exist locally but are **not** considered published until reviewed, tested and integrated. Do not conflate local WIP with released implementation.
+
+These milestone labels follow the development log, not a renumbering of the original approved roadmap (whose Phase 3.5 is Reranker). The next recorded milestone is hybrid RRF; preserve the roadmap's original priorities and phase definitions.
+
+The working method remains:
 
 ```text
-PHASE 2 — Evaluation Foundation
+Complete -> Measure -> Improve
 ```
 
-Current subphase:
+Use the bilingual operational runbook `docs/OPERATIONS.md` for tested command shapes (installation, destructive ingest, API, tests, offline evaluation) and `docs/EVALUATION.md` for evidence construction and approval rules. Treat `docs/EVAL_CURATOR_AGENT.md` and nested `AGENTS.md` as binding when curating candidates.
 
-```text
-PHASE 2A — Universal Document Explorer
-```
+Documentation rules:
 
-Current implementation sequence:
-
-```text
-2A.0
-architecture freeze
-
-2A.1
-data models
-
-2A.2
-normalization + tokenization
-
-2A.3
-security foundations
-
-2A.4
-PDF loading + validation
-
-2A.5
-BM25 index
-
-2A.6
-search engine
-
-2A.7
-CLI
-
-2A.8
-integration
-```
-
-The main RAG retrieval implementation should remain unchanged until the
-evaluation foundation is sufficiently complete.
+- Document **current implementation** separately from future architecture.
+- Synchronize English and Czech procedures when behavior changes.
+- Before recommending `scripts.ingest`, warn that it **deletes and recreates** the existing Chroma collection.
+- Never invent a GitHub CI success, test count or benchmark result; distinguish local reports from remote CI evidence.
+- Keep dependency/lockfile decisions separate from feature changes.
+- Never use TEST questions for retrieval tuning.
 
 ---
 

@@ -41,11 +41,12 @@ Do not modify:
 
 ## Existing datasets
 
-Before generating candidates, inspect:
+Before generating candidates, inspect DEV/RANDOM for duplicate facts and topic coverage:
 
 - eval/dev_questions.json
 - eval/random_questions.json
-- eval/test_questions.json, if it exists
+
+Keep `eval/test_questions.json` held out. The validation script checks its IDs and normalized questions automatically, without requiring manual inspection of TEST contents during development. Ensure all three dataset files are present: the script skips missing files.
 
 Avoid duplicate questions, duplicate facts, and unnecessarily repeated topics.
 

@@ -1,5 +1,7 @@
 # AI Engineering Portfolio — Python, RAG & Retrieval Evaluation
 
+[**Český návod / Czech guide**](README.cs.md)
+
 An evolving, hands-on AI engineering project focused on building **testable retrieval systems** and understanding how they behave—not just calling an LLM API.
 
 **Tech stack:** Python 3.11 · FastAPI · Pydantic · ChromaDB · Sentence Transformers · BM25 · Pytest · Docker · GitHub Actions
@@ -21,7 +23,7 @@ The project processes technical PDF documentation into searchable chunks and pro
 
 ### Verification
 
-Latest *locally reported* full-suite run after BM25 integration: **210 passed, 1 skipped** (the skip was due to Windows symlink restrictions). This is not a claim about GitHub Actions status; see the Actions tab for remote CI runs.
+Historical *locally reported* full-suite run after BM25 integration: **210 passed, 1 skipped** (the skip was due to Windows symlink restrictions). This is not a current test count or a claim about GitHub Actions status; see the [PR #3 checks](https://github.com/jyenten/AI_roadmap/pull/3/checks) for this revision.
 
 ### Architecture at a glance
 
@@ -46,7 +48,7 @@ Technical PDF files
   FastAPI response with source metadata
 ~~~
 
-**Important:** BM25 is implemented and tested as a retriever; it is **not yet an integrated selectable retrieval mode in the RAG API or existing evaluation CLI**. Comparison and hybrid retrieval are planned follow-up work.
+**Integration status:** `legacy`, `vector` and `bm25` are selectable in the **offline evaluation CLI** (DEV/RANDOM). BM25 is **not** an established selectable mode in HTTP `/ask`. Hybrid RRF remains in development and must not be presented as completed.
 
 ## Engineering approach
 
@@ -66,12 +68,12 @@ For ongoing agent experiments, a **separate private GitHub repository** (`jyente
 
 ## Next steps
 
-- Integrate BM25 into the offline evaluation workflow and compare it with vector retrieval on development data.
-- Experiment with hybrid lexical + semantic retrieval, measuring quality and latency.
+- Preserve the measured BM25/Vector DEV and RANDOM baselines from Phase 3.4.
+- Implement and evaluate hybrid lexical + semantic retrieval (RRF) without tuning on TEST.
 - Improve reproducibility, dependency pinning, operational metrics and onboarding documentation.
 
 ## Getting started
 
-Start with the [project README](rag_api_project/README.md) for setup, API examples, tests, Docker and evaluation commands.
+Start with the [project README](rag_api_project/README.md) or [Czech project README](rag_api_project/README.cs.md). Use the bilingual [operations runbook](rag_api_project/docs/OPERATIONS.md) for setup/ingestion and the [golden evidence guide](rag_api_project/docs/EVALUATION.md) for curation, validation, approvals and evaluation.
 
 > **Project status:** educational engineering portfolio / actively developed prototype, not a production SaaS or hosted demo.

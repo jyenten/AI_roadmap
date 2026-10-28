@@ -1,5 +1,7 @@
 # RAG API — Document Search & Retrieval Evaluation
 
+[**Český návod / Czech guide**](README.cs.md) · [Bilingual operations](docs/OPERATIONS.md) · [Bilingual evaluation](docs/EVALUATION.md)
+
 A Python/FastAPI project for answering questions about technical PDF documentation, focusing on retrieval quality, source traceability, and regression testing.
 
 **Status:** actively developed educational prototype, not a production service. The existing `/ask` pipeline uses Chroma retrieval, context selection, reranking, and rule-based/model-generated responses. Separately, the repository includes a vector retriever, BM25 lexical retriever, and offline retrieval evaluation tools.
@@ -37,7 +39,7 @@ PDF documents --> text extraction / chunking --> ChromaDB + metadata
                                                            MRR / Hit@K / latency
 ~~~
 
-**Integration boundary:** BM25 is implemented and tested but is not yet selectable through `/ask` or the existing evaluation CLI. Hybrid search is planned, not implemented.
+**Integration boundary:** BM25 is implemented and selectable in the **offline evaluation CLI** together with `legacy` and `vector`. The HTTP `/ask` API has not been switched to a BM25 or hybrid retrieval mode. Hybrid RRF is work in progress, not an established released feature.
 
 ## Key engineering decisions
 
@@ -54,10 +56,11 @@ Run from `rag_api_project/` using Python 3.11.
 **Windows PowerShell**
 
 ~~~powershell
+python --version  # Must be 3.11.x.
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install -r requirements.txt
-Copy-Item .env.example .env
+if (!(Test-Path .env)) { Copy-Item .env.example .env }
 ~~~
 
 **macOS/Linux**
@@ -66,7 +69,7 @@ Copy-Item .env.example .env
 python3.11 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements.txt
-cp .env.example .env
+test -f .env || cp .env.example .env
 ~~~
 
 Dependencies are currently unpinned; this is not yet a fully reproducible lockfile-based installation.
@@ -79,7 +82,7 @@ Put technical PDF files in `data/` (ignored by Git), then run:
 python -m scripts.ingest
 ~~~
 
-The local Chroma collection is stored under `chroma_db/`. The example configuration uses the collection named `ospf`. The API requires suitable indexed data to answer corpus-specific questions.
+The local Chroma collection is stored under `chroma_db/`. The example configuration uses the collection named `ospf`. **Warning: `scripts.ingest` deletes and recreates an existing collection with that name**, rather than incrementally updating it. Back up the index if it must be preserved. The API requires suitable indexed data to answer corpus-specific questions. Full procedure: [OPERATIONS.md](docs/OPERATIONS.md).
 
 ## Running the API
 
@@ -114,7 +117,7 @@ From `rag_api_project/`:
 python -m pytest -q tests
 ~~~
 
-Most recent **locally reported** full-suite run after BM25 integration: **210 passed, 1 skipped**. The skip was caused by unavailable Windows symlink privileges; external dependency deprecation warnings were reported. Remote CI results must be verified independently on the GitHub Actions tab.
+Historical **locally reported** full-suite run after Phase 3.3 BM25 integration: **210 passed, 1 skipped**. The skip was caused by unavailable Windows symlink privileges; external dependency deprecation warnings were reported. Remote CI results must be verified independently on the GitHub Actions tab.
 
 BM25 tests use synthetic Chroma fixtures and cover pagination, ranking, deterministic tie-breaking, metadata alignment, invalid queries and records, and malformed batches.
 
@@ -122,14 +125,17 @@ BM25 tests use synthetic Chroma fixtures and cover pagination, ranking, determin
 
 The framework reports MRR, Hit@1/3/5/8 and retrieval latency mean/p50/p95. Run metadata includes the dataset hash, Git commit and dirty-worktree state. Runtime evaluation results under `eval/results/` are excluded from version control.
 
-Supported commands in the currently published evaluation CLI:
+Supported commands in the published evaluation CLI:
 
 ~~~bash
 python -m scripts.evaluate_retrieval --retriever legacy --dataset dev
 python -m scripts.evaluate_retrieval --retriever vector --dataset dev
+python -m scripts.evaluate_retrieval --retriever bm25 --dataset dev
+python -m scripts.evaluate_retrieval --retriever vector --dataset random
+python -m scripts.evaluate_retrieval --retriever bm25 --dataset random
 ~~~
 
-The documented CLI version accepts `legacy` or `vector`, and `dev` or `random`. A BM25 CLI option and hybrid retrieval evaluation are follow-up work. The held-out TEST set is reserved for final assessment, not iterative tuning.
+The CLI accepts `legacy`, `vector`, `bm25` and `dev`/`random`. It writes JSONL run history, so it is not read-only. The held-out TEST set is reserved for final assessment, not iterative tuning. See [EVALUATION.md](docs/EVALUATION.md) for evidence creation and comparison discipline.
 
 ## Standalone BM25 PDF search
 
@@ -152,12 +158,12 @@ docker compose down
 
 Compose maps host port `8001` to container port `8000` and mounts local Chroma/model-cache directories. This is a local container configuration, not a hosted demo.
 
-**Known limitation:** review the Docker build context and copied modules before relying on newer retrieval/evaluation functionality inside the image. The current Dockerfile copies `app/` and `scripts/` rather than every newer top-level package.
+**Known limitations:** the image copies `app/` and `scripts/`, but omits `document_search/`, `evaluation/`, `eval/` and source PDFs. Compose does not pass the host `.env` into the container. Run ingestion and evaluation natively; the container API requires a compatible mounted index. See [OPERATIONS.md](docs/OPERATIONS.md) for configuration and packaging boundaries.
 
 ## Current limitations and next steps
 
-- Evaluate BM25 and vector retrieval on development data; compare MRR, Hit@K and latency.
-- Experiment with hybrid lexical + semantic retrieval, based on measured results.
+- Preserve the measured Phase 3.4 BM25 vs. Vector DEV/RANDOM baseline (DEV MRR: 0.7171 vs 0.8321; RANDOM MRR: 0.8133 vs 0.6050).
+- Experiment with hybrid lexical + semantic retrieval (RRF), based on measured results, without tuning on held-out TEST.
 - Improve dependency pinning, Docker packaging coverage, and operational observability.
 - Continue improving extraction robustness, error reporting and evaluation on unseen questions.
 

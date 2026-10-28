@@ -1,5 +1,25 @@
 # AI RAG Project Architecture
 
+## Current implementation snapshot (2026-10-28)
+
+The sections marked **target** below describe planned design, not necessarily shipped code. The published `document-search-bm25` branch currently contains:
+
+- Runtime: `app/main.py`, `app/rag.py`, `app/retrieval.py` for the existing FastAPI RAG path.
+- Experiment retrievers: `app/retrievers/vector.py` and `app/retrievers/bm25.py` over the same Chroma collection.
+- Offline evaluation: `scripts/evaluate_retrieval.py` selects `legacy`, `vector` or `bm25` on DEV/RANDOM.
+- Evidence: `evaluation/evidence.py`, `evaluation/candidates.py`, approved JSON datasets and independent page-based `scripts/search_pdf.py`.
+- Hybrid RRF is **in progress** and is not yet an established selectable CLI or `/ask` mode.
+- PDF ingestion `scripts/ingest.py` **deletes and recreates** its target Chroma collection.
+
+Architecture boundaries: the standalone page explorer is not the chunk-level BM25 retriever; retrieval evaluation is independent of the HTTP answer pipeline; no raw BM25 relevance score may be added directly to vector distances. The separate bilingual [OPERATIONS.md](OPERATIONS.md) and [EVALUATION.md](EVALUATION.md) contain verified commands and golden-evidence governance.
+
+## Identity and evaluation boundary
+
+A Chroma chunk has an `id` distinct from `chunk_index`. `source`, physical `page` and chunk metadata preserve provenance. Planned hybrid fusion should match the same chunk by stable Chroma ID, not by text equality or page number alone. When changes to retrieval ranking or chunk identity are introduced, compare DEV and RANDOM results under controlled corpus/configuration and keep TEST held out.
+
+---
+
+
 ## 1. Purpose
 
 This document describes the architecture of the AI RAG project.
@@ -336,9 +356,9 @@ heuristic scoring
 result selection
 ```
 
-This file is intentionally left operational until PHASE 3.
+This file remains operational alongside the experiment retrievers in `app/retrievers/`.
 
-During PHASE 3 it will be decomposed into:
+The approved PHASE 3 target proposes decomposition into:
 
 ```text
 app/
@@ -1524,37 +1544,13 @@ PHASE 3
 
 ---
 
-### 23.3 Evaluation
+### 23.3 Evaluation — foundation implemented
 
-Current evaluation scripts exist primarily under:
-
-```text
-scripts/
-```
-
-Target:
-
-move reusable evaluation logic into:
-
-```text
-evaluation/
-```
-
-while leaving CLI and orchestration scripts under:
-
-```text
-scripts/
-```
-
-Resolution:
-
-```text
-PHASE 2
-```
+Reusable dataset loading, evidence matching, metrics, latency and history already live in `evaluation/`; CLI orchestration remains in `scripts/`. The older `scripts.evaluate_random` still contains history-path, Git-status and metric-output defects. The supported comparison workflow is `scripts.evaluate_retrieval` on DEV/RANDOM; see [EVALUATION.md](EVALUATION.md).
 
 ---
 
-### 23.4 Document Search
+### 23.4 Document Search — historical prototype replaced
 
 The previous heuristic search prototype experimented with:
 
@@ -1566,9 +1562,9 @@ anchor terms
 manual exclusions
 ```
 
-That implementation is not the target architecture.
+That historical prototype has been replaced by the generic page-based BM25 implementation in `document_search/`.
 
-Target:
+Current discovery workflow:
 
 ```text
 generic BM25 search
@@ -1576,11 +1572,7 @@ generic BM25 search
 human evidence validation
 ```
 
-Resolution:
-
-```text
-PHASE 2A
-```
+Source-PDF evidence still requires human validation, independently of search ranking.
 
 ---
 
@@ -1747,7 +1739,9 @@ preferred.
 
 ---
 
-## 26. Current Architectural Focus
+## 26. Historical Phase 2A Architectural Focus
+
+The sequence below preserves the original plan. It is no longer the active step; see the [current implementation snapshot](#current-implementation-snapshot-2026-10-28) and [development guide](DEVELOPMENT_GUIDE.md#61-current-workflow-verified-snapshot-2026-10-28). The current work is the hybrid RRF experiment described in the development log; this does not renumber the approved roadmap.
 
 Current development phase:
 
