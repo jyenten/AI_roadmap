@@ -1,10 +1,64 @@
+<a id="top"></a>
+
 # Operations runbook / Provozní příručka
+
+[Česky](#cz) · [English](#en) · [Obsah / Contents](#obsah)
+
+<a id="obsah"></a>
+
+<details>
+<summary>Obsah / Contents — kliknutím rozbalit / click to expand</summary>
+
+**Česky**
+
+- [CZ — Český návod](#cz-cz--český-návod)
+- [1. Předpoklady a instalace (Windows PowerShell)](#cz-1-předpoklady-a-instalace-windows-powershell)
+- [1a. Reprodukovatelnost závislostí (Windows Python 3.11)](#cz-1a-reprodukovatelnost-závislostí-windows-python-311)
+- [2. Konfigurace a zdroje](#cz-2-konfigurace-a-zdroje)
+- [3. Ingest PDF do ChromaDB](#cz-3-ingest-pdf-do-chromadb)
+- [4. Spuštění API](#cz-4-spuštění-api)
+- [5. Vyhledání podkladů v původních PDF (page explorer)](#cz-5-vyhledání-podkladů-v-původních-pdf-page-explorer)
+- [6. Testy a kontrola commitu](#cz-6-testy-a-kontrola-commitu)
+- [7. Offline evaluace](#cz-7-offline-evaluace)
+- [8. Docker a provozní omezení](#cz-8-docker-a-provozní-omezení)
+
+**English**
+
+- [EN — English instructions](#en-en--english-instructions)
+- [1. Setup and configuration](#en-1-setup-and-configuration)
+- [1a. Dependency reproducibility (Windows Python 3.11)](#en-1a-dependency-reproducibility-windows-python-311)
+- [2. Prepare and ingest PDF sources](#en-2-prepare-and-ingest-pdf-sources)
+- [3. Run and inspect the application](#en-3-run-and-inspect-the-application)
+- [4. PDF evidence discovery and offline evaluation](#en-4-pdf-evidence-discovery-and-offline-evaluation)
+- [5. Tests, Git and Docker](#en-5-tests-git-and-docker)
+- [6. Troubleshooting and limits](#en-6-troubleshooting-and-limits)
+
+</details>
+
+---
 
 > **Scope / Rozsah:** Current Chroma-backed RAG project, Python 3.11. Commands below run from `rag_api_project/`. This is a local educational prototype, not a production deployment.
 >
 > **Safety / Bezpečnost:** `python -m scripts.ingest` **deletes and recreates** the existing Chroma collection with the configured name. Back up the index and confirm the PDF corpus and configuration before running. It is **not** an incremental ingest.
 
+> **Rozsah:** Současný RAG projekt nad Chroma, Python 3.11. Příkazy spouštěj z `rag_api_project/`. Jde o lokální výukový prototyp.
+>
+> **Bezpečnost:** `python -m scripts.ingest` existující Chroma kolekci s nakonfigurovaným názvem **smaže a znovu vytvoří**. Před spuštěním ověř zálohu, korpus a konfiguraci; nejde o přírůstkový ingest.
+
+
+<a id="cz"></a>
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="cz-cz--český-návod"></a>
+
 ## CZ — Český návod
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="cz-1-předpoklady-a-instalace-windows-powershell"></a>
 
 ### 1. Předpoklady a instalace (Windows PowerShell)
 
@@ -34,11 +88,21 @@ test -f .env || cp .env.example .env
 
 Před instalací zkontroluj použitý interpreter a kompatibilitu balíčků. Ve zveřejněné větvi je `requirements.txt` nepinovaný; lokálně vytvořené lockfily nelze automaticky pokládat za schválené ani přenositelné. Neměň verze závislostí jako součást dokumentační úpravy.
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="cz-1a-reprodukovatelnost-závislostí-windows-python-311"></a>
+
 ### 1a. Reprodukovatelnost závislostí (Windows Python 3.11)
 
 Základní `requirements.txt` ve zveřejněné větvi obsahuje neomezené verze balíčků; lokálně může existovat `requirements-win-py311.lock.txt` s přesnými verzemi. Tento lockfile **není automaticky schválený ani verzovaný**. Nezacházej s ním jako s univerzálním instalačním návodem bez samostatné kontroly kompatibility a CI.
 
 Před případným přijetím lockfilu je nutné ověřit podporovaný Python/OS, metodu vytvoření, čisté instalace na Windows a CI, soulad s `requirements.txt` a proces aktualizace balíčků. Změny balíčků patří do samostatného commitu a nesmí se slučovat s revizí dokumentace.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="cz-2-konfigurace-a-zdroje"></a>
 
 ### 2. Konfigurace a zdroje
 
@@ -59,6 +123,11 @@ Implicitní cesty z `app/config.py`: `data/` pro PDF a `chroma_db/` pro Chroma i
 Vlož zdrojová PDF **přímo do** `data/` (nikoli do podadresářů). Současný ingest vyhledává soubory odpovídající vzoru `*.pdf`; před spuštěním ověř přesné názvy a přípony.
 
 Proměnné prostředí mají přednost před `.env`. Po změně konfigurace restartuj API (nastavení se cachuje). Ingest a vector/legacy retrieval musí používat stejný embedding model jako index. Page explorer a validátor čtou standardně relativní `data/`, nikoli `RAG_DATA_DIR`; vlastní cestu jim předej pomocí `--data-dir <adresář>`.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="cz-3-ingest-pdf-do-chromadb"></a>
 
 ### 3. Ingest PDF do ChromaDB
 
@@ -82,6 +151,11 @@ python -c "import chromadb; from app.config import get_settings; s=get_settings(
 
 Počet chunků závisí na přesné verzi PDF, chunkování a konfiguraci; historické počty nejsou univerzálním očekáváním. U změn korpusu zaznamenej názvy/identitu zdrojových PDF a konfiguraci, aby šlo výsledky evaluace reprodukovat.
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="cz-4-spuštění-api"></a>
+
 ### 4. Spuštění API
 
 ```powershell
@@ -97,6 +171,11 @@ Invoke-RestMethod -Uri http://127.0.0.1:8000/ask -Method Post -ContentType 'appl
 
 `/ready` a `/stats` poskytují další diagnostiku prostředí a kolekce. **Důležitá hranice:** BM25 je volitelný v *offline evaluation CLI*, nikoliv automaticky jako možnost pro HTTP `/ask`. Rozpracovaný hybrid nepovažuj za implementovanou funkci API.
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="cz-5-vyhledání-podkladů-v-původních-pdf-page-explorer"></a>
+
 ### 5. Vyhledání podkladů v původních PDF (page explorer)
 
 ```powershell
@@ -104,6 +183,11 @@ python -m scripts.search_pdf "OSPF router ID" --top-k 10 --interactive
 ```
 
 `scripts.search_pdf` používá samostatný BM25 index *PDF stránek* z `data/`. Není to totéž jako `app/retrievers/bm25.py`, který řadí chunky uložené v Chroma. Page explorer slouží k průzkumu a ručnímu ověření důkazů, nikoli k automatickému přepisování golden evidence.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="cz-6-testy-a-kontrola-commitu"></a>
 
 ### 6. Testy a kontrola commitu
 
@@ -124,6 +208,11 @@ python -m scripts.git_check
 
 Před prací použij `git status --short` a `git branch --show-current`. Výchozí integrační větev je `main`; změny připravuj na samostatné pracovní větvi a slučuj přes zkontrolovaný PR. Nepřepínej větev přes nesouvisející WIP. Po explicitním `git add <cesty>` přečti `git diff --cached` i seznam souborů. Helper nekontroluje tajemství, schválení ani věcný rozsah změn. Commit/push prováděj jen v autorizovaném rozsahu, bez automatického merge.
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="cz-7-offline-evaluace"></a>
+
 ### 7. Offline evaluace
 
 ```powershell
@@ -135,6 +224,11 @@ python -m scripts.evaluate_retrieval --retriever bm25 --dataset random
 ```
 
 Výstup: MRR, Hit@1/3/5/8, latence mean/P50/P95 a první pozice relevantního důkazu pro jednotlivé otázky. Běhy se zapisují do `eval/results/*_runs.jsonl` podle strategie a datasetu; obsahují hash datasetu, Git commit a příznak dirty worktree. Zápis do historie je vedlejší efekt: příkaz není čistě read-only. **TEST je held-out** a úmyslně není volbou tohoto CLI. Podrobnosti: [EVALUATION.md](EVALUATION.md).
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="cz-8-docker-a-provozní-omezení"></a>
 
 ### 8. Docker a provozní omezení
 
@@ -151,7 +245,20 @@ Compose nepředává hostitelský `.env` aplikaci: nemá `env_file` ani `environ
 
 ---
 
+
+<a id="en"></a>
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-en--english-instructions"></a>
+
 ## EN — English instructions
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-1-setup-and-configuration"></a>
 
 ### 1. Setup and configuration
 
@@ -181,9 +288,19 @@ The configuration lives in `.env` (see `.env.example` and `app/config.py`). Defa
 
 `RAG_GENERATION_MODEL_NAME` defaults to `google/flan-t5-base`; `RAG_RERANKER_MODEL_NAME` to `cross-encoder/ms-marco-MiniLM-L-6-v2`. Optional `RAG_DATA_DIR` / `RAG_CHROMA_DIR` override paths (prefer absolute paths). Environment variables override `.env`; restart the API after changes because settings are cached. Ingest and vector/legacy retrieval must use the index's embedding model. Page discovery and candidate validation default to relative `data/`, independently of `RAG_DATA_DIR`; pass `--data-dir <directory>` for a custom corpus.
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-1a-dependency-reproducibility-windows-python-311"></a>
+
 ### 1a. Dependency reproducibility (Windows Python 3.11)
 
 The published `requirements.txt` does not pin versions. A locally generated `requirements-win-py311.lock.txt` may exist but is **not automatically approved, tracked or portable**. Before adopting such a lockfile, independently verify the generation method, Python/OS support, clean Windows installs, CI compatibility, consistency with the requirements file, and an update policy. Keep dependency changes in a separate reviewed commit.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-2-prepare-and-ingest-pdf-sources"></a>
 
 ### 2. Prepare and ingest PDF sources
 
@@ -207,6 +324,11 @@ python -c "import chromadb; from app.config import get_settings; s=get_settings(
 
 Keep private PDFs, indices, `.env` secrets and model caches out of Git. Document corpus/configuration changes before comparing evaluation runs.
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-3-run-and-inspect-the-application"></a>
+
 ### 3. Run and inspect the application
 
 ```bash
@@ -220,6 +342,11 @@ Invoke-RestMethod -Uri http://127.0.0.1:8000/ask -Method Post -ContentType 'appl
 ```
 
 BM25 is selectable in the offline evaluation CLI, **not** as an established `/ask` retrieval mode. Hybrid RRF integration is experimental, not a documented deployed endpoint.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-4-pdf-evidence-discovery-and-offline-evaluation"></a>
 
 ### 4. PDF evidence discovery and offline evaluation
 
@@ -240,6 +367,11 @@ python -m scripts.evaluate_retrieval --retriever bm25 --dataset random
 ```
 
 Evaluation prints MRR, Hit@K and retrieval-only latency. It appends JSONL run history with dataset hash and Git provenance. **TEST is intentionally unavailable for iterative tuning.** Follow [EVALUATION.md](EVALUATION.md) for ground-truth construction, validation, approval and interpretation.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-5-tests-git-and-docker"></a>
 
 ### 5. Tests, Git and Docker
 
@@ -266,6 +398,11 @@ Compose exposes http://127.0.0.1:8001/docs and mounts Chroma/model-cache directo
 
 Compose does **not** pass the host `.env` to the application: it defines neither `env_file` nor `environment`, and the image contains only `.env.example`. Custom `RAG_*` values require explicit local Compose configuration with container-valid paths. Startup or `/health` alone does not verify `/ask`; also inspect `/ready` and `/stats`.
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-6-troubleshooting-and-limits"></a>
+
 ### 6. Troubleshooting and limits
 
 - Missing PDFs: inspect `data/`, exact filenames and `*.pdf` extension.
@@ -273,3 +410,5 @@ Compose does **not** pass the host `.env` to the application: it defines neither
 - Package import errors: check Python interpreter, virtual environment and project working directory.
 - `FIRST_EVIDENCE_RANK=None`: no ranked result matched the declared source/page/text evidence; this does not prove the retriever returned no documents.
 - Fast latency measurements exclude initialization and full answer generation; compare repeated warmed runs for operational conclusions.
+
+[↑ Nahoru / Back to top](#top) · [Obsah / Contents](#obsah)

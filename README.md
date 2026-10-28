@@ -1,16 +1,50 @@
+<a id="top"></a>
+
 # AI Engineering Portfolio — Python, RAG & Retrieval Evaluation
 
-[**Český návod / Czech guide**](README.cs.md)
+[Česky](README.cs.md#cz) · [English](#en) · [Obsah / Contents](#obsah)
+
+<a id="obsah"></a>
+
+<details>
+<summary>Obsah / Contents — kliknutím rozbalit / click to expand</summary>
+
+**English**
+
+- [Featured project: RAG API and document search](#en-featured-project-rag-api-and-document-search)
+- [What is implemented](#en-what-is-implemented)
+- [Verification](#en-verification)
+- [Architecture at a glance](#en-architecture-at-a-glance)
+- [Engineering approach](#en-engineering-approach)
+- [Repository layout](#en-repository-layout)
+- [Next steps](#en-next-steps)
+- [Getting started](#en-getting-started)
+
+</details>
+
+---
+
+<a id="en"></a>
 
 An evolving, hands-on AI engineering project focused on building **testable retrieval systems** and understanding how they behave—not just calling an LLM API.
 
 **Tech stack:** Python 3.11 · FastAPI · Pydantic · ChromaDB · Sentence Transformers · BM25 · Pytest · Docker · GitHub Actions
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-featured-project-rag-api-and-document-search"></a>
 
 ## Featured project: RAG API and document search
 
 **[Explore the RAG API project](rag_api_project/README.md)**
 
 The project processes technical PDF documentation into searchable chunks and provides a FastAPI question-answering workflow. In parallel, it develops standalone retrieval strategies and a reproducible offline evaluation framework.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-what-is-implemented"></a>
 
 ### What is implemented
 
@@ -21,9 +55,19 @@ The project processes technical PDF documentation into searchable chunks and pro
 - **Testing:** pytest unit and regression tests with synthetic fixtures and fake Chroma collections; GitHub Actions CI configuration.
 - **Deployment tooling:** Dockerfile and Compose configuration for the API.
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-verification"></a>
+
 ### Verification
 
-Historical *locally reported* full-suite run after BM25 integration: **210 passed, 1 skipped** (the skip was due to Windows symlink restrictions). This is not a current test count or a claim about GitHub Actions status; see the [PR #3 checks](https://github.com/jyenten/AI_roadmap/pull/3/checks) for this revision.
+Historical *locally reported* full-suite run after BM25 integration: **210 passed, 1 skipped** (the skip was due to Windows symlink restrictions). This is not a current test count or a claim about GitHub Actions status; see the dated [verified checkpoint](LEARNING_LOG.md#current-project-checkpoint) and verify new runs on [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-architecture-at-a-glance"></a>
 
 ### Architecture at a glance
 
@@ -50,6 +94,11 @@ Technical PDF files
 
 **Integration status:** `legacy`, `vector` and `bm25` are selectable in the **offline evaluation CLI** (DEV/RANDOM). BM25 is **not** an established selectable mode in HTTP `/ask`. Hybrid RRF remains in development and must not be presented as completed.
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-engineering-approach"></a>
+
 ## Engineering approach
 
 This is a hands-on learning project developed with substantial AI assistance. I use ChatGPT and Codex for explanations, design discussions, code suggestions and generation, debugging, tests, and reviews. I also implement and modify code, investigate failures, and validate changes. The repository documents the development process and the resulting system; it is not a claim that every component was independently conceived or written by me.
@@ -60,11 +109,21 @@ For the BM25 milestone, Codex prepared regression tests in an **isolated local G
 
 For ongoing agent experiments, a **separate private GitHub repository** (`jyenten/AI_roadmap_codex_mirror`) mirrors an approved public snapshot. Its `main` branch is the mirror baseline, while `agent/bm25-tests` is reserved for Codex work. The private repository is not publicly accessible and **synchronization is manual**; Codex changes are not automatically published or merged without review.
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-repository-layout"></a>
+
 ## Repository layout
 
 - [rag_api_project/](rag_api_project/) — active FastAPI, RAG, retrieval and evaluation work.
 - .github/ — CI workflow configuration.
 - [archive/](archive/) — 29 earlier programming and machine-learning exercise folders (`ALG/` and `den_1/` through `den_28_Docker/`), moved without altering their contents; preserved for learning history and reference.
+
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-next-steps"></a>
 
 ## Next steps
 
@@ -72,8 +131,15 @@ For ongoing agent experiments, a **separate private GitHub repository** (`jyente
 - Implement and evaluate hybrid lexical + semantic retrieval (RRF) without tuning on TEST.
 - Improve reproducibility, dependency pinning, operational metrics and onboarding documentation.
 
+
+[↑ Obsah / Contents](#obsah)
+
+<a id="en-getting-started"></a>
+
 ## Getting started
 
 Start with the [project README](rag_api_project/README.md) or [Czech project README](rag_api_project/README.cs.md). Use the bilingual [operations runbook](rag_api_project/docs/OPERATIONS.md) for setup/ingestion and the [golden evidence guide](rag_api_project/docs/EVALUATION.md) for curation, validation, approvals and evaluation.
 
 > **Project status:** educational engineering portfolio / actively developed prototype, not a production SaaS or hosted demo.
+
+[↑ Nahoru / Back to top](#top) · [Obsah / Contents](#obsah)
