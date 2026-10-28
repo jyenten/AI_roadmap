@@ -24,6 +24,27 @@ mean the corresponding skill is mastered.
 
 ## Current project checkpoint
 
+Date: 2026-10-28
+Default branch: main
+Reviewed project commit: bfb1d85 (before this log update)
+
+- PR #3 is merged: bilingual runbooks, evidence-validator fixes and regressions.
+- Latest verified GitHub CI on `main`: **223 passed in 4.99s**
+  ([run 40744368854](https://github.com/jyenten/AI_roadmap/actions/runs/40744368854)).
+- Gitleaks and CodeQL passed on that revision. Dependency Audit remains failing
+  with open ChromaDB findings; it has not been disabled or given an exception.
+- BM25 and Vector DEV/RANDOM baselines are preserved. They were not rerun for
+  this log update; held-out TEST remains unchanged.
+- Hybrid RRF and retriever-ID interface work remain local and uncommitted.
+- The Linux dependency-lock proposal (PR #1), Dependabot proposal (PR #2) and
+  local FAISS/storage experiment are separate from the integrated `main` state.
+
+Project completion and human skill assessment remain separate. The existing
+GUIDED assessments below are preserved; this history review assigns no new
+INDEPENDENT or PROFICIENT rating.
+
+## Historical project checkpoint — 2026-10-12
+
 Date: 2026-10-12
 Branch: document-search-bm25
 Commit: 9ed9985
@@ -46,7 +67,7 @@ Last verified full test suite:
 These are project achievements, not independent
 skill assessments.
 
-## Active learning: Phase 3.3 — BM25
+## Historical learning plan: Phase 3.3 — BM25 (2026-10-12)
 
 Topic:
 Lexical retrieval over existing Chroma chunks.
@@ -105,6 +126,121 @@ Record difficulties and misunderstandings.
 Do not inflate skill assessments.
 Revisit weak topics through independent exercises.
 
+## Project and learning history
+
+The retrospective entries added on 2026-10-28 are reconstructed from commit
+history, selected source/test changes, PR state and local worktree status.
+Dates describe recorded commits, not verified study time. Concepts listed are
+present in the work; Git authorship alone does not prove independent human
+implementation, understanding or the extent of AI assistance. Attribution is
+stated only where the existing log or observed collaboration establishes it.
+Historical scripts and experimental tests were not rerun during this log audit.
+
+### 2026-05-12 to 2026-05-22 — Python, data analysis and classical ML
+
+**Project evidence:** Exercises originally recorded on the history now retained
+by `master`, subsequently inherited by `main` and moved under `archive/`.
+
+- Python input, conditions, loops, functions and collections; later Pandas CSV
+  analysis, filtering/grouping, missing values and Matplotlib plots.
+- Linear regression, classification, cross-validation/overfitting,
+  RandomForest, feature engineering and a complete ML exercise.
+- Concepts to consolidate: train/test separation, reproducible splits,
+  preprocessing and interpreting metrics rather than only fitting a model.
+- Evidence: [initial days 1–4, 8daf3fa](https://github.com/jyenten/AI_roadmap/commit/8daf3fa),
+  [Pandas, 909b475](https://github.com/jyenten/AI_roadmap/commit/909b475),
+  [complete ML exercise, 1c852a6](https://github.com/jyenten/AI_roadmap/commit/1c852a6).
+
+### 2026-05-23 to 2026-06-09 — PyTorch, NLP, initial RAG and containers
+
+**Project evidence:** Archived learning exercises, already included in `main`.
+
+- PyTorch networks, CNN/image classification, transfer learning and ResNet18.
+- NLP sentiment classification, embeddings, BERT/tokenizers, attention and
+  Hugging Face pipeline/QA experiments.
+- Initial RAG experiments followed by FastAPI and Docker application exercises.
+- Concepts to consolidate: tensor/model interfaces, tokenization, retrieval
+  versus generation, package compatibility and container runtime boundaries.
+- Evidence: [PyTorch, 1c05b12](https://github.com/jyenten/AI_roadmap/commit/1c05b12),
+  [BERT, 4097483](https://github.com/jyenten/AI_roadmap/commit/4097483),
+  [Hugging Face QA, 1441c8a](https://github.com/jyenten/AI_roadmap/commit/1441c8a),
+  [Docker/RAG API, f57517e](https://github.com/jyenten/AI_roadmap/commit/f57517e).
+
+### 2026-07-27 to 2026-08-21 — RAG API foundation, diagnostics and CI
+
+**Project milestone:** Historical `master` foundation; included in `main`.
+
+- Improved PDF cleaning/chunking, retrieved context and alignment of sources
+  with selected context; added source metadata to API responses.
+- Added health/stats/readiness endpoints, blank-question validation and handling
+  for unavailable RAG services; added Docker and Compose setup.
+- Added API checks, a test Chroma setup, smoke tests and GitHub Actions CI.
+- Concepts covered: service readiness versus liveness, traceable responses,
+  typed API boundaries, test isolation and repeatable development checks.
+- Evidence: [source metadata, 581d6f6](https://github.com/jyenten/AI_roadmap/commit/581d6f6),
+  [readiness, 6950495](https://github.com/jyenten/AI_roadmap/commit/6950495),
+  [CI/smoke tests, 702c0ab](https://github.com/jyenten/AI_roadmap/commit/702c0ab),
+  [`master` tip, 3c0bfdd](https://github.com/jyenten/AI_roadmap/commit/3c0bfdd).
+
+### 2026-09-01 to 2026-09-16 — Retrieval diagnostics and evaluation foundation
+
+**Project milestone:** Included in `main`; `retrieval-eval-refactor` retains an
+early checkpoint of this development, not the final evaluation implementation.
+
+- Added retrieval diagnostics, revised preprocessing/chunking with regression
+  tests, initial DEV retrieval evaluation and evaluation-history tooling.
+- Recorded architecture, roadmap and development rules.
+- Concepts covered: diagnosing retrieval separately from generation, chunk
+  boundaries/overlap, evidence-based evaluation and bounded development scope.
+- Evidence: [chunking regressions, 26b39e6](https://github.com/jyenten/AI_roadmap/commit/26b39e6),
+  [initial evaluation, 2fafcae](https://github.com/jyenten/AI_roadmap/commit/2fafcae),
+  [`retrieval-eval-refactor` tip, 010d8d1](https://github.com/jyenten/AI_roadmap/commit/010d8d1).
+
+### 2026-09-16 to 2026-09-17 — Independent PDF page explorer
+
+**Project milestone:** Implemented and included in `main`.
+
+- Added page/search data models, normalization/tokenization, PDF loading,
+  path/PDF/input validation, BM25 indexing/search and an interactive CLI.
+- Added synthetic tests, development checks and automatic test watching.
+- Concepts covered: immutable models, source/page identity, resource limits,
+  lexical ranking and keeping page-level discovery separate from chunk retrieval.
+- Evidence: [safe PDF loading, f05e080](https://github.com/jyenten/AI_roadmap/commit/f05e080),
+  [BM25 search, 4a0fa06](https://github.com/jyenten/AI_roadmap/commit/4a0fa06),
+  [page-explorer CLI, 1f3fad5](https://github.com/jyenten/AI_roadmap/commit/1f3fad5).
+
+### 2026-09-22 to 2026-10-08 — Evidence matching and governed evaluation
+
+**Project milestone:** Implemented and included in `main`.
+
+- Split evaluation into models, dataset loading, evidence matching, metrics,
+  runner and JSONL history; added reproducible random sampling.
+- Added DEV/RANDOM/held-out TEST separation, candidate validation/promotion
+  tools, curator rules, CODEOWNERS and evaluation-governance CI.
+- Concepts covered: physical PDF page numbers, normalized literal fragments,
+  MRR/Hit@K, random seeds, dataset leakage and human approval boundaries.
+- Evidence: [dataset models, f0b30b8](https://github.com/jyenten/AI_roadmap/commit/f0b30b8),
+  [evidence matching, 8e93ce5](https://github.com/jyenten/AI_roadmap/commit/8e93ce5),
+  [runner/metrics, ed6bf73](https://github.com/jyenten/AI_roadmap/commit/ed6bf73),
+  [random sampling, 3247ab4](https://github.com/jyenten/AI_roadmap/commit/3247ab4),
+  [governance, 8aae380](https://github.com/jyenten/AI_roadmap/commit/8aae380).
+- Later review identified defects in the older `scripts.evaluate_random`;
+  historical implementation does not mean every legacy CLI is currently sound.
+  The supported comparison procedure is documented in
+  [EVALUATION.md](rag_api_project/docs/EVALUATION.md).
+
+### 2026-10-11 to 2026-10-12 — Vector baseline, latency and agent rules
+
+**Project milestone:** Implemented and included in `main`.
+
+- Added a standalone VectorRetriever baseline, retriever selection in evaluation,
+  retrieval-only latency mean/p50/p95 and stricter run/history validation.
+- Added tests for CLI selection, latency, models/history and Git provenance.
+- Added repository-level LEARN/IMPLEMENT/REVIEW rules and this learning log.
+- Concepts covered: stable retriever interfaces, measurement boundaries,
+  reproducible run metadata and separating project completion from skill mastery.
+- Evidence: [vector/observability, 9ed9985](https://github.com/jyenten/AI_roadmap/commit/9ed9985),
+  [agent rules/log, 50797d4](https://github.com/jyenten/AI_roadmap/commit/50797d4).
 
 ### 2026-10-13 — Phase 3.3: BM25 Retriever
 
@@ -129,6 +265,40 @@ Revisit weak topics through independent exercises.
 **Next independent exercise:** Explain and modify retrieval ranking without step-by-step assistance.
 
 **Next project milestone:** BM25 vs. Vector evaluation on DEV, followed by RANDOM.
+
+### 2026-10-14 — Portfolio history, agent provenance and security automation
+
+**Project milestone:** Included in `main`.
+
+- Moved earlier exercises under `archive/` without rewriting their contents;
+  refreshed portfolio/project READMEs and disclosed AI-assisted development.
+- Documented nested agent rules, the local BM25-test worktree and manually
+  synchronized private-mirror workflow. The existing BM25 entry attributes
+  regression-test preparation to Codex; no broader independent authorship is inferred.
+- Added Gitleaks, Dependabot, Dependency Review and scheduled/PR dependency audit.
+- Concepts covered: exact staging, preserving learning evidence, isolated agent
+  work, secret scanning and distinguishing a passing test suite from dependency safety.
+- Evidence: [archive move, d157023](https://github.com/jyenten/AI_roadmap/commit/d157023),
+  [agent provenance, 646525d](https://github.com/jyenten/AI_roadmap/commit/646525d),
+  [secret scanning, b032e9a](https://github.com/jyenten/AI_roadmap/commit/b032e9a),
+  [dependency audit, 6a20b25](https://github.com/jyenten/AI_roadmap/commit/6a20b25).
+
+### 2026-10-15 to 2026-10-17 — Linux dependency reproducibility proposal
+
+**Project milestone:** Implemented on `chore/linux-lock-ci`, **not merged** into
+`main`; [PR #1](https://github.com/jyenten/AI_roadmap/pull/1) remains open.
+
+- Added a Linux/Python 3.11 dependency snapshot, clean Ubuntu installation
+  verification, direct-dependency/lock consistency checks and CI lock installation.
+- Added a separate ChromaDB risk-assessment document on that branch.
+- Concepts covered: direct versus transitive dependencies, OS-specific locks,
+  `pip check`, clean-environment validation and security risk tracking.
+- Evidence: [snapshot workflow, 4b26db1](https://github.com/jyenten/AI_roadmap/commit/4b26db1),
+  [lock checker, 8e2e7ec](https://github.com/jyenten/AI_roadmap/commit/8e2e7ec),
+  [branch tip, a258e85](https://github.com/jyenten/AI_roadmap/commit/a258e85).
+- [Historical PR CI](https://github.com/jyenten/AI_roadmap/actions/runs/39022965393)
+  passed at that tip, while dependency-security checks failed. This is not
+  approval of those dependency versions or proof that `main` uses the lock.
 
 ### 2026-10-20 — Phase 3.4: Retrieval Evaluation
 
@@ -157,3 +327,129 @@ Revisit weak topics through independent exercises.
 **Skill assessment:** GUIDED
 
 **Next project milestone:** Hybrid retrieval using RRF.
+
+### 2026-10-26 — Document store and verified FAISS bundle experiment
+
+**Project milestone:** Committed only on local `experiment/vector-backend` at
+`14159ce`; **not present in the public `main` branch**.
+
+- Added `DocumentStore` with JSON loading, ID/text/source/page validation and
+  duplicate-ID rejection.
+- Added FAISS/index-record count checks and a verified-bundle loader that checks
+  SHA-256 values against a manifest before loading the bundle.
+- Added committed storage regression tests for valid/invalid records, bundles
+  and checksums. Their presence was inspected; this audit did not execute them
+  or establish a passing test count.
+- Concepts covered: stable document IDs, separating vector index and metadata,
+  integrity versus authenticity, validation before loading and regression tests.
+- The branch descends from the **unmerged Linux-lock proposal**, so it cannot be
+  treated as an isolated, reviewed change already integrated into `main`.
+- An additional FAISS-retriever test is untracked in its worktree. A completed
+  FAISS retriever or Chroma replacement is not established by this storage commit.
+- Human/AI implementation split and independent explanation were not established
+  from the available evidence; no new skill rating is assigned.
+
+### 2026-10-26 — Automated GitHub Actions dependency proposal
+
+**Project milestone:** Bot-authored proposal, **not merged**.
+
+- `dependabot/github_actions/actions/setup-python-7.1.0` at `21a5733` proposes
+  `actions/setup-python` 7.0.0 → 7.1.0 in three workflows.
+- [PR #2](https://github.com/jyenten/AI_roadmap/pull/2) is open. Its historical
+  [CI run](https://github.com/jyenten/AI_roadmap/actions/runs/40291737972) passed;
+  not all security/governance checks passed.
+- This records automation activity and a review opportunity, not human
+  implementation or a demonstrated new skill.
+
+### 2026-10-28 — Bilingual runbooks, validator regressions and default main
+
+**Project milestone:** Completed and integrated through
+[PR #3](https://github.com/jyenten/AI_roadmap/pull/3), merge commit `cbb2928`.
+
+- Codex audited/refined Czech and English READMEs, AGENTS rules, operations,
+  architecture/development status and golden-evidence procedures under explicit
+  IMPLEMENT + REVIEW delegation.
+- Fixed validation of every evidence page and duplicate normalized questions;
+  expanded synthetic candidate-validator coverage to 10 cases. Against the
+  original validator, three cases reproduced the defects.
+- Verified destructive ingest ordering with a fake client, source-page discovery
+  and validation with synthetic data, relative links and Compose configuration.
+  No real corpus benchmark, real-PDF evidence review or Docker runtime test was claimed.
+- After the owner's explicit approval, Eval Governance passed including structure
+  checks of all seven candidate batches. The owner separately authorized merge;
+  dependency-audit findings remained open and the check stayed enabled.
+- Preserved the old independent `main` as `archive/main-initial-20261028`, renamed
+  the active default branch to `main`, and aligned CI/runbooks in `bfb1d85`.
+  Existing open PR targets were updated; history and datasets were preserved.
+- Evidence: [validator fix, 5dffd5b](https://github.com/jyenten/AI_roadmap/commit/5dffd5b),
+  [regressions, aefaa40](https://github.com/jyenten/AI_roadmap/commit/aefaa40),
+  [default-branch follow-up, bfb1d85](https://github.com/jyenten/AI_roadmap/commit/bfb1d85).
+- Verification: Windows **222 passed, 1 skipped** (symlink privileges), two
+  dependency warnings; GitHub CI on `main` **223 passed**. These results concern
+  the integrated project, not the separate FAISS/lock experiments.
+- Concepts covered: evidence-based documentation, meaningful regressions,
+  governance boundaries, environment-dependent tests and preserving Git history.
+- The observed implementation/audit was agent-assisted; it does not establish
+  independent human mastery of these topics.
+
+## Uncommitted work observed on 2026-10-28
+
+These are worktree observations, not dated completed milestones. Their creation
+dates and correctness are not inferred from file presence.
+
+- Former `document-search-bm25` worktree: local `rrf_contribution`/`fuse_rankings`
+  prototype with deterministic ID tie-breaking; BM25/Vector `search_with_ids`
+  interface changes; modified requirements and an untracked Windows lockfile.
+  There is no committed/released HybridRetriever integration or verified hybrid
+  evaluation result from this work. Dependencies/lockfile are not approved by
+  their existence. Other untracked agent experiments were not attributed to a
+  versioned milestone.
+- `agent/phase3-model-hardening`: the branch tip is the older `8aae380`, with
+  uncommitted history/model/CLI/latency/retriever/test changes. Several concerns
+  overlap the later integrated vector-baseline milestone; the dirty worktree is
+  not evidence of another completed or merged feature.
+- `experiment/vector-backend`: committed storage work is distinguished above
+  from its untracked FAISS-retriever test. No experimental test-pass claim is made.
+
+The original worktrees and their uncommitted changes were read only and preserved.
+Next learning focus remains hybrid RRF with DEV/RANDOM measurement and no TEST
+tuning; the storage/backend experiment remains a separate review track.
+
+## Branch audit coverage — 2026-10-28
+
+Seven current public GitHub branches were fetched and inspected. Ancestor
+branches are counted once in the history above, rather than as separate
+achievements. The inventory is a point-in-time snapshot, not a live status page.
+
+| Public branch | Reviewed tip | Status relative to the reviewed `main` |
+| --- | --- | --- |
+| `main` | `bfb1d85` | Integrated project and current default |
+| `master` | `3c0bfdd` | Historical API/CI foundation; ancestor of `main` |
+| `retrieval-eval-refactor` | `010d8d1` | Early roadmap/evaluation checkpoint; ancestor of `main` |
+| `docs/bilingual-rag-runbooks-20261028` | `9504b1e` | Merged through PR #3 |
+| `chore/linux-lock-ci` | `a258e85` | Unmerged PR #1; lock proposal only |
+| `dependabot/github_actions/actions/setup-python-7.1.0` | `21a5733` | Unmerged bot proposal, PR #2 |
+| `archive/main-initial-20261028` | `0cb285c` | Preserved independent initial README history |
+
+Eight local branches in the original project clone were also inspected, along
+with all five registered worktrees. The current documentation checkout's
+`main` and documentation branch are already represented in the public table.
+
+| Original local branch | Reviewed tip | Evidence/state |
+| --- | --- | --- |
+| `agent/bm25-tests` | `646525d` | Clean worktree; tip already included in `main`; BM25 test provenance documented |
+| `agent/phase3-model-hardening` | `8aae380` | Tip included in `main`; dirty audit worktree kept separate |
+| `chore/linux-lock-ci` | `a258e85` | Clean worktree; same unmerged proposal as the public branch |
+| `document-search-bm25` | `f9cc7e2` | Former default name; dirty hybrid/dependency worktree, not synchronized by this audit |
+| `experiment/vector-backend` | `14159ce` | Local-only storage/FAISS commit plus an untracked retriever test |
+| `master` | `3c0bfdd` | Same historical checkpoint as the public branch |
+| `retrieval-eval-refactor` | `010d8d1` | Same historical checkpoint as the public branch |
+| `retrieval-eval-refactor¨` | `3c0bfdd` | Local alias of the `master` checkpoint; no unique milestone |
+
+Cached private-mirror refs `codex-private/main` and
+`codex-private/agent/bm25-tests` both pointed to `646525d`, already included in
+the public history. Only those local refs were inspected; the live private
+remote was not fetched. The obsolete cached `origin/document-search-bm25` in
+the documentation checkout is a pre-rename ref, not an eighth current public
+branch. No branches, source code, datasets or dependency files were changed by
+this learning-log audit.
