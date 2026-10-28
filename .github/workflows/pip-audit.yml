@@ -4,7 +4,7 @@ on:
   pull_request:
   push:
     branches:
-      - document-search-bm25
+      - main
     paths:
       - "rag_api_project/requirements.txt"
       - ".github/workflows/pip-audit.yml"

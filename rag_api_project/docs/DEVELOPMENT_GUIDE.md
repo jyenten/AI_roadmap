@@ -1080,7 +1080,7 @@ Example of an appropriate branch:
 document-search-bm25
 ```
 
-because it represents a separate architectural development direction.
+because it represented a separate architectural development direction. That development branch later became the default `main` branch; use separate working branches for new changes.
 
 ---
 

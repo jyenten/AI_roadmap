@@ -2,7 +2,7 @@
 
 ## Current implementation snapshot (2026-10-28)
 
-The sections marked **target** below describe planned design, not necessarily shipped code. The published `document-search-bm25` branch currently contains:
+The sections marked **target** below describe planned design, not necessarily shipped code. The default `main` branch currently contains:
 
 - Runtime: `app/main.py`, `app/rag.py`, `app/retrieval.py` for the existing FastAPI RAG path.
 - Experiment retrievers: `app/retrievers/vector.py` and `app/retrievers/bm25.py` over the same Chroma collection.

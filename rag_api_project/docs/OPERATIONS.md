@@ -122,7 +122,7 @@ python -m scripts.git_check
 
 `scripts.git_check` kontroluje staged whitespace a spouští pytest. Pro změny v `eval/` nebo pravidlech curatoru platí dodatečná pravidla v `AGENTS.md`, `docs/EVAL_CURATOR_AGENT.md` a CI governance.
 
-Před prací použij `git status --short` a `git branch --show-current`. Pro pokračování PR #3 použij existující větev `docs/bilingual-rag-runbooks-20261028` (base `document-search-bm25`); nepřepínej větev přes nesouvisející WIP. Po explicitním `git add <cesty>` přečti `git diff --cached` i seznam souborů. Helper nekontroluje tajemství, schválení ani věcný rozsah změn. Commit/push prováděj jen v autorizovaném rozsahu, bez automatického merge.
+Před prací použij `git status --short` a `git branch --show-current`. Výchozí integrační větev je `main`; změny připravuj na samostatné pracovní větvi a slučuj přes zkontrolovaný PR. Nepřepínej větev přes nesouvisející WIP. Po explicitním `git add <cesty>` přečti `git diff --cached` i seznam souborů. Helper nekontroluje tajemství, schválení ani věcný rozsah změn. Commit/push prováděj jen v autorizovaném rozsahu, bez automatického merge.
 
 ### 7. Offline evaluace
 
@@ -253,7 +253,7 @@ python -m scripts.git_check
 
 Use explicit `git add <paths>`, review staged changes, and follow project agent/governance rules. Never silently modify gold evidence to improve a score.
 
-Inspect `git status --short` and `git branch --show-current` first. Continue PR #3 on `docs/bilingual-rag-runbooks-20261028`, based on `document-search-bm25`; do not switch across unrelated WIP. After staging exact paths, inspect `git diff --cached` and its file list. The helper checks staged whitespace and runs tests; it does not verify secrets, approvals or scope. Commit/push only within authorized scope; never merge automatically.
+Inspect `git status --short` and `git branch --show-current` first. The default integration branch is `main`; prepare changes on a separate working branch and merge through a reviewed PR. Do not switch across unrelated WIP. After staging exact paths, inspect `git diff --cached` and its file list. The helper checks staged whitespace and runs tests; it does not verify secrets, approvals or scope. Commit/push only within authorized scope; never merge automatically.
 
 Docker commands (from the project directory):
 
