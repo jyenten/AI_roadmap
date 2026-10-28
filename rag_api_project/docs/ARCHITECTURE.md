@@ -1,5 +1,25 @@
 # AI RAG Project Architecture
 
+## Current implementation snapshot (2026-10-28)
+
+The sections marked **target** below describe planned design, not necessarily shipped code. The published `document-search-bm25` branch currently contains:
+
+- Runtime: `app/main.py`, `app/rag.py`, `app/retrieval.py` for the existing FastAPI RAG path.
+- Experiment retrievers: `app/retrievers/vector.py` and `app/retrievers/bm25.py` over the same Chroma collection.
+- Offline evaluation: `scripts/evaluate_retrieval.py` selects `legacy`, `vector` or `bm25` on DEV/RANDOM.
+- Evidence: `evaluation/evidence.py`, `evaluation/candidates.py`, approved JSON datasets and independent page-based `scripts/search_pdf.py`.
+- Hybrid RRF is **in progress** and is not yet an established selectable CLI or `/ask` mode.
+- PDF ingestion `scripts/ingest.py` **deletes and recreates** its target Chroma collection.
+
+Architecture boundaries: the standalone page explorer is not the chunk-level BM25 retriever; retrieval evaluation is independent of the HTTP answer pipeline; no raw BM25 relevance score may be added directly to vector distances. The separate bilingual [OPERATIONS.md](OPERATIONS.md) and [EVALUATION.md](EVALUATION.md) contain verified commands and golden-evidence governance.
+
+## Identity and evaluation boundary
+
+A Chroma chunk has an `id` distinct from `chunk_index`. `source`, physical `page` and chunk metadata preserve provenance. Planned hybrid fusion should match the same chunk by stable Chroma ID, not by text equality or page number alone. When changes to retrieval ranking or chunk identity are introduced, compare DEV and RANDOM results under controlled corpus/configuration and keep TEST held out.
+
+---
+
+
 ## 1. Purpose
 
 This document describes the architecture of the AI RAG project.
