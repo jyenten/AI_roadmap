@@ -93,7 +93,7 @@ Jde o aktuální plánovací bod, nikoli o přečíslování nebo náhradu schv�
 | Porovnání chunkového BM25 a Vector | Implementované v offline CLI nad DEV/RANDOM | `app/retrievers/`, [zapsané milníky](LEARNING_LOG.md#cz-historie-projektu-a-učení) |
 | Hybridní lexikální/sémantický retrieval s RRF | Lokálně rozpracovaný; nejde o zveřejněný režim CLI/API | [Záznam necommitnuté práce](LEARNING_LOG.md#cz-necommitnutá-práce-pozorovaná-28-10-2026) |
 | Evaluace na odděleném TEST | Vyhrazena pro závěrečné posouzení, nikoli průběžné ladění | [Evaluační pravidla](EVALUATION.md#cz) |
-| Dvojjazyčné příručky a regrese validátoru | Začleněné přes [PR #3](https://github.com/jyenten/local-rag-api/pull/3) | [Provoz](OPERATIONS.md#cz), [evaluace](EVALUATION.md#cz) |
+| Dvojjazyčné příručky a regrese validátoru | Začleněné přes [PR #3](https://github.com/jyenten/local_rag_api/pull/3) | [Provoz](OPERATIONS.md#cz), [evaluace](EVALUATION.md#cz) |
 | Automatizace závislostí a bezpečnosti | Zapnutá; nálezy závislosti ChromaDB zůstávají otevřené | `.github/workflows/`, [aktuální projektový bod](LEARNING_LOG.md#cz-ověřený-stav-projektu) |
 
 Podrobné výsledky a historické MRR/Hit@K patří do evaluační metodiky a deníku učení; roadmapa neudržuje další kopii benchmarkové tabulky.
@@ -3317,6 +3317,6 @@ Nejde o odhady samotného psaní kódu.
 
 ## Historie plánování
 
-Předchozí stav FÁZE 2A a podrobný seznam nejbližších úkolů zůstávají v [roadmapě před zkrácením](https://github.com/jyenten/local-rag-api/blob/d7c3b4f71711c798646bd0a878b96b9c46c92d93/rag_api_project/docs/ROADMAP.md#historical-project-status-original-phase-2a-plan). Popisují starší bod, nikoli dnešní další kroky. Dokončená práce je v [LEARNING_LOG.md](LEARNING_LOG.md#cz); aktuální zaměření patří pouze do [aktuálního zaměření vývoje](#cz-aktuální-zaměření-vývoje) této roadmapy.
+Předchozí stav FÁZE 2A a podrobný seznam nejbližších úkolů zůstávají v [roadmapě před zkrácením](https://github.com/jyenten/local_rag_api/blob/d7c3b4f71711c798646bd0a878b96b9c46c92d93/rag_api_project/docs/ROADMAP.md#historical-project-status-original-phase-2a-plan). Popisují starší bod, nikoli dnešní další kroky. Dokončená práce je v [LEARNING_LOG.md](LEARNING_LOG.md#cz); aktuální zaměření patří pouze do [aktuálního zaměření vývoje](#cz-aktuální-zaměření-vývoje) této roadmapy.
 
 [↑ Nahoru](#top)

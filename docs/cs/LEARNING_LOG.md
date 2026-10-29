@@ -81,7 +81,7 @@ Výchozí větev: main
 Zkontrolovaný commit projektu: bfb1d85 (před touto aktualizací deníku)
 
 - PR #3 je sloučený: dvojjazyčné provozní návody, opravy validátoru evidence a regrese.
-- Poslední ověřené GitHub CI na `main`: **223 úspěšných testů za 4,99 s** ([běh 40744368854](https://github.com/jyenten/local-rag-api/actions/runs/40744368854)).
+- Poslední ověřené GitHub CI na `main`: **223 úspěšných testů za 4,99 s** ([běh 40744368854](https://github.com/jyenten/local_rag_api/actions/runs/40744368854)).
 - Gitleaks a CodeQL na této revizi prošly. Dependency Audit nadále selhává kvůli otevřeným nálezům ChromaDB; nebyl vypnut ani pro něj nebyla udělena výjimka.
 - Baseline BM25 a Vector na DEV/RANDOM zůstávají zachované. Při aktualizaci tohoto deníku nebyly znovu měřeny; oddělený TEST zůstává beze změny.
 - Hybridní RRF a práce na rozhraní ID retrieverů zůstávají lokální a necommitnuté.
@@ -202,7 +202,7 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Vstup v Pythonu, podmínky, cykly, funkce a kolekce; později analýza CSV v Pandas, filtrování/seskupování, chybějící hodnoty a grafy Matplotlib.
 - Lineární regrese, klasifikace, křížová validace/přeučení, RandomForest, tvorba příznaků a úplné ML cvičení.
 - Pojmy k upevnění: oddělení train/test, reprodukovatelné rozdělení, předzpracování a interpretace metrik místo pouhého fitování modelu.
-- Důkazy: [počáteční dny 1–4, 8daf3fa](https://github.com/jyenten/local-rag-api/commit/8daf3fa), [Pandas, 909b475](https://github.com/jyenten/local-rag-api/commit/909b475), [úplné ML cvičení, 1c852a6](https://github.com/jyenten/local-rag-api/commit/1c852a6).
+- Důkazy: [počáteční dny 1–4, 8daf3fa](https://github.com/jyenten/local_rag_api/commit/8daf3fa), [Pandas, 909b475](https://github.com/jyenten/local_rag_api/commit/909b475), [úplné ML cvičení, 1c852a6](https://github.com/jyenten/local_rag_api/commit/1c852a6).
 
 
 <a id="cz-2026-05-23-až-2026-06-09--pytorch-nlp-počáteční-rag-a-kontejnery"></a>
@@ -215,7 +215,7 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Klasifikace sentimentu v NLP, embeddingy, BERT/tokenizéry, attention a experimenty Hugging Face pipeline/QA.
 - Počáteční RAG experimenty následované cvičeními aplikací FastAPI a Docker.
 - Pojmy k upevnění: rozhraní tensor/model, tokenizace, retrieval oproti generování, kompatibilita balíčků a hranice běhu kontejnerů.
-- Důkazy: [PyTorch, 1c05b12](https://github.com/jyenten/local-rag-api/commit/1c05b12), [BERT, 4097483](https://github.com/jyenten/local-rag-api/commit/4097483), [Hugging Face QA, 1441c8a](https://github.com/jyenten/local-rag-api/commit/1441c8a), [Docker/RAG API, f57517e](https://github.com/jyenten/local-rag-api/commit/f57517e).
+- Důkazy: [PyTorch, 1c05b12](https://github.com/jyenten/local_rag_api/commit/1c05b12), [BERT, 4097483](https://github.com/jyenten/local_rag_api/commit/4097483), [Hugging Face QA, 1441c8a](https://github.com/jyenten/local_rag_api/commit/1441c8a), [Docker/RAG API, f57517e](https://github.com/jyenten/local_rag_api/commit/f57517e).
 
 
 <a id="cz-2026-07-27-až-2026-08-21--základ-rag-api-diagnostika-a-ci"></a>
@@ -228,7 +228,7 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Endpointy health/stats/readiness, validace prázdných otázek a ošetření nedostupnosti RAG služeb; Docker a Compose konfigurace.
 - Kontroly API, testovací Chroma, smoke testy a GitHub Actions CI.
 - Zahrnuté pojmy: připravenost služby oproti životnosti, dohledatelné odpovědi, typované hranice API, izolace testů a opakovatelné vývojové kontroly.
-- Důkazy: [metadata zdrojů, 581d6f6](https://github.com/jyenten/local-rag-api/commit/581d6f6), [readiness, 6950495](https://github.com/jyenten/local-rag-api/commit/6950495), [CI/smoke testy, 702c0ab](https://github.com/jyenten/local-rag-api/commit/702c0ab), [vrchol `master`, 3c0bfdd](https://github.com/jyenten/local-rag-api/commit/3c0bfdd).
+- Důkazy: [metadata zdrojů, 581d6f6](https://github.com/jyenten/local_rag_api/commit/581d6f6), [readiness, 6950495](https://github.com/jyenten/local_rag_api/commit/6950495), [CI/smoke testy, 702c0ab](https://github.com/jyenten/local_rag_api/commit/702c0ab), [vrchol `master`, 3c0bfdd](https://github.com/jyenten/local_rag_api/commit/3c0bfdd).
 
 
 <a id="cz-2026-09-01-až-2026-09-16--diagnostika-retrievalu-a-základ-evaluace"></a>
@@ -240,7 +240,7 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Diagnostika retrievalu, upravené předzpracování/chunkování s regresními testy, počáteční DEV evaluace a nástroje historie evaluace.
 - Zaznamenaná architektura, roadmapa a vývojová pravidla.
 - Zahrnuté pojmy: diagnostika retrievalu odděleně od generování, hranice/překryv chunků, evaluace podložená evidencí a ohraničený rozsah vývoje.
-- Důkazy: [regrese chunkování, 26b39e6](https://github.com/jyenten/local-rag-api/commit/26b39e6), [počáteční evaluace, 2fafcae](https://github.com/jyenten/local-rag-api/commit/2fafcae), [vrchol `retrieval-eval-refactor`, 010d8d1](https://github.com/jyenten/local-rag-api/commit/010d8d1).
+- Důkazy: [regrese chunkování, 26b39e6](https://github.com/jyenten/local_rag_api/commit/26b39e6), [počáteční evaluace, 2fafcae](https://github.com/jyenten/local_rag_api/commit/2fafcae), [vrchol `retrieval-eval-refactor`, 010d8d1](https://github.com/jyenten/local_rag_api/commit/010d8d1).
 
 
 <a id="cz-2026-09-16-až-2026-09-17--nezávislý-průzkumník-pdf-stránek"></a>
@@ -252,7 +252,7 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Modely stránek/vyhledávání, normalizace/tokenizace, načítání PDF, validace cest/PDF/vstupů, BM25 indexování/vyhledávání a interaktivní CLI.
 - Syntetické testy, vývojové kontroly a automatické sledování změn pro testy.
 - Zahrnuté pojmy: neměnné modely, identita zdroje/stránky, limity prostředků, lexikální řazení a oddělení stránkového průzkumu od chunkového retrievalu.
-- Důkazy: [bezpečné načítání PDF, f05e080](https://github.com/jyenten/local-rag-api/commit/f05e080), [BM25 vyhledávání, 4a0fa06](https://github.com/jyenten/local-rag-api/commit/4a0fa06), [CLI průzkumníku stránek, 1f3fad5](https://github.com/jyenten/local-rag-api/commit/1f3fad5).
+- Důkazy: [bezpečné načítání PDF, f05e080](https://github.com/jyenten/local_rag_api/commit/f05e080), [BM25 vyhledávání, 4a0fa06](https://github.com/jyenten/local_rag_api/commit/4a0fa06), [CLI průzkumníku stránek, 1f3fad5](https://github.com/jyenten/local_rag_api/commit/1f3fad5).
 
 
 <a id="cz-2026-09-22-až-2026-10-08--párování-evidence-a-řízená-evaluace"></a>
@@ -264,7 +264,7 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Evaluace rozdělená na modely, načítání datasetů, párování evidence, metriky, runner a JSONL historii; reprodukovatelný náhodný výběr.
 - Oddělení DEV/RANDOM/závěrečného TEST, validace/povýšení kandidátů, kurátorská pravidla, CODEOWNERS a CI Eval Governance.
 - Zahrnuté pojmy: fyzická čísla PDF stránek, normalizované doslovné fragmenty, MRR/Hit@K, náhodné seedy, únik dat mezi datasety a hranice lidského schválení.
-- Důkazy: [modely datasetů, f0b30b8](https://github.com/jyenten/local-rag-api/commit/f0b30b8), [párování evidence, 8e93ce5](https://github.com/jyenten/local-rag-api/commit/8e93ce5), [runner/metriky, ed6bf73](https://github.com/jyenten/local-rag-api/commit/ed6bf73), [náhodný výběr, 3247ab4](https://github.com/jyenten/local-rag-api/commit/3247ab4), [governance, 8aae380](https://github.com/jyenten/local-rag-api/commit/8aae380).
+- Důkazy: [modely datasetů, f0b30b8](https://github.com/jyenten/local_rag_api/commit/f0b30b8), [párování evidence, 8e93ce5](https://github.com/jyenten/local_rag_api/commit/8e93ce5), [runner/metriky, ed6bf73](https://github.com/jyenten/local_rag_api/commit/ed6bf73), [náhodný výběr, 3247ab4](https://github.com/jyenten/local_rag_api/commit/3247ab4), [governance, 8aae380](https://github.com/jyenten/local_rag_api/commit/8aae380).
 - Pozdější revize našla vady ve starším `scripts.evaluate_random`; historická implementace neznamená, že je každé starší CLI nyní správné. Podporovaný postup porovnání je v [EVALUATION.md](EVALUATION.md#cz).
 
 
@@ -278,7 +278,7 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Testy výběru v CLI, latence, modelů/historie a Git původu.
 - Globální pravidla LEARN/IMPLEMENT/REVIEW a tento deník učení.
 - Zahrnuté pojmy: stabilní rozhraní retrieverů, hranice měření, reprodukovatelná metadata běhu a oddělení dokončení projektu od zvládnutí dovedností.
-- Důkazy: [vector/observabilita, 9ed9985](https://github.com/jyenten/local-rag-api/commit/9ed9985), [pravidla agentů/deník, 50797d4](https://github.com/jyenten/local-rag-api/commit/50797d4).
+- Důkazy: [vector/observabilita, 9ed9985](https://github.com/jyenten/local_rag_api/commit/9ed9985), [pravidla agentů/deník, 50797d4](https://github.com/jyenten/local_rag_api/commit/50797d4).
 
 
 <a id="cz-2026-10-13--fáze-33-bm25-retriever"></a>
@@ -318,20 +318,20 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 - Zdokumentována vnořená pravidla agentů, lokální worktree BM25 testů a ručně synchronizované soukromé zrcadlo. Existující BM25 záznam připisuje přípravu regresních testů Codexu; širší samostatné autorství se nevyvozuje.
 - Přidány Gitleaks, Dependabot, Dependency Review a plánovaný/PR audit závislostí.
 - Zahrnuté pojmy: přesný staging, zachování dokladů učení, izolovaná práce agentů, kontrola tajných údajů a odlišení úspěšných testů od bezpečnosti závislostí.
-- Důkazy: [přesun archivu, d157023](https://github.com/jyenten/local-rag-api/commit/d157023), [původ agentů, 646525d](https://github.com/jyenten/local-rag-api/commit/646525d), [kontrola tajných údajů, b032e9a](https://github.com/jyenten/local-rag-api/commit/b032e9a), [audit závislostí, 6a20b25](https://github.com/jyenten/local-rag-api/commit/6a20b25).
+- Důkazy: [přesun archivu, d157023](https://github.com/jyenten/local_rag_api/commit/d157023), [původ agentů, 646525d](https://github.com/jyenten/local_rag_api/commit/646525d), [kontrola tajných údajů, b032e9a](https://github.com/jyenten/local_rag_api/commit/b032e9a), [audit závislostí, 6a20b25](https://github.com/jyenten/local_rag_api/commit/6a20b25).
 
 
 <a id="cz-2026-10-15-až-2026-10-17--návrh-reprodukovatelných-linux-závislostí"></a>
 
 ### 2026-10-15 až 2026-10-17 — Návrh reprodukovatelných Linux závislostí
 
-**Milník projektu:** Implementováno na `chore/linux-lock-ci`, **nesloučeno** do `main`; [PR #1](https://github.com/jyenten/local-rag-api/pull/1) zůstává otevřený.
+**Milník projektu:** Implementováno na `chore/linux-lock-ci`, **nesloučeno** do `main`; [PR #1](https://github.com/jyenten/local_rag_api/pull/1) zůstává otevřený.
 
 - Snapshot závislostí Linux/Python 3.11, ověření čisté instalace Ubuntu, kontroly souladu přímých závislostí/locku a instalace podle locku v CI.
 - Na této větvi přidán samostatný dokument posouzení rizik ChromaDB.
 - Zahrnuté pojmy: přímé a tranzitivní závislosti, locky specifické pro OS, `pip check`, validace čistého prostředí a sledování bezpečnostních rizik.
-- Důkazy: [snapshot workflow, 4b26db1](https://github.com/jyenten/local-rag-api/commit/4b26db1), [kontrola locku, 8e2e7ec](https://github.com/jyenten/local-rag-api/commit/8e2e7ec), [vrchol větve, a258e85](https://github.com/jyenten/local-rag-api/commit/a258e85).
-- [Historické PR CI](https://github.com/jyenten/local-rag-api/actions/runs/39022965393) na tomto vrcholu prošlo, bezpečnostní kontroly závislostí selhaly. Nejde o schválení verzí závislostí ani důkaz, že `main` tento lock používá.
+- Důkazy: [snapshot workflow, 4b26db1](https://github.com/jyenten/local_rag_api/commit/4b26db1), [kontrola locku, 8e2e7ec](https://github.com/jyenten/local_rag_api/commit/8e2e7ec), [vrchol větve, a258e85](https://github.com/jyenten/local_rag_api/commit/a258e85).
+- [Historické PR CI](https://github.com/jyenten/local_rag_api/actions/runs/39022965393) na tomto vrcholu prošlo, bezpečnostní kontroly závislostí selhaly. Nejde o schválení verzí závislostí ani důkaz, že `main` tento lock používá.
 
 
 <a id="cz-2026-10-20--fáze-34-evaluace-retrievalu"></a>
@@ -385,7 +385,7 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 **Milník projektu:** Návrh vytvořený botem, **nesloučený**.
 
 - `dependabot/github_actions/actions/setup-python-7.1.0` v `21a5733` navrhuje `actions/setup-python` 7.0.0 → 7.1.0 ve třech workflow.
-- [PR #2](https://github.com/jyenten/local-rag-api/pull/2) je otevřený. Jeho historický [běh CI](https://github.com/jyenten/local-rag-api/actions/runs/40291737972) prošel; neprošly všechny bezpečnostní/governance kontroly.
+- [PR #2](https://github.com/jyenten/local_rag_api/pull/2) je otevřený. Jeho historický [běh CI](https://github.com/jyenten/local_rag_api/actions/runs/40291737972) prošel; neprošly všechny bezpečnostní/governance kontroly.
 - Jde o záznam aktivity automatizace a příležitosti k revizi, nikoli lidské implementace nebo prokázané nové dovednosti.
 
 
@@ -393,14 +393,14 @@ Retrospektivní záznamy přidané 28. 10. 2026 jsou rekonstruované z historie 
 
 ### 2026-10-28 — Dvojjazyčné návody, regrese validátoru a výchozí main
 
-**Milník projektu:** Dokončeno a integrováno přes [PR #3](https://github.com/jyenten/local-rag-api/pull/3), merge commit `cbb2928`.
+**Milník projektu:** Dokončeno a integrováno přes [PR #3](https://github.com/jyenten/local_rag_api/pull/3), merge commit `cbb2928`.
 
 - Codex na základě výslovného zadání IMPLEMENT + REVIEW zkontroloval a upravil české/anglické README, pravidla AGENTS, provozní dokumentaci, stav architektury/vývoje a postupy golden evidence.
 - Opravena validace každé stránky evidence a duplicitních normalizovaných otázek; syntetické pokrytí validátoru rozšířeno na 10 případů. Proti původnímu validátoru tři případy reprodukovaly vady.
 - Ověřeno pořadí destruktivního ingestu s falešným klientem, průzkum zdrojových stránek a validace na syntetických datech, relativní odkazy a konfigurace Compose. Nebyl tvrzen benchmark skutečného korpusu, revize evidence ze skutečných PDF ani běhový test Dockeru.
 - Po výslovném schválení vlastníkem prošla Eval Governance včetně strukturálních kontrol všech sedmi kandidátních dávek. Vlastník samostatně schválil merge; nálezy auditu závislostí zůstaly otevřené a kontrola zapnutá.
 - Původní nezávislá `main` zachována jako `archive/main-initial-20261028`, aktivní výchozí větev přejmenována na `main` a CI/návody sladěny v `bfb1d85`. Cíle existujících otevřených PR byly aktualizovány; historie a datasety zachovány.
-- Důkazy: [oprava validátoru, 5dffd5b](https://github.com/jyenten/local-rag-api/commit/5dffd5b), [regrese, aefaa40](https://github.com/jyenten/local-rag-api/commit/aefaa40), [navazující změna výchozí větve, bfb1d85](https://github.com/jyenten/local-rag-api/commit/bfb1d85).
+- Důkazy: [oprava validátoru, 5dffd5b](https://github.com/jyenten/local_rag_api/commit/5dffd5b), [regrese, aefaa40](https://github.com/jyenten/local_rag_api/commit/aefaa40), [navazující změna výchozí větve, bfb1d85](https://github.com/jyenten/local_rag_api/commit/bfb1d85).
 - Ověření: Windows **222 úspěšných testů, 1 přeskočený** (oprávnění symlinků), dvě varování závislostí; GitHub CI na `main` **223 úspěšných testů**. Tyto výsledky se vztahují k integrovanému projektu, nikoli k odděleným FAISS/lock experimentům.
 - Zahrnuté pojmy: dokumentace podložená důkazy, smysluplné regrese, schvalovací hranice, testy závislé na prostředí a zachování Git historie.
 - Pozorovaná implementace/audit využívaly agenta; nedokládají samostatné lidské zvládnutí těchto témat.
@@ -419,14 +419,14 @@ fází. Původní specifikace fází zůstaly zachovány.
 - Identifikátory API, příklady, historická měření, existující hodnocení dovedností
   a schvalovací hranice zůstávají zachované. Překlad nedokládá nový implementační
   milník ani samostatnou úroveň dovednosti.
-- Důkaz: [oddělení dokumentace, da6b382](https://github.com/jyenten/local-rag-api/commit/da6b382).
+- Důkaz: [oddělení dokumentace, da6b382](https://github.com/jyenten/local_rag_api/commit/da6b382).
 
 
 <a id="cz-oddělené-jazyky-dokumentace"></a>
 
 ### 2026-10-28 — Oddělené jazyky dokumentace
 
-**Údržba projektu:** Revize dokumentace v [PR #4](https://github.com/jyenten/local-rag-api/pull/4) odděluje úplné projektové příručky do `rag_api_project/docs/en/` a `rag_api_project/docs/cs/` se společným [rozcestníkem dokumentace](../README.md).
+**Údržba projektu:** Revize dokumentace v [PR #4](https://github.com/jyenten/local_rag_api/pull/4) odděluje úplné projektové příručky do `rag_api_project/docs/en/` a `rag_api_project/docs/cs/` se společným [rozcestníkem dokumentace](../README.md).
 
 - README, AGENTS a tento deník zachovávají anglické/české soubory na své úrovni repozitáře/projektu.
 - Původní cesty příruček zachovávají navigaci a záložky kapitol; relativní odkazy a přepínání jazyků jsou aktualizované.
@@ -494,7 +494,7 @@ Uložené reference soukromého zrcadla `codex-private/main` a `codex-private/ag
 **Údržba dokumentace:** Připravena na základě výslovného pokynu vlastníka provést úpravy z auditu portfolia; výchozí veřejný `main` je `28c7450`.
 
 - Zkráceny české/anglické úvody portfolia a projektu, zachováno přiznání výrazné AI asistence a odkazy na pravidla agentů; podrobnosti workflow odkazují na deník a vývojovou příručku.
-- Doplněn datovaný veřejný výsledek CI pro `28c7450`: **223 testů prošlo za 7,51 s** ([běh 40770029069](https://github.com/jyenten/local-rag-api/actions/runs/40770029069)). Výsledek patří této výchozí revizi, nikoli automaticky novému dokumentačnímu commitu.
+- Doplněn datovaný veřejný výsledek CI pro `28c7450`: **223 testů prošlo za 7,51 s** ([běh 40770029069](https://github.com/jyenten/local_rag_api/actions/runs/40770029069)). Výsledek patří této výchozí revizi, nikoli automaticky novému dokumentačnímu commitu.
 - Doplněny odkazy na historické MRR srovnání BM25/Vector z 20. 10. 2026 s výslovným původem a omezeními reprodukce; anglický příklad schématu a tabulka baseline jsou obsahově soběstačné. Historické metriky se neměřily znovu ani neměnily.
 - Opraveny dokumentační cesty v ukázce cílové struktury, zpřesněn skutečný rozsah `/ready` a v přehledech použity plné názvy milníků místo nejednoznačných čísel fází z deníku.
 - Do provozních příruček doplněn vlastníkem potvrzený lokální/offline kontext a známý stav kontroly závislostí. Závislostní a bezpečnostní kontroly zůstávají zapnuté.
