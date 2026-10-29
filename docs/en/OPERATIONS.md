@@ -11,6 +11,7 @@
 
 - [1. Setup and configuration](#en-1-setup-and-configuration)
 - [1a. Dependency reproducibility (Windows Python 3.11)](#en-1a-dependency-reproducibility-windows-python-311)
+- [1b. Dependency audit context](#en-1b-dependency-audit-context)
 - [2. Prepare and ingest PDF sources](#en-2-prepare-and-ingest-pdf-sources)
 - [3. Run and inspect the application](#en-3-run-and-inspect-the-application)
 - [4. PDF evidence discovery and offline evaluation](#en-4-pdf-evidence-discovery-and-offline-evaluation)
@@ -63,6 +64,15 @@ The configuration lives in `.env` (see `.env.example` and `app/config.py`). Defa
 ## 1a. Dependency reproducibility (Windows Python 3.11)
 
 The published `requirements.txt` does not pin versions. A locally generated `requirements-win-py311.lock.txt` may exist but is **not automatically approved, tracked or portable**. Before adopting such a lockfile, independently verify the generation method, Python/OS support, clean Windows installs, CI compatibility, consistency with the requirements file, and an update policy. Keep dependency changes in a separate reviewed commit.
+
+
+<a id="en-1b-dependency-audit-context"></a>
+
+## 1b. Dependency audit context
+
+The chatbot currently runs locally/offline. The owner keeps dependency auditing enabled with possible future API integration in mind. The [2026-10-28 audit of `bfb1d85`](https://github.com/jyenten/AI_roadmap/actions/runs/40744368979) failed with known ChromaDB findings; this is separate from the Python test results.
+
+Applicability depends on the affected functionality and deployment configuration. Local/offline operation alone does not establish whether a finding is exploitable or irrelevant. No check is disabled or waived by this documentation update.
 
 
 <a id="en-2-prepare-and-ingest-pdf-sources"></a>

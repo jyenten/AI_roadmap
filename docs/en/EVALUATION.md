@@ -16,6 +16,7 @@
 - [5. Matching and metrics](#en-5-matching-and-metrics)
 - [6. Repeatable evaluation and historical baseline](#en-6-repeatable-evaluation-and-historical-baseline)
 - [7. Governance references](#en-7-governance-references)
+- [8. Historical baseline — 2026-10-20](#en-8-historical-baseline-2026-10-20)
 
 </details>
 
@@ -33,7 +34,24 @@
 
 A **gold evidence** record is a source-grounded passage, not an LLM-generated answer. It stores `source` (exact PDF filename), `pages` (physical 1-based PDF page numbers, not printed page labels) and `contains_any` (literal evidence fragments with **OR** semantics). An evaluation question also has `id`, `topic` and `question`. Multiple GoldEvidence records may support independent valid passages.
 
-The [JSON example](../cs/EVALUATION.md#cz-1-co-je-golden-evidence) illustrates the **schema only**; it is not real evidence. Evidence text must be copied from the actual local PDF and must genuinely answer the question.
+The following example illustrates the **schema only**. It is not verified gold evidence and must not be promoted into a protected dataset. Evidence text must be copied from the actual local PDF and must genuinely answer the question.
+
+```json
+[
+  {
+    "id": "routing_dev_example",
+    "topic": "routing",
+    "question": "Example question about a documented routing fact?",
+    "gold_evidence": [
+      {
+        "source": "Example_Manual.pdf",
+        "pages": [12],
+        "contains_any": ["Exact evidence fragment copied from the source PDF"]
+      }
+    ]
+  }
+]
+```
 
 
 <a id="en-2-dataset-separation"></a>
@@ -94,7 +112,7 @@ This changes a protected dataset. GitHub evaluation governance requires human re
 
 `evaluation/evidence.py` matches a retrieved *chunk* only when its source name equals the evidence source, its physical page is allowed, and at least one normalized `contains_any` fragment occurs in the chunk. `FIRST_EVIDENCE_RANK=None` means no evaluated result matched the gold evidence; it does not mean zero results were retrieved.
 
-MRR averages reciprocal rank of the first match (0 for no match); Hit@K counts questions with a match at or before position K. Extracted page text and indexed chunk text can differ; avoid fragments crossing chunk boundaries.
+MRR averages reciprocal rank of the first match (0 for no match); Hit@K counts questions with a match at or before position K. These measure evidence retrieval, not the accuracy of generated answers. Extracted page text and indexed chunk text can differ; avoid fragments crossing chunk boundaries.
 
 
 <a id="en-6-repeatable-evaluation-and-historical-baseline"></a>
@@ -113,13 +131,26 @@ The CLI **writes** strategy-specific JSONL histories under `eval/results/`; each
 
 Also archive PDF SHA-256 hashes, an index snapshot/identity and chunk count, ingest parameters, model versions/revisions, Python/packages, OS/hardware and warm-up procedure. These are not automatically recorded; a dirty flag does not preserve the diff. Export histories before rotation. There is no built-in warm-up or repetition flag; the first `search()` is included. `--dataset random` evaluates the **entire fixed** RANDOM set. The older `scripts.evaluate_random` has unresolved history-path, Git-status and metric-output defects; use `scripts.evaluate_retrieval --dataset random` for this workflow.
 
-The historical Phase 3.4 metrics are in the [baseline table](../cs/EVALUATION.md#cz-8-historický-baseline-phase-34-2026-10-20) (2026-10-20). MRR is recorded in [LEARNING_LOG.md](LEARNING_LOG.md); Hit@K values are from an earlier working report and cannot be independently confirmed without its original JSONL runs. These are not current guarantees or production performance claims. Latency is retrieval-only; do not infer full-pipeline cost or response time from it. No TEST tuning.
+The historical BM25 vs. Vector comparison from 2026-10-20 and its evidence limits are in the [baseline table](#en-8-historical-baseline-2026-10-20). Latency is retrieval-only; do not infer full-pipeline cost or response time from it. No TEST tuning.
 
 
 <a id="en-7-governance-references"></a>
 
 ## 7. Governance references
 
-Read [EVAL_CURATOR_AGENT.md](EVAL_CURATOR_AGENT.md), [../AGENTS.md](PROJECT_AGENTS.md), the [repository-wide AGENTS.md](AGENTS.md), [OPERATIONS.md](OPERATIONS.md) and `.github/workflows/eval-governance.yml` (repository root). Respect human approval boundaries even when a validation script passes.
+Read [EVAL_CURATOR_AGENT.md](EVAL_CURATOR_AGENT.md), [project agent rules](PROJECT_AGENTS.md), the [repository-wide AGENTS.md](AGENTS.md), [OPERATIONS.md](OPERATIONS.md) and `.github/workflows/eval-governance.yml` (repository root). Respect human approval boundaries even when a validation script passes.
+
+<a id="en-8-historical-baseline-2026-10-20"></a>
+
+## 8. Historical baseline — 2026-10-20
+
+| Dataset | Retriever | MRR | Hit@1 | Hit@3 | Hit@5 | Hit@8 |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| DEV (20) | BM25 | 0.7171 | 0.60 | 0.80 | 0.85 | 0.90 |
+| DEV (20) | Vector | 0.8321 | 0.75 | 0.90 | 0.90 | 0.95 |
+| RANDOM (25) | BM25 | 0.8133 | 0.72 | 0.92 | 0.92 | 0.92 |
+| RANDOM (25) | Vector | 0.6050 | 0.44 | 0.72 | 0.80 | 0.84 |
+
+MRR is recorded in the [learning log](LEARNING_LOG.md#en-2026-10-20--phase-34-retrieval-evaluation). Hit@K values come from an earlier working report and cannot be independently confirmed without its original JSONL runs. The original runs, corpus and index are not bundled with this public snapshot; the values were not reproduced for this documentation update. These are retrieval metrics, not generated-answer accuracy. Changes to data or environment may change the results. Short-run retrieval latency is not a final operational benchmark. TEST remains held out.
 
 [↑ Back to top](#top)

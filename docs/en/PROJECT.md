@@ -31,7 +31,7 @@
 
 <a id="en"></a>
 
-A Python/FastAPI project for answering questions about technical PDF documentation, focusing on retrieval quality, source traceability, and regression testing.
+A local Python/FastAPI chatbot for technical PDF documentation, currently focused on OSPF, with retrieval evaluation, source metadata and regression testing. Inference runs locally; installation and first model use may require downloads.
 
 **Status:** actively developed educational prototype, not a production service. The existing `/ask` pipeline uses Chroma retrieval, context selection, reranking, and rule-based/model-generated responses. Separately, the repository includes a vector retriever, BM25 lexical retriever, and offline retrieval evaluation tools.
 
@@ -65,17 +65,11 @@ Python 3.11 · FastAPI · Pydantic · ChromaDB · Sentence Transformers · `rank
 
 ### Data flow
 
-~~~text
-PDF documents --> text extraction / chunking --> ChromaDB + metadata
-                                                   |
-                   +-------------------------------+----------------------+
-                   |                                                      |
-             Existing RAG API                                     Retrieval experiments
-          context -> answer -> sources                           vector and BM25 retrievers
-                                                                  |
-                                                          offline evaluation
-                                                           MRR / Hit@K / latency
-~~~
+| Path | Current flow | Interface / output |
+| --- | --- | --- |
+| HTTP answers | Chroma retrieval → context selection and reranking → OSPF rules / model fallback | `POST /ask`; answer, context and source metadata |
+| Offline evaluation | `legacy` / `vector` / `bm25` → comparison against golden evidence | CLI; MRR, Hit@K, retrieval latency and JSONL history |
+| PDF exploration | Local PDF pages → independent BM25 page search | `search_pdf` CLI; input to human evidence verification |
 
 **Integration boundary:** BM25 is implemented and selectable in the **offline evaluation CLI** together with `legacy` and `vector`. The HTTP `/ask` API has not been switched to a BM25 or hybrid retrieval mode. Hybrid RRF is work in progress, not an established released feature.
 
@@ -143,7 +137,7 @@ python -m uvicorn app.main:app --reload
 Open `http://127.0.0.1:8000/docs` for interactive OpenAPI documentation.
 
 - `GET /` and `GET /health` — liveness and environment information.
-- `GET /ready` — verifies the RAG service is available; requires working corpus/configuration.
+- `GET /ready` — initializes the retrieval service and reports the collection chunk count. It does not execute a question or verify generation-model loading, so it is not a full `/ask` smoke test.
 - `GET /stats` — reports collection information.
 - `POST /ask` — accepts a JSON question and returns an answer with supporting context and source previews.
 
@@ -170,7 +164,7 @@ From `rag_api_project/`:
 python -m pytest -q tests
 ~~~
 
-Historical **locally reported** full-suite run after Phase 3.3 BM25 integration: **210 passed, 1 skipped**. The skip was caused by unavailable Windows symlink privileges; external dependency deprecation warnings were reported. See the dated [verified checkpoint](LEARNING_LOG.md#en-current-project-checkpoint); verify new runs independently on [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
+Verified run for **commit `28c7450`, 2026-10-28**: **223 passed in 7.51s** on Ubuntu / Python 3.11 ([GitHub Actions run](https://github.com/jyenten/AI_roadmap/actions/runs/40770029069)). This is a dated test result, separate from real-corpus retrieval evaluation. Historical local runs remain in the [learning log](LEARNING_LOG.md).
 
 BM25 tests use synthetic Chroma fixtures and cover pagination, ranking, deterministic tie-breaking, metadata alignment, invalid queries and records, and malformed batches.
 
@@ -179,7 +173,7 @@ BM25 tests use synthetic Chroma fixtures and cover pagination, ranking, determin
 
 ## Offline retrieval evaluation
 
-The framework reports MRR, Hit@1/3/5/8 and retrieval latency mean/p50/p95. Run metadata includes the dataset hash, Git commit and dirty-worktree state. Runtime evaluation results under `eval/results/` are excluded from version control.
+The framework reports MRR, Hit@1/3/5/8 and retrieval latency mean/p50/p95. Run metadata includes the dataset hash, Git commit and dirty-worktree state. Runtime evaluation results under `eval/results/` are excluded from version control. Repeating a historical result requires the same source PDFs, index, retrieval configuration and model/dependency versions. The public snapshot does not bundle the original corpus, index or JSONL run histories.
 
 Supported commands in the published evaluation CLI:
 
@@ -227,7 +221,7 @@ Compose maps host port `8001` to container port `8000` and mounts local Chroma/m
 
 ## Current limitations and next steps
 
-- Preserve the measured Phase 3.4 BM25 vs. Vector DEV/RANDOM baseline (DEV MRR: 0.7171 vs 0.8321; RANDOM MRR: 0.8133 vs 0.6050).
+- Preserve the [BM25 vs. Vector DEV/RANDOM baseline recorded on 2026-10-20](EVALUATION.md#en-8-historical-baseline-2026-10-20).
 - Experiment with hybrid lexical + semantic retrieval (RRF), based on measured results, without tuning on held-out TEST.
 - Improve dependency pinning, Docker packaging coverage, and operational observability.
 - Continue improving extraction robustness, error reporting and evaluation on unseen questions.
@@ -237,12 +231,8 @@ Compose maps host port `8001` to container port `8000` and mounts local Chroma/m
 
 ## AI-assisted development and contributor boundaries
 
-This learning project uses ChatGPT and Codex for explanations, design, implementation assistance, debugging, tests, and review; not every component was independently conceived or written by the repository owner.
+Developed with substantial ChatGPT and Codex assistance, including code and test generation, debugging and review. The [learning log](LEARNING_LOG.md) records collaboration, BM25 test attribution and learning evidence; completed features are separate from independently demonstrated skills. Detailed worktree and private-mirror history remains in that log.
 
-The [repository-level AGENTS.md](AGENTS.md) describes LEARN, IMPLEMENT and REVIEW modes and requires human approval for integration. The [project-level AGENTS.md](PROJECT_AGENTS.md) adds specific rules for evaluation dataset curation, including human approval before promoting candidate questions. Skill evidence and progress are documented in [LEARNING_LOG.md](LEARNING_LOG.md).
-
-For the BM25 feature, Codex authored synthetic regression tests in an isolated **local** worktree (`agent/bm25-tests`); the reviewed tests were integrated into the public development branch alongside the BM25 implementation.
-
-Ongoing Codex experiments use a separate **private GitHub mirror** (`jyenten/AI_roadmap_codex_mirror`). Its `main` holds an approved public snapshot and `agent/bm25-tests` provides an isolated remote branch for agent work. The original local worktree is separate from this new remote branch. Synchronization and integration are manual, subject to the approval rules in `AGENTS.md`.
+Before changing files, read the [repository rules](AGENTS.md) and [project rules](PROJECT_AGENTS.md). Development and review procedures are in the [development guide](DEVELOPMENT_GUIDE.md).
 
 [↑ Nahoru / Back to top](#top)

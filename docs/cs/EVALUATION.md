@@ -171,6 +171,6 @@ Pro reprodukci ulož mimo automatickou historii také SHA-256 každého PDF, ide
 | RANDOM (25) | BM25 | 0.8133 | 0.72 | 0.92 | 0.92 | 0.92 |
 | RANDOM (25) | Vector | 0.6050 | 0.44 | 0.72 | 0.80 | 0.84 |
 
-MRR jsou doložena v [LEARNING_LOG.md](LEARNING_LOG.md). Hodnoty Hit@K pocházejí z předchozího pracovního reportu a bez původních JSONL běhů je nelze nezávisle potvrdit. Nejsou zárukou stejného výsledku při změně dat nebo prostředí. Latency jednotlivých krátkých běhů nepovažuj za finální benchmark. TEST zůstává nedotčený.
+MRR jsou doložena v [deníku učení](LEARNING_LOG.md#cz-2026-10-20--fáze-34-evaluace-retrievalu). Hodnoty Hit@K pocházejí z předchozího pracovního reportu a bez původních JSONL běhů je nelze nezávisle potvrdit. Původní běhy, korpus ani index nejsou součástí tohoto veřejného snapshotu; hodnoty nebyly pro tuto úpravu dokumentace znovu reprodukovány. Jde o metriky retrievalu, nikoli o přesnost generovaných odpovědí. Nejsou zárukou stejného výsledku při změně dat nebo prostředí. Latency jednotlivých krátkých běhů nepovažuj za finální benchmark. TEST zůstává nedotčený.
 
 [↑ Nahoru](#top)
