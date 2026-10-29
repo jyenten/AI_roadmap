@@ -98,7 +98,7 @@ all acceptance criteria of its broader phase or production readiness.
 | Chunk-level BM25 and Vector comparison | Implemented in the offline CLI on DEV/RANDOM | `app/retrievers/`, [recorded milestones](LEARNING_LOG.md#en-project-and-learning-history) |
 | Hybrid lexical/semantic retrieval with RRF | Local work in progress; not a published CLI/API mode | [Uncommitted-work record](LEARNING_LOG.md#en-uncommitted-work-observed-on-2026-10-28) |
 | Held-out TEST evaluation | Reserved for final assessment, not iterative tuning | [Evaluation policy](EVALUATION.md) |
-| Bilingual runbooks and validator regressions | Integrated through [PR #3](https://github.com/jyenten/local-rag-api/pull/3) | [Operations](OPERATIONS.md), [evaluation](EVALUATION.md) |
+| Bilingual runbooks and validator regressions | Integrated through [PR #3](https://github.com/jyenten/local_rag_api/pull/3) | [Operations](OPERATIONS.md), [evaluation](EVALUATION.md) |
 | Dependency/security automation | Enabled; ChromaDB dependency findings remain open | `.github/workflows/`, [current project checkpoint](LEARNING_LOG.md#en-current-project-checkpoint) |
 
 Detailed results and historical MRR/Hit@K belong to the evaluation guide and
@@ -3119,7 +3119,7 @@ They are not pure typing estimates.
 ## Planning history
 
 The previous Phase 2A status and step-by-step immediate-task list are retained in
-[the pre-cleanup roadmap revision](https://github.com/jyenten/local-rag-api/blob/d7c3b4f71711c798646bd0a878b96b9c46c92d93/rag_api_project/docs/ROADMAP.md#historical-project-status-original-phase-2a-plan).
+[the pre-cleanup roadmap revision](https://github.com/jyenten/local_rag_api/blob/d7c3b4f71711c798646bd0a878b96b9c46c92d93/rag_api_project/docs/ROADMAP.md#historical-project-status-original-phase-2a-plan).
 They describe an earlier checkpoint, not today's next steps. Completed work is
 recorded in [LEARNING_LOG.md](LEARNING_LOG.md); the current focus belongs
 only to this roadmap's [current development focus](#en-current-development-focus).

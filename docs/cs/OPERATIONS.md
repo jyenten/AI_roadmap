@@ -74,7 +74,7 @@ Před případným přijetím lockfilu je nutné ověřit podporovaný Python/OS
 
 ## 1b. Kontext kontroly závislostí
 
-Chatbot nyní běží lokálně/offline. Vlastník kontrolu závislostí ponechává zapnutou i s ohledem na možné budoucí napojení API. [Audit revize `bfb1d85` z 28. 10. 2026](https://github.com/jyenten/local-rag-api/actions/runs/40744368979) skončil chybou se známými nálezy u ChromaDB; jde o stav oddělený od výsledků Python testů.
+Chatbot nyní běží lokálně/offline. Vlastník kontrolu závislostí ponechává zapnutou i s ohledem na možné budoucí napojení API. [Audit revize `bfb1d85` z 28. 10. 2026](https://github.com/jyenten/local_rag_api/actions/runs/40744368979) skončil chybou se známými nálezy u ChromaDB; jde o stav oddělený od výsledků Python testů.
 
 Relevance nálezů závisí na zasažených funkcích a konfiguraci provozu. Samotný lokální/offline provoz neprokazuje zneužitelnost ani nerelevanci nálezu. Tato úprava dokumentace žádnou kontrolu nevypíná ani neuděluje výjimku.
 
