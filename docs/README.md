@@ -1,4 +1,6 @@
-# Dokumentace AI RAG / AI RAG documentation
+<a id="dokumentace-ai-rag--ai-rag-documentation"></a>
+
+# Dokumentace Local RAG API / Local RAG API documentation
 
 Veškerá verzovaná Markdown dokumentace je v této složce. Jedinou výjimkou je [hlavní README](../README.md) v kořeni repozitáře. / All versioned Markdown documentation lives here; the sole exception is the [root README](../README.md).
 

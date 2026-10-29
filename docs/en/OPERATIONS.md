@@ -70,7 +70,7 @@ The published `requirements.txt` does not pin versions. A locally generated `req
 
 ## 1b. Dependency audit context
 
-The chatbot currently runs locally/offline. The owner keeps dependency auditing enabled with possible future API integration in mind. The [2026-10-28 audit of `bfb1d85`](https://github.com/jyenten/AI_roadmap/actions/runs/40744368979) failed with known ChromaDB findings; this is separate from the Python test results.
+The chatbot currently runs locally/offline. The owner keeps dependency auditing enabled with possible future API integration in mind. The [2026-10-28 audit of `bfb1d85`](https://github.com/jyenten/local-rag-api/actions/runs/40744368979) failed with known ChromaDB findings; this is separate from the Python test results.
 
 Applicability depends on the affected functionality and deployment configuration. Local/offline operation alone does not establish whether a finding is exploitable or irrelevant. No check is disabled or waived by this documentation update.
 

@@ -83,7 +83,7 @@ Reviewed project commit: bfb1d85 (before this log update)
 
 - PR #3 is merged: bilingual runbooks, evidence-validator fixes and regressions.
 - Latest verified GitHub CI on `main`: **223 passed in 4.99s**
-  ([run 40744368854](https://github.com/jyenten/AI_roadmap/actions/runs/40744368854)).
+  ([run 40744368854](https://github.com/jyenten/local-rag-api/actions/runs/40744368854)).
 - Gitleaks and CodeQL passed on that revision. Dependency Audit remains failing
   with open ChromaDB findings; it has not been disabled or given an exception.
 - BM25 and Vector DEV/RANDOM baselines are preserved. They were not rerun for
@@ -228,9 +228,9 @@ by `master`, subsequently inherited by `main` and moved under `archive/`.
   RandomForest, feature engineering and a complete ML exercise.
 - Concepts to consolidate: train/test separation, reproducible splits,
   preprocessing and interpreting metrics rather than only fitting a model.
-- Evidence: [initial days 1–4, 8daf3fa](https://github.com/jyenten/AI_roadmap/commit/8daf3fa),
-  [Pandas, 909b475](https://github.com/jyenten/AI_roadmap/commit/909b475),
-  [complete ML exercise, 1c852a6](https://github.com/jyenten/AI_roadmap/commit/1c852a6).
+- Evidence: [initial days 1–4, 8daf3fa](https://github.com/jyenten/local-rag-api/commit/8daf3fa),
+  [Pandas, 909b475](https://github.com/jyenten/local-rag-api/commit/909b475),
+  [complete ML exercise, 1c852a6](https://github.com/jyenten/local-rag-api/commit/1c852a6).
 
 
 <a id="en-2026-05-23-to-2026-06-09--pytorch-nlp-initial-rag-and-containers"></a>
@@ -245,10 +245,10 @@ by `master`, subsequently inherited by `main` and moved under `archive/`.
 - Initial RAG experiments followed by FastAPI and Docker application exercises.
 - Concepts to consolidate: tensor/model interfaces, tokenization, retrieval
   versus generation, package compatibility and container runtime boundaries.
-- Evidence: [PyTorch, 1c05b12](https://github.com/jyenten/AI_roadmap/commit/1c05b12),
-  [BERT, 4097483](https://github.com/jyenten/AI_roadmap/commit/4097483),
-  [Hugging Face QA, 1441c8a](https://github.com/jyenten/AI_roadmap/commit/1441c8a),
-  [Docker/RAG API, f57517e](https://github.com/jyenten/AI_roadmap/commit/f57517e).
+- Evidence: [PyTorch, 1c05b12](https://github.com/jyenten/local-rag-api/commit/1c05b12),
+  [BERT, 4097483](https://github.com/jyenten/local-rag-api/commit/4097483),
+  [Hugging Face QA, 1441c8a](https://github.com/jyenten/local-rag-api/commit/1441c8a),
+  [Docker/RAG API, f57517e](https://github.com/jyenten/local-rag-api/commit/f57517e).
 
 
 <a id="en-2026-07-27-to-2026-08-21--rag-api-foundation-diagnostics-and-ci"></a>
@@ -264,10 +264,10 @@ by `master`, subsequently inherited by `main` and moved under `archive/`.
 - Added API checks, a test Chroma setup, smoke tests and GitHub Actions CI.
 - Concepts covered: service readiness versus liveness, traceable responses,
   typed API boundaries, test isolation and repeatable development checks.
-- Evidence: [source metadata, 581d6f6](https://github.com/jyenten/AI_roadmap/commit/581d6f6),
-  [readiness, 6950495](https://github.com/jyenten/AI_roadmap/commit/6950495),
-  [CI/smoke tests, 702c0ab](https://github.com/jyenten/AI_roadmap/commit/702c0ab),
-  [`master` tip, 3c0bfdd](https://github.com/jyenten/AI_roadmap/commit/3c0bfdd).
+- Evidence: [source metadata, 581d6f6](https://github.com/jyenten/local-rag-api/commit/581d6f6),
+  [readiness, 6950495](https://github.com/jyenten/local-rag-api/commit/6950495),
+  [CI/smoke tests, 702c0ab](https://github.com/jyenten/local-rag-api/commit/702c0ab),
+  [`master` tip, 3c0bfdd](https://github.com/jyenten/local-rag-api/commit/3c0bfdd).
 
 
 <a id="en-2026-09-01-to-2026-09-16--retrieval-diagnostics-and-evaluation-foundation"></a>
@@ -282,9 +282,9 @@ early checkpoint of this development, not the final evaluation implementation.
 - Recorded architecture, roadmap and development rules.
 - Concepts covered: diagnosing retrieval separately from generation, chunk
   boundaries/overlap, evidence-based evaluation and bounded development scope.
-- Evidence: [chunking regressions, 26b39e6](https://github.com/jyenten/AI_roadmap/commit/26b39e6),
-  [initial evaluation, 2fafcae](https://github.com/jyenten/AI_roadmap/commit/2fafcae),
-  [`retrieval-eval-refactor` tip, 010d8d1](https://github.com/jyenten/AI_roadmap/commit/010d8d1).
+- Evidence: [chunking regressions, 26b39e6](https://github.com/jyenten/local-rag-api/commit/26b39e6),
+  [initial evaluation, 2fafcae](https://github.com/jyenten/local-rag-api/commit/2fafcae),
+  [`retrieval-eval-refactor` tip, 010d8d1](https://github.com/jyenten/local-rag-api/commit/010d8d1).
 
 
 <a id="en-2026-09-16-to-2026-09-17--independent-pdf-page-explorer"></a>
@@ -298,9 +298,9 @@ early checkpoint of this development, not the final evaluation implementation.
 - Added synthetic tests, development checks and automatic test watching.
 - Concepts covered: immutable models, source/page identity, resource limits,
   lexical ranking and keeping page-level discovery separate from chunk retrieval.
-- Evidence: [safe PDF loading, f05e080](https://github.com/jyenten/AI_roadmap/commit/f05e080),
-  [BM25 search, 4a0fa06](https://github.com/jyenten/AI_roadmap/commit/4a0fa06),
-  [page-explorer CLI, 1f3fad5](https://github.com/jyenten/AI_roadmap/commit/1f3fad5).
+- Evidence: [safe PDF loading, f05e080](https://github.com/jyenten/local-rag-api/commit/f05e080),
+  [BM25 search, 4a0fa06](https://github.com/jyenten/local-rag-api/commit/4a0fa06),
+  [page-explorer CLI, 1f3fad5](https://github.com/jyenten/local-rag-api/commit/1f3fad5).
 
 
 <a id="en-2026-09-22-to-2026-10-08--evidence-matching-and-governed-evaluation"></a>
@@ -315,11 +315,11 @@ early checkpoint of this development, not the final evaluation implementation.
   tools, curator rules, CODEOWNERS and evaluation-governance CI.
 - Concepts covered: physical PDF page numbers, normalized literal fragments,
   MRR/Hit@K, random seeds, dataset leakage and human approval boundaries.
-- Evidence: [dataset models, f0b30b8](https://github.com/jyenten/AI_roadmap/commit/f0b30b8),
-  [evidence matching, 8e93ce5](https://github.com/jyenten/AI_roadmap/commit/8e93ce5),
-  [runner/metrics, ed6bf73](https://github.com/jyenten/AI_roadmap/commit/ed6bf73),
-  [random sampling, 3247ab4](https://github.com/jyenten/AI_roadmap/commit/3247ab4),
-  [governance, 8aae380](https://github.com/jyenten/AI_roadmap/commit/8aae380).
+- Evidence: [dataset models, f0b30b8](https://github.com/jyenten/local-rag-api/commit/f0b30b8),
+  [evidence matching, 8e93ce5](https://github.com/jyenten/local-rag-api/commit/8e93ce5),
+  [runner/metrics, ed6bf73](https://github.com/jyenten/local-rag-api/commit/ed6bf73),
+  [random sampling, 3247ab4](https://github.com/jyenten/local-rag-api/commit/3247ab4),
+  [governance, 8aae380](https://github.com/jyenten/local-rag-api/commit/8aae380).
 - Later review identified defects in the older `scripts.evaluate_random`;
   historical implementation does not mean every legacy CLI is currently sound.
   The supported comparison procedure is documented in
@@ -338,8 +338,8 @@ early checkpoint of this development, not the final evaluation implementation.
 - Added repository-level LEARN/IMPLEMENT/REVIEW rules and this learning log.
 - Concepts covered: stable retriever interfaces, measurement boundaries,
   reproducible run metadata and separating project completion from skill mastery.
-- Evidence: [vector/observability, 9ed9985](https://github.com/jyenten/AI_roadmap/commit/9ed9985),
-  [agent rules/log, 50797d4](https://github.com/jyenten/AI_roadmap/commit/50797d4).
+- Evidence: [vector/observability, 9ed9985](https://github.com/jyenten/local-rag-api/commit/9ed9985),
+  [agent rules/log, 50797d4](https://github.com/jyenten/local-rag-api/commit/50797d4).
 
 
 <a id="en-2026-10-13--phase-33-bm25-retriever"></a>
@@ -383,10 +383,10 @@ early checkpoint of this development, not the final evaluation implementation.
 - Added Gitleaks, Dependabot, Dependency Review and scheduled/PR dependency audit.
 - Concepts covered: exact staging, preserving learning evidence, isolated agent
   work, secret scanning and distinguishing a passing test suite from dependency safety.
-- Evidence: [archive move, d157023](https://github.com/jyenten/AI_roadmap/commit/d157023),
-  [agent provenance, 646525d](https://github.com/jyenten/AI_roadmap/commit/646525d),
-  [secret scanning, b032e9a](https://github.com/jyenten/AI_roadmap/commit/b032e9a),
-  [dependency audit, 6a20b25](https://github.com/jyenten/AI_roadmap/commit/6a20b25).
+- Evidence: [archive move, d157023](https://github.com/jyenten/local-rag-api/commit/d157023),
+  [agent provenance, 646525d](https://github.com/jyenten/local-rag-api/commit/646525d),
+  [secret scanning, b032e9a](https://github.com/jyenten/local-rag-api/commit/b032e9a),
+  [dependency audit, 6a20b25](https://github.com/jyenten/local-rag-api/commit/6a20b25).
 
 
 <a id="en-2026-10-15-to-2026-10-17--linux-dependency-reproducibility-proposal"></a>
@@ -394,17 +394,17 @@ early checkpoint of this development, not the final evaluation implementation.
 ### 2026-10-15 to 2026-10-17 — Linux dependency reproducibility proposal
 
 **Project milestone:** Implemented on `chore/linux-lock-ci`, **not merged** into
-`main`; [PR #1](https://github.com/jyenten/AI_roadmap/pull/1) remains open.
+`main`; [PR #1](https://github.com/jyenten/local-rag-api/pull/1) remains open.
 
 - Added a Linux/Python 3.11 dependency snapshot, clean Ubuntu installation
   verification, direct-dependency/lock consistency checks and CI lock installation.
 - Added a separate ChromaDB risk-assessment document on that branch.
 - Concepts covered: direct versus transitive dependencies, OS-specific locks,
   `pip check`, clean-environment validation and security risk tracking.
-- Evidence: [snapshot workflow, 4b26db1](https://github.com/jyenten/AI_roadmap/commit/4b26db1),
-  [lock checker, 8e2e7ec](https://github.com/jyenten/AI_roadmap/commit/8e2e7ec),
-  [branch tip, a258e85](https://github.com/jyenten/AI_roadmap/commit/a258e85).
-- [Historical PR CI](https://github.com/jyenten/AI_roadmap/actions/runs/39022965393)
+- Evidence: [snapshot workflow, 4b26db1](https://github.com/jyenten/local-rag-api/commit/4b26db1),
+  [lock checker, 8e2e7ec](https://github.com/jyenten/local-rag-api/commit/8e2e7ec),
+  [branch tip, a258e85](https://github.com/jyenten/local-rag-api/commit/a258e85).
+- [Historical PR CI](https://github.com/jyenten/local-rag-api/actions/runs/39022965393)
   passed at that tip, while dependency-security checks failed. This is not
   approval of those dependency versions or proof that `main` uses the lock.
 
@@ -472,8 +472,8 @@ early checkpoint of this development, not the final evaluation implementation.
 
 - `dependabot/github_actions/actions/setup-python-7.1.0` at `21a5733` proposes
   `actions/setup-python` 7.0.0 → 7.1.0 in three workflows.
-- [PR #2](https://github.com/jyenten/AI_roadmap/pull/2) is open. Its historical
-  [CI run](https://github.com/jyenten/AI_roadmap/actions/runs/40291737972) passed;
+- [PR #2](https://github.com/jyenten/local-rag-api/pull/2) is open. Its historical
+  [CI run](https://github.com/jyenten/local-rag-api/actions/runs/40291737972) passed;
   not all security/governance checks passed.
 - This records automation activity and a review opportunity, not human
   implementation or a demonstrated new skill.
@@ -484,7 +484,7 @@ early checkpoint of this development, not the final evaluation implementation.
 ### 2026-10-28 — Bilingual runbooks, validator regressions and default main
 
 **Project milestone:** Completed and integrated through
-[PR #3](https://github.com/jyenten/AI_roadmap/pull/3), merge commit `cbb2928`.
+[PR #3](https://github.com/jyenten/local-rag-api/pull/3), merge commit `cbb2928`.
 
 - Codex audited/refined Czech and English READMEs, AGENTS rules, operations,
   architecture/development status and golden-evidence procedures under explicit
@@ -501,9 +501,9 @@ early checkpoint of this development, not the final evaluation implementation.
 - Preserved the old independent `main` as `archive/main-initial-20261028`, renamed
   the active default branch to `main`, and aligned CI/runbooks in `bfb1d85`.
   Existing open PR targets were updated; history and datasets were preserved.
-- Evidence: [validator fix, 5dffd5b](https://github.com/jyenten/AI_roadmap/commit/5dffd5b),
-  [regressions, aefaa40](https://github.com/jyenten/AI_roadmap/commit/aefaa40),
-  [default-branch follow-up, bfb1d85](https://github.com/jyenten/AI_roadmap/commit/bfb1d85).
+- Evidence: [validator fix, 5dffd5b](https://github.com/jyenten/local-rag-api/commit/5dffd5b),
+  [regressions, aefaa40](https://github.com/jyenten/local-rag-api/commit/aefaa40),
+  [default-branch follow-up, bfb1d85](https://github.com/jyenten/local-rag-api/commit/bfb1d85).
 - Verification: Windows **222 passed, 1 skipped** (symlink privileges), two
   dependency warnings; GitHub CI on `main` **223 passed**. These results concern
   the integrated project, not the separate FAISS/lock experiments.
@@ -526,14 +526,14 @@ ROADMAP.md owns phase goals and status. Original phase specifications were prese
 - API identifiers, examples, historical measurements, existing skill assessments
   and approval boundaries are preserved. Translation does not establish a new
   implementation milestone or an independent skill rating.
-- Evidence: [documentation split, da6b382](https://github.com/jyenten/AI_roadmap/commit/da6b382).
+- Evidence: [documentation split, da6b382](https://github.com/jyenten/local-rag-api/commit/da6b382).
 
 
 <a id="en-separate-documentation-languages"></a>
 
 ### 2026-10-28 — Separate documentation languages
 
-**Project maintenance:** The documentation revision in [PR #4](https://github.com/jyenten/AI_roadmap/pull/4) separates full project guides into `rag_api_project/docs/en/` and `rag_api_project/docs/cs/`, with a shared [documentation index](../README.md).
+**Project maintenance:** The documentation revision in [PR #4](https://github.com/jyenten/local-rag-api/pull/4) separates full project guides into `rag_api_project/docs/en/` and `rag_api_project/docs/cs/`, with a shared [documentation index](../README.md).
 
 - README, AGENTS and this log retain English/Czech file pairs at their repository/project level.
 - Original guide paths retain navigation and chapter bookmarks; relative links and language switches are updated.
@@ -624,7 +624,7 @@ this learning-log audit.
 **Documentation maintenance:** Prepared under the owner's explicit instruction to implement the portfolio audit, based on public `main` at `28c7450`.
 
 - Shortened the English/Czech portfolio and project introductions, retained substantial AI-assistance disclosure and links to agent rules, and moved workflow detail behind learning/development references.
-- Added the dated public CI result for `28c7450`: **223 passed in 7.51s** ([run 40770029069](https://github.com/jyenten/AI_roadmap/actions/runs/40770029069)). This result belongs to that base revision, not automatically to the new documentation commit.
+- Added the dated public CI result for `28c7450`: **223 passed in 7.51s** ([run 40770029069](https://github.com/jyenten/local-rag-api/actions/runs/40770029069)). This result belongs to that base revision, not automatically to the new documentation commit.
 - Linked the historical 2026-10-20 BM25/Vector MRR comparison with explicit evidence and reproduction limits; made the English schema example and baseline table self-contained. Historical metrics were not rerun or changed.
 - Corrected documentation paths in the target-structure illustration, clarified the implemented `/ready` check and used full milestone names instead of ambiguous journal phase numbers in the portfolio summaries.
 - Recorded the owner's local/offline operation context and known dependency-audit state in operations guides. Dependency/security checks remain enabled.

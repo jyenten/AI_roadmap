@@ -1,6 +1,8 @@
 <a id="top"></a>
 
-# RAG API — Document Search & Retrieval Evaluation
+<a id="rag-api--document-search--retrieval-evaluation"></a>
+
+# Local RAG API — Document Search & Retrieval Evaluation
 
 [Česky](../cs/PROJECT.md#cz) · [English](#en) · [Documentation](../README.md)
 
@@ -164,7 +166,7 @@ From `rag_api_project/`:
 python -m pytest -q tests
 ~~~
 
-Verified run for **commit `28c7450`, 2026-10-28**: **223 passed in 7.51s** on Ubuntu / Python 3.11 ([GitHub Actions run](https://github.com/jyenten/AI_roadmap/actions/runs/40770029069)). This is a dated test result, separate from real-corpus retrieval evaluation. Historical local runs remain in the [learning log](LEARNING_LOG.md).
+Verified run for **commit `28c7450`, 2026-10-28**: **223 passed in 7.51s** on Ubuntu / Python 3.11 ([GitHub Actions run](https://github.com/jyenten/local-rag-api/actions/runs/40770029069)). This is a dated test result, separate from real-corpus retrieval evaluation. Historical local runs remain in the [learning log](LEARNING_LOG.md).
 
 BM25 tests use synthetic Chroma fixtures and cover pagination, ranking, deterministic tie-breaking, metadata alignment, invalid queries and records, and malformed batches.
 

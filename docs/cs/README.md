@@ -1,6 +1,8 @@
 <a id="top"></a>
 
-# AI Engineering Portfolio — Python, RAG a evaluace retrievalu
+<a id="ai-engineering-portfolio--python-rag-a-evaluace-retrievalu"></a>
+
+# Local RAG API — vyhledávání v dokumentech a evaluace retrievalu
 
 [Česky](#cz) · [English](../../README.md#en) · [Dokumentace](../README.md)
 
@@ -30,9 +32,11 @@ Lokální Python/FastAPI prototyp pro odpovídání nad technickými PDF, aktuá
 
 <a id="cz-hlavní-projekt-rag-api-a-vyhledávání-v-dokumentech"></a>
 
-## Hlavní projekt: RAG API a vyhledávání v dokumentech
+<a id="hlavní-projekt-rag-api-a-vyhledávání-v-dokumentech"></a>
 
-**[Otevřít projekt RAG API](PROJECT.md)**
+## Hlavní projekt: Local RAG API
+
+**[Otevřít Local RAG API](PROJECT.md)**
 
 Ingest PDF extrahuje a chunkuje technickou dokumentaci do ChromaDB. Současná HTTP pipeline používá výběr kontextu, reranking, pravidla odpovědí specifická pro OSPF a generování modelem jako fallback. Samostatné strategie retrievalu se porovnávají v offline evaluačním CLI.
 
@@ -51,7 +55,7 @@ Ingest PDF extrahuje a chunkuje technickou dokumentaci do ChromaDB. Současná H
 
 ### Ověření
 
-Ověřený běh pro **commit `28c7450`, 28. 10. 2026**: **223 testů prošlo za 7,51 s** na Ubuntu / Python 3.11 ([běh GitHub Actions](https://github.com/jyenten/AI_roadmap/actions/runs/40770029069)). Jde o datovaný výsledek testů, oddělený od evaluace retrievalu na skutečném korpusu. Historické lokální běhy zůstávají v [deníku učení](LEARNING_LOG.md).
+Ověřený běh pro **commit `28c7450`, 28. 10. 2026**: **223 testů prošlo za 7,51 s** na Ubuntu / Python 3.11 ([běh GitHub Actions](https://github.com/jyenten/local-rag-api/actions/runs/40770029069)). Jde o datovaný výsledek testů, oddělený od evaluace retrievalu na skutečném korpusu. Historické lokální běhy zůstávají v [deníku učení](LEARNING_LOG.md).
 
 <a id="cz-zaznamenany-retrieval-baseline"></a>
 
