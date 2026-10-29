@@ -76,16 +76,16 @@ Dokončená funkce projektu automaticky neznamená zvládnutí příslušné dov
 
 ## Ověřený stav projektu
 
-Datum: 2026-10-28
+Datum: 2026-10-29
 Výchozí větev: main
-Zkontrolovaný commit projektu: bfb1d85 (před touto aktualizací deníku)
+Zkontrolovaný commit projektu: 82d5889 (před touto aktualizací deníku)
 
-- PR #3 je sloučený: dvojjazyčné provozní návody, opravy validátoru evidence a regrese.
-- Poslední ověřené GitHub CI na `main`: **223 úspěšných testů za 4,99 s** ([běh 40744368854](https://github.com/jyenten/local_rag_api/actions/runs/40744368854)).
-- Gitleaks a CodeQL na této revizi prošly. Dependency Audit nadále selhává kvůli otevřeným nálezům ChromaDB; nebyl vypnut ani pro něj nebyla udělena výjimka.
+- PR #6 až #8 jsou sloučené: evidence portfolia, název Local RAG API a kanonické odkazy `jyenten/local_rag_api` jsou začleněné. Aktualizace `setup-python` z PR #2 je také sloučená; oddělený návrh lockfilu tím začleněný není.
+- Poslední ověřené GitHub CI na `main`: **223 úspěšných testů za 7,29 s** ([běh 40865587005](https://github.com/jyenten/local_rag_api/actions/runs/40865587005)).
+- Gitleaks a CodeQL na této revizi prošly. Dependency Audit nadále selhává se stejnou známou sadou nálezů ChromaDB; zůstává zapnutý bez výjimky.
 - Baseline BM25 a Vector na DEV/RANDOM zůstávají zachované. Při aktualizaci tohoto deníku nebyly znovu měřeny; oddělený TEST zůstává beze změny.
 - Hybridní RRF a práce na rozhraní ID retrieverů zůstávají lokální a necommitnuté.
-- Návrh Linux lock souboru (PR #1), návrh Dependabotu (PR #2) a lokální experiment FAISS/úložiště jsou oddělené od integrovaného stavu `main`.
+- Návrh Linux lock souboru (PR #1) zůstává otevřený; lokální experiment FAISS/úložiště je také oddělený od integrovaného stavu `main`.
 
 Dokončení projektu a hodnocení lidských dovedností zůstávají oddělené. Níže uvedená existující hodnocení GUIDED jsou zachována; tato revize historie nepřiděluje nové INDEPENDENT ani PROFICIENT.
 

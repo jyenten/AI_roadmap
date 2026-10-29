@@ -55,7 +55,7 @@ Ingest PDF extrahuje a chunkuje technickou dokumentaci do ChromaDB. Současná H
 
 ### Ověření
 
-Ověřený běh pro **commit `28c7450`, 28. 10. 2026**: **223 testů prošlo za 7,51 s** na Ubuntu / Python 3.11 ([běh GitHub Actions](https://github.com/jyenten/local_rag_api/actions/runs/40770029069)). Jde o datovaný výsledek testů, oddělený od evaluace retrievalu na skutečném korpusu. Historické lokální běhy zůstávají v [deníku učení](LEARNING_LOG.md).
+Ověřený běh pro **commit `82d5889`, 29. 10. 2026**: **223 testů prošlo za 7,29 s** na Ubuntu / Python 3.11 ([běh GitHub Actions](https://github.com/jyenten/local_rag_api/actions/runs/40865587005)). Jde o datovaný výsledek testů, oddělený od evaluace retrievalu na skutečném korpusu. Historické lokální běhy zůstávají v [deníku učení](LEARNING_LOG.md).
 
 <a id="cz-zaznamenany-retrieval-baseline"></a>
 
