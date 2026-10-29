@@ -1,6 +1,8 @@
 <a id="top"></a>
 
-# AI Engineering Portfolio — Python, RAG & Retrieval Evaluation
+<a id="ai-engineering-portfolio--python-rag--retrieval-evaluation"></a>
+
+# Local RAG API — Document Search & Retrieval Evaluation
 
 [Česky](docs/cs/README.md#cz) · [English](#en) · [Documentation](docs/README.md)
 
@@ -29,9 +31,11 @@ Local Python/FastAPI prototype for question answering over technical PDFs, curre
 
 <a id="en-featured-project-rag-api-and-document-search"></a>
 
-## Featured project: RAG API and document search
+<a id="featured-project-rag-api-and-document-search"></a>
 
-**[Explore the RAG API project](docs/en/PROJECT.md)**
+## Featured project: Local RAG API
+
+**[Explore Local RAG API](docs/en/PROJECT.md)**
 
 PDF ingestion extracts and chunks technical documentation into ChromaDB. The current HTTP answer pipeline uses context selection, reranking, OSPF-specific answer rules and model generation as a fallback. Separate retrieval strategies are compared in the offline evaluation CLI.
 
@@ -50,7 +54,7 @@ PDF ingestion extracts and chunks technical documentation into ChromaDB. The cur
 
 ### Verification
 
-Verified run for **commit `28c7450`, 2026-10-28**: **223 passed in 7.51s** on Ubuntu / Python 3.11 ([GitHub Actions run](https://github.com/jyenten/AI_roadmap/actions/runs/40770029069)). This is a dated test result, separate from real-corpus retrieval evaluation. Historical local runs remain in the [learning log](docs/en/LEARNING_LOG.md).
+Verified run for **commit `28c7450`, 2026-10-28**: **223 passed in 7.51s** on Ubuntu / Python 3.11 ([GitHub Actions run](https://github.com/jyenten/local-rag-api/actions/runs/40770029069)). This is a dated test result, separate from real-corpus retrieval evaluation. Historical local runs remain in the [learning log](docs/en/LEARNING_LOG.md).
 
 <a id="en-recorded-retrieval-baseline"></a>
 

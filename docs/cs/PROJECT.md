@@ -1,6 +1,8 @@
 <a id="top"></a>
 
-# RAG API — vyhledávání v dokumentech a evaluace retrievalu
+<a id="rag-api--vyhledávání-v-dokumentech-a-evaluace-retrievalu"></a>
+
+# Local RAG API — vyhledávání v dokumentech a evaluace retrievalu
 
 [Česky](#cz) · [English](../en/PROJECT.md#en) · [Dokumentace](../README.md)
 
@@ -165,7 +167,7 @@ Z `rag_api_project/`:
 python -m pytest -q tests
 ~~~
 
-Ověřený běh pro **commit `28c7450`, 28. 10. 2026**: **223 testů prošlo za 7,51 s** na Ubuntu / Python 3.11 ([běh GitHub Actions](https://github.com/jyenten/AI_roadmap/actions/runs/40770029069)). Jde o datovaný výsledek testů, oddělený od evaluace retrievalu na skutečném korpusu. Historické lokální běhy zůstávají v [deníku učení](LEARNING_LOG.md).
+Ověřený běh pro **commit `28c7450`, 28. 10. 2026**: **223 testů prošlo za 7,51 s** na Ubuntu / Python 3.11 ([běh GitHub Actions](https://github.com/jyenten/local-rag-api/actions/runs/40770029069)). Jde o datovaný výsledek testů, oddělený od evaluace retrievalu na skutečném korpusu. Historické lokální běhy zůstávají v [deníku učení](LEARNING_LOG.md).
 
 BM25 testy používají syntetické Chroma fixtures a pokrývají stránkování, řazení, deterministické rozhodování při shodě skóre, soulad metadat, neplatné dotazy a záznamy i vadné dávky.
 
