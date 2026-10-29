@@ -1874,19 +1874,21 @@ rag_api_project/
 │   ├── random/
 │   └── test_questions.json
 │
-├── docs/
-│   ├── ROADMAP.md
-│   ├── ARCHITECTURE.md
-│   └── DEVELOPMENT_GUIDE.md
-│
 ├── Dockerfile
 ├── compose.yaml
 ├── requirements.txt
-├── README.md
 └── .env.example
 ```
 
-Jde o cílovou strukturu.
+Jde o cílovou strukturu aplikačních modulů. Dokumentace zůstává soustředěna v kořeni repozitáře; diagram neplánuje její návrat do `rag_api_project/`.
+
+| Dokumentace | Cesta v repozitáři |
+| --- | --- |
+| Vstup portfolia | [README.md](../../README.md) |
+| Rozcestník dokumentace | [docs/README.md](../README.md) |
+| Český přehled projektu | [docs/cs/PROJECT.md](PROJECT.md) |
+| Anglický přehled projektu | [docs/en/PROJECT.md](../en/PROJECT.md) |
+| Jazykové příručky a pravidla | `docs/cs/` a `docs/en/` |
 
 Adresáře se mají vytvářet až při zahájení příslušné vývojové fáze.
 

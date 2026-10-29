@@ -38,6 +38,8 @@
 - [Uncommitted work observed on 2026-10-28](#en-uncommitted-work-observed-on-2026-10-28)
 - [Branch audit coverage — 2026-10-28](#en-branch-audit-coverage--2026-10-28)
 
+- [2026-10-29 — Portfolio documentation and local operation context](#en-2026-10-29-portfolio-documentation)
+
 </details>
 
 ---
@@ -614,5 +616,19 @@ remote was not fetched. The obsolete cached `origin/document-search-bm25` in
 the documentation checkout is a pre-rename ref, not an eighth current public
 branch. No branches, source code, datasets or dependency files were changed by
 this learning-log audit.
+
+<a id="en-2026-10-29-portfolio-documentation"></a>
+
+### 2026-10-29 — Portfolio documentation and local operation context
+
+**Documentation maintenance:** Prepared under the owner's explicit instruction to implement the portfolio audit, based on public `main` at `28c7450`.
+
+- Shortened the English/Czech portfolio and project introductions, retained substantial AI-assistance disclosure and links to agent rules, and moved workflow detail behind learning/development references.
+- Added the dated public CI result for `28c7450`: **223 passed in 7.51s** ([run 40770029069](https://github.com/jyenten/AI_roadmap/actions/runs/40770029069)). This result belongs to that base revision, not automatically to the new documentation commit.
+- Linked the historical 2026-10-20 BM25/Vector MRR comparison with explicit evidence and reproduction limits; made the English schema example and baseline table self-contained. Historical metrics were not rerun or changed.
+- Corrected documentation paths in the target-structure illustration, clarified the implemented `/ready` check and used full milestone names instead of ambiguous journal phase numbers in the portfolio summaries.
+- Recorded the owner's local/offline operation context and known dependency-audit state in operations guides. Dependency/security checks remain enabled.
+- Verification for this change covers relative paths/anchors, preserved old anchors, CLI choices and unchanged benchmark values. No source-PDF ingest, corpus evaluation or Docker runtime test was performed.
+- Retrieval code, architecture decisions, roadmap priorities, dependencies, protected datasets and prior skill assessments are unchanged. This maintenance entry assigns no new skill rating.
 
 [↑ Back to top](#top)

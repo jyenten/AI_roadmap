@@ -38,6 +38,8 @@
 - [Necommitnutá práce pozorovaná 28. 10. 2026](#cz-necommitnutá-práce-pozorovaná-28-10-2026)
 - [Pokrytí auditu větví — 2026-10-28](#cz-pokrytí-auditu-větví--2026-10-28)
 
+- [2026-10-29 — Dokumentace portfolia a kontext lokálního provozu](#cz-2026-10-29-portfolio-dokumentace)
+
 </details>
 
 ---
@@ -484,5 +486,19 @@ Zkontrolováno bylo také osm lokálních větví v původním klonu projektu a 
 | `retrieval-eval-refactor¨` | `3c0bfdd` | Lokální alias stavu `master`; bez samostatného milníku |
 
 Uložené reference soukromého zrcadla `codex-private/main` a `codex-private/agent/bm25-tests` obě ukazovaly na `646525d`, již zahrnutý ve veřejné historii. Kontrolovaly se pouze tyto lokální reference; živý soukromý remote nebyl stahován. Zastaralá uložená `origin/document-search-bm25` v dokumentačním checkoutu je reference před přejmenováním, nikoli osmá současná veřejná větev. Audit deníku učení nezměnil větve, zdrojový kód, datasety ani soubory závislostí.
+
+<a id="cz-2026-10-29-portfolio-dokumentace"></a>
+
+### 2026-10-29 — Dokumentace portfolia a kontext lokálního provozu
+
+**Údržba dokumentace:** Připravena na základě výslovného pokynu vlastníka provést úpravy z auditu portfolia; výchozí veřejný `main` je `28c7450`.
+
+- Zkráceny české/anglické úvody portfolia a projektu, zachováno přiznání výrazné AI asistence a odkazy na pravidla agentů; podrobnosti workflow odkazují na deník a vývojovou příručku.
+- Doplněn datovaný veřejný výsledek CI pro `28c7450`: **223 testů prošlo za 7,51 s** ([běh 40770029069](https://github.com/jyenten/AI_roadmap/actions/runs/40770029069)). Výsledek patří této výchozí revizi, nikoli automaticky novému dokumentačnímu commitu.
+- Doplněny odkazy na historické MRR srovnání BM25/Vector z 20. 10. 2026 s výslovným původem a omezeními reprodukce; anglický příklad schématu a tabulka baseline jsou obsahově soběstačné. Historické metriky se neměřily znovu ani neměnily.
+- Opraveny dokumentační cesty v ukázce cílové struktury, zpřesněn skutečný rozsah `/ready` a v přehledech použity plné názvy milníků místo nejednoznačných čísel fází z deníku.
+- Do provozních příruček doplněn vlastníkem potvrzený lokální/offline kontext a známý stav kontroly závislostí. Závislostní a bezpečnostní kontroly zůstávají zapnuté.
+- Ověření změny zahrnuje relativní cesty/kotvy, zachování starých kotev, volby CLI a nezměněné benchmark hodnoty. Neprováděl se ingest zdrojových PDF, evaluace korpusu ani test Docker runtime.
+- Retrieval kód, architektonická rozhodnutí, priority roadmapy, závislosti, chráněné datasety a původní hodnocení dovedností zůstávají zachovány. Tento záznam nepřiděluje nové hodnocení dovedností.
 
 [↑ Nahoru](#top)

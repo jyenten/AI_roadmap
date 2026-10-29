@@ -11,6 +11,7 @@
 
 - [1. Předpoklady a instalace (Windows PowerShell)](#cz-1-předpoklady-a-instalace-windows-powershell)
 - [1a. Reprodukovatelnost závislostí (Windows Python 3.11)](#cz-1a-reprodukovatelnost-závislostí-windows-python-311)
+- [1b. Kontext kontroly závislostí](#cz-1b-kontext-kontroly-zavislosti)
 - [2. Konfigurace a zdroje](#cz-2-konfigurace-a-zdroje)
 - [3. Ingest PDF do ChromaDB](#cz-3-ingest-pdf-do-chromadb)
 - [4. Spuštění API](#cz-4-spuštění-api)
@@ -67,6 +68,15 @@ Před instalací zkontroluj použitý interpreter a kompatibilitu balíčků. Ve
 Základní `requirements.txt` ve zveřejněné větvi obsahuje neomezené verze balíčků; lokálně může existovat `requirements-win-py311.lock.txt` s přesnými verzemi. Tento lockfile **není automaticky schválený ani verzovaný**. Nezacházej s ním jako s univerzálním instalačním návodem bez samostatné kontroly kompatibility a CI.
 
 Před případným přijetím lockfilu je nutné ověřit podporovaný Python/OS, metodu vytvoření, čisté instalace na Windows a CI, soulad s `requirements.txt` a proces aktualizace balíčků. Změny balíčků patří do samostatného commitu a nesmí se slučovat s revizí dokumentace.
+
+
+<a id="cz-1b-kontext-kontroly-zavislosti"></a>
+
+## 1b. Kontext kontroly závislostí
+
+Chatbot nyní běží lokálně/offline. Vlastník kontrolu závislostí ponechává zapnutou i s ohledem na možné budoucí napojení API. [Audit revize `bfb1d85` z 28. 10. 2026](https://github.com/jyenten/AI_roadmap/actions/runs/40744368979) skončil chybou se známými nálezy u ChromaDB; jde o stav oddělený od výsledků Python testů.
+
+Relevance nálezů závisí na zasažených funkcích a konfiguraci provozu. Samotný lokální/offline provoz neprokazuje zneužitelnost ani nerelevanci nálezu. Tato úprava dokumentace žádnou kontrolu nevypíná ani neuděluje výjimku.
 
 
 <a id="cz-2-konfigurace-a-zdroje"></a>

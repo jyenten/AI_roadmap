@@ -4,6 +4,16 @@ Veškerá verzovaná Markdown dokumentace je v této složce. Jedinou výjimkou 
 
 Příručky mají samostatný obsah kapitol a závěrečný odkaz nahoru. / Guides have chapter contents and a final back-to-top link.
 
+## První návštěva / First visit
+
+| Co hledáš / What to inspect | Česky | English |
+| --- | --- | --- |
+| Co projekt řeší a obsahuje / Problem and implemented features | [Přehled projektu](cs/PROJECT.md#cz) | [Project overview](en/PROJECT.md#en) |
+| Zaznamenané výsledky a jejich omezení / Recorded results and limits | [Historický baseline](cs/EVALUATION.md#cz-8-historický-baseline-phase-34-2026-10-20) | [Historical baseline](en/EVALUATION.md#en-8-historical-baseline-2026-10-20) |
+| Jak jej spustit / Run locally | [Provozní příručka](cs/OPERATIONS.md#cz) | [Operations runbook](en/OPERATIONS.md#en) |
+
+## Všechny příručky / All guides
+
 | Oblast / Topic | Česky | English |
 | --- | --- | --- |
 | Přehled repozitáře / Repository overview | [Česky](cs/README.md#cz) | [English](../README.md#en) |

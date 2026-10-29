@@ -33,5 +33,6 @@ Starší záložky vedou na příslušný řádek níže. Odkaz v řádku otevř
 | EN | <a id="en-5-matching-and-metrics"></a><a id="5-matching-and-metrics"></a>[5. Matching and metrics](en/EVALUATION.md#en-5-matching-and-metrics) |
 | EN | <a id="en-6-repeatable-evaluation-and-historical-baseline"></a><a id="6-repeatable-evaluation-and-historical-baseline"></a>[6. Repeatable evaluation and historical baseline](en/EVALUATION.md#en-6-repeatable-evaluation-and-historical-baseline) |
 | EN | <a id="en-7-governance-references"></a><a id="7-governance-references"></a>[7. Governance references](en/EVALUATION.md#en-7-governance-references) |
+| EN | <a id="en-8-historical-baseline-2026-10-20"></a>[8. Historical baseline — 2026-10-20](en/EVALUATION.md#en-8-historical-baseline-2026-10-20) |
 
 [↑ Nahoru / Back to top](#top)

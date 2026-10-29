@@ -4,35 +4,29 @@
 
 [Česky](#cz) · [English](../../README.md#en) · [Dokumentace](../README.md)
 
-> **Dokumentace a pravidla agentů:** Ostatní Markdown dokumenty jsou v [docs/](../README.md). Před změnou souborů načti [globální pravidla agentů](AGENTS.md) a pro RAG také [projektová pravidla](PROJECT_AGENTS.md).
+<a id="cz"></a>
+
+Lokální Python/FastAPI prototyp pro odpovídání nad technickými PDF, aktuálně zaměřený na dokumentaci OSPF. Propojuje metadata zdrojů a stránek v HTTP odpovědích se samostatnými experimenty s vektorovým a BM25 retrievalem. Offline evaluace zaznamenává MRR, Hit@K, latenci retrievalu, hashe datasetů a Git původ.
+
+**Technologie:** Python 3.11 · FastAPI · Pydantic · ChromaDB · Sentence Transformers · BM25 · Pytest · Docker · GitHub Actions
 
 <a id="obsah"></a>
 
 <details>
-<summary>Obsah / Contents — kliknutím rozbalit / click to expand</summary>
+<summary>Obsah — kliknutím rozbalit</summary>
 
-**Česky**
-
-- [Hlavní projekt: RAG API a vyhledávání v dokumentech](#cz-hlavní-projekt-rag-api-a-vyhledávání-v-dokumentech)
+- [Hlavní projekt](#cz-hlavní-projekt-rag-api-a-vyhledávání-v-dokumentech)
 - [Co je implementováno](#cz-co-je-implementováno)
 - [Ověření](#cz-ověření)
+- [Zaznamenaný retrieval baseline](#cz-zaznamenany-retrieval-baseline)
 - [Architektura v přehledu](#cz-architektura-v-přehledu)
+- [Jak začít](#cz-jak-začít)
 - [Inženýrský přístup](#cz-inženýrský-přístup)
 - [Struktura repozitáře](#cz-struktura-repozitáře)
 - [Další kroky](#cz-další-kroky)
-- [Jak začít](#cz-jak-začít)
 - [Rychlý start na Windows](#cz-rychlý-start-na-windows)
 
 </details>
-
----
-
-<a id="cz"></a>
-
-Průběžně rozvíjený praktický projekt AI inženýrství zaměřený na **testovatelné vyhledávací systémy** a porozumění jejich chování, nejen na volání LLM API.
-
-**Technologie:** Python 3.11 · FastAPI · Pydantic · ChromaDB · Sentence Transformers · BM25 · Pytest · Docker · GitHub Actions
-
 
 <a id="cz-hlavní-projekt-rag-api-a-vyhledávání-v-dokumentech"></a>
 
@@ -40,8 +34,7 @@ Průběžně rozvíjený praktický projekt AI inženýrství zaměřený na **t
 
 **[Otevřít projekt RAG API](PROJECT.md)**
 
-Projekt zpracovává technickou PDF dokumentaci do prohledávatelných chunků a poskytuje FastAPI postup pro otázky a odpovědi. Současně vyvíjí samostatné strategie retrievalu a reprodukovatelný framework offline evaluace.
-
+Ingest PDF extrahuje a chunkuje technickou dokumentaci do ChromaDB. Současná HTTP pipeline používá výběr kontextu, reranking, pravidla odpovědí specifická pro OSPF a generování modelem jako fallback. Samostatné strategie retrievalu se porovnávají v offline evaluačním CLI.
 
 <a id="cz-co-je-implementováno"></a>
 
@@ -49,87 +42,72 @@ Projekt zpracovává technickou PDF dokumentaci do prohledávatelných chunků a
 
 - **API:** FastAPI endpointy pro health, readiness, statistiky a otázky; typované modely požadavků/odpovědí.
 - **Dokumentová pipeline:** extrakce textu PDF, chunkování, indexování do ChromaDB a metadata zdroje/stránky/chunku.
-- **Retrieval:** vektorový retrieval pomocí větných embeddingů, samostatně testovaný lexikální BM25 retriever a dřívější RAG postup retrievalu/rerankingu.
+- **Retrieval:** vektorový retrieval pomocí větných embeddingů, samostatně testovaný lexikální BM25 retriever a existující RAG postup retrievalu/rerankingu.
 - **Evaluace:** označené datasety otázek, Hit@1/3/5/8, MRR, latence mean/p50/p95, JSONL historie evaluace, hashe datasetů a Git původ.
-- **Testování:** jednotkové a regresní pytest testy se syntetickými fixtures a falešnými Chroma kolekcemi; konfigurace GitHub Actions CI.
-- **Nástroje nasazení:** Dockerfile a Compose konfigurace pro API.
-
+- **Testování:** jednotkové a regresní pytest testy se syntetickými fixtures a falešnými Chroma kolekcemi; GitHub Actions CI.
+- **Nástroje nasazení:** Dockerfile a Compose konfigurace pro lokální kontejner API.
 
 <a id="cz-ověření"></a>
 
 ### Ověření
 
-Historický *lokálně hlášený* úplný běh po integraci BM25: **210 úspěšných testů, 1 přeskočený** (omezení symlinků ve Windows). Nejde o aktuální počet testů ani tvrzení o současném GitHub Actions. Datované ověřené výsledky jsou v [deníku učení](LEARNING_LOG.md#cz-ověřený-stav-projektu); nové běhy ověř na [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
+Ověřený běh pro **commit `28c7450`, 28. 10. 2026**: **223 testů prošlo za 7,51 s** na Ubuntu / Python 3.11 ([běh GitHub Actions](https://github.com/jyenten/AI_roadmap/actions/runs/40770029069)). Jde o datovaný výsledek testů, oddělený od evaluace retrievalu na skutečném korpusu. Historické lokální běhy zůstávají v [deníku učení](LEARNING_LOG.md).
 
+<a id="cz-zaznamenany-retrieval-baseline"></a>
+
+### Zaznamenaný retrieval baseline — 20. 10. 2026
+
+| Dataset | Otázek | BM25 MRR | Vector MRR |
+| --- | ---: | ---: | ---: |
+| DEV | 20 | 0.7171 | 0.8321 |
+| RANDOM | 25 | 0.8133 | 0.6050 |
+
+Jde o historické výsledky zapsané v [deníku učení](LEARNING_LOG.md#cz-2026-10-20--fáze-34-evaluace-retrievalu). Původní JSONL běhy, korpus ani index nejsou součástí tohoto veřejného snapshotu; hodnoty nebyly pro tuto úpravu dokumentace znovu reprodukovány. MRR hodnotí pořadí nalezené evidence, nikoli přesnost generované odpovědi. Pevný RANDOM dataset slouží k průzkumu robustnosti; TEST je vyhrazen závěrečnému posouzení. Původ a omezení porovnání popisuje [evaluační příručka](EVALUATION.md#cz-8-historický-baseline-phase-34-2026-10-20).
 
 <a id="cz-architektura-v-přehledu"></a>
 
 ### Architektura v přehledu
 
-~~~text
-Technical PDF files
-        |
-  PDF ingestion & chunking
-        |
-  ChromaDB + metadata
-        |
-        +------------------------+
-        |                        |
-  Vector retriever        BM25 lexical retriever
-        |                        |
-        +------- retrieval evaluation
-                     (MRR, Hit@K, latency)
+| Cesta | Současný tok | Rozhraní / výstup |
+| --- | --- | --- |
+| HTTP odpovědi | Chroma retrieval → výběr kontextu a reranking → OSPF pravidla / modelový fallback | `POST /ask`; odpověď, kontext a metadata zdrojů |
+| Offline evaluace | `legacy` / `vector` / `bm25` → porovnání s golden evidence | CLI; MRR, Hit@K, latence retrievalu a JSONL historie |
+| Průzkum PDF | Lokální PDF stránky → samostatné BM25 vyhledávání stránek | CLI `search_pdf`; podklad pro ruční ověření evidence |
 
-  Existing RAG context pipeline
-        |
-  Rule-based answers / fallback generation
-        |
-  FastAPI response with source metadata
-~~~
+**Stav integrace:** HTTP endpoint `/ask` používá existující RAG pipeline nad ChromaDB. `legacy`, `vector` a `bm25` jsou volitelné v offline evaluačním CLI na DEV/RANDOM. Hybridní RRF zatím není integrované do veřejné větve `main`.
 
-**Stav integrace:** `legacy`, `vector` a `bm25` jsou volitelné v **offline evaluačním CLI** (DEV/RANDOM). BM25 **není** zavedený volitelný režim HTTP `/ask`. Hybridní RRF je ve vývoji a nesmí být prezentovaný jako hotový.
+<a id="cz-jak-začít"></a>
 
+## Jak začít
+
+Začni [českým přehledem projektu](PROJECT.md) ([English](../en/PROJECT.md)). Pro instalaci/ingest použij [provozní návod](OPERATIONS.md#cz); pro evidenci, metriky a postup porovnání [evaluační příručku](EVALUATION.md#cz).
+
+**Stav projektu:** výukové inženýrské portfolio / aktivně vyvíjený lokální prototyp. Hostovaná ukázka není k dispozici. Instalace a první použití modelů mohou vyžadovat jejich stažení; inference používá lokální modely.
 
 <a id="cz-inženýrský-přístup"></a>
 
 ## Inženýrský přístup
 
-Jde o praktický výukový projekt vyvíjený s výraznou pomocí AI. ChatGPT a Codex používám pro vysvětlování, návrhové diskuse, návrhy a generování kódu, diagnostiku, testy a revize. Také sám implementuji a upravuji kód, zkoumám selhání a ověřuji změny. Repozitář dokumentuje vývojový proces i výsledný systém; netvrdí, že jsem každou komponentu samostatně vymyslel či napsal.
+Projekt vzniká s výraznou pomocí ChatGPT a Codexu, včetně generování kódu a testů, diagnostiky a revizí. [Deník učení](LEARNING_LOG.md) zaznamenává spolupráci a doklady učení; dokončené funkce rozlišuje od samostatně prokázaných dovedností. Vývojové postupy popisuje [vývojová příručka](DEVELOPMENT_GUIDE.md).
 
-Pravidla spolupráce jsou ve dvou úrovních: [globální AGENTS.md](AGENTS.md#cz) určuje režimy LEARN / IMPLEMENT / REVIEW a hranice schvalování; [projektový AGENTS.md](PROJECT_AGENTS.md#cz) přidává ochrany kurátorství evaluačních datasetů. Pokrok a doklady dovedností jsou v [LEARNING_LOG.md](LEARNING_LOG.md#cz).
-
-Pro BM25 milník připravil Codex regresní testy v **izolovaném lokálním Git worktree** na `agent/bm25-tests`. Zkontrolované testy byly poté integrovány do veřejné vývojové větve.
-
-Pro průběžné experimenty agentů zrcadlí **samostatný soukromý GitHub repozitář** (`jyenten/AI_roadmap_codex_mirror`) schválený veřejný snapshot. Jeho `main` je základ zrcadla, `agent/bm25-tests` je vyhrazená práci Codexu. Soukromý repozitář není veřejně přístupný a **synchronizace je ruční**; změny Codexu se bez revize automaticky nezveřejňují ani neslučují.
-
+**Pokyny pro přispěvatele a agenty:** před změnou souborů načti [globální pravidla](AGENTS.md) a pro RAG také [projektová pravidla](PROJECT_AGENTS.md). Jejich umístění pod `docs/` nemění jejich působnost. Původ BM25 testů a historii práce agentů zachovává [deník učení](LEARNING_LOG.md#cz-2026-10-13--fáze-33-bm25-retriever).
 
 <a id="cz-struktura-repozitáře"></a>
 
 ## Struktura repozitáře
 
 - [rag_api_project/](../../rag_api_project/) — aktivní vývoj FastAPI, RAG, retrievalu a evaluace.
-- [docs/](../README.md) — české a anglické příručky, pravidla agentů a deník učení.
-- .github/ — konfigurace CI workflow.
-- [archive/](../../archive/) — 29 dřívějších složek programovacích a ML cvičení (`ALG/` a `den_1/` až `den_28_Docker/`), přesunutých bez změny obsahu; zachovaných jako historie učení a reference.
-
+- [docs/](../README.md) — všechny ostatní verzované Markdown soubory: české/anglické příručky, pravidla agentů a historie učení.
+- [.github/](../../.github/) — konfigurace CI workflow.
+- [archive/](../../archive/) — 29 dřívějších složek programovacích a ML cvičení zachovaných jako historie učení a reference.
 
 <a id="cz-další-kroky"></a>
 
 ## Další kroky
 
-- Zachovat naměřené baseline BM25/Vector na DEV a RANDOM z fáze 3.4.
+- Zachovat baseline BM25/Vector na DEV a RANDOM ze srovnání retrievalu zaznamenaného 20. 10. 2026.
 - Implementovat a vyhodnotit hybridní lexikální + sémantický retrieval (RRF) bez ladění na TEST.
 - Zlepšovat reprodukovatelnost, pinování závislostí, provozní metriky a úvodní dokumentaci.
-
-
-<a id="cz-jak-začít"></a>
-
-## Jak začít
-
-Začni [českým přehledem projektu](PROJECT.md) ([English](../en/PROJECT.md)). Pro instalaci/ingest použij dvojjazyčný [provozní návod](OPERATIONS.md#cz); pro tvorbu evidence, validaci, schvalování a evaluaci [příručku golden evidence](EVALUATION.md#cz).
-
-> **Stav projektu:** výukové inženýrské portfolio / aktivně vyvíjený prototyp, nikoli produkční SaaS nebo hostovaná ukázka.
-
 
 <a id="cz-rychlý-start-na-windows"></a>
 

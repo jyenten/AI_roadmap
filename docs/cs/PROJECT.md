@@ -32,7 +32,7 @@
 
 <a id="cz"></a>
 
-Projekt Python/FastAPI pro odpovídání na otázky nad technickou PDF dokumentací se zaměřením na kvalitu retrievalu, dohledatelnost zdrojů a regresní testování.
+Lokální Python/FastAPI chatbot nad technickou PDF dokumentací, aktuálně zaměřený na OSPF, s evaluací retrievalu, metadaty zdrojů a regresním testováním. Inference běží lokálně; instalace a první použití modelů mohou vyžadovat jejich stažení.
 
 **Stav:** aktivně vyvíjený výukový prototyp, nikoli produkční služba. Existující `/ask` pipeline používá Chroma retrieval, výběr kontextu, reranking a odpovědi podle pravidel nebo modelu. Vedle toho repozitář obsahuje vektorový retriever, lexikální BM25 retriever a nástroje offline evaluace retrievalu.
 
@@ -66,17 +66,11 @@ Python 3.11 · FastAPI · Pydantic · ChromaDB · Sentence Transformers · `rank
 
 ### Tok dat
 
-~~~text
-PDF documents --> text extraction / chunking --> ChromaDB + metadata
-                                                   |
-                   +-------------------------------+----------------------+
-                   |                                                      |
-             Existing RAG API                                     Retrieval experiments
-          context -> answer -> sources                           vector and BM25 retrievers
-                                                                  |
-                                                          offline evaluation
-                                                           MRR / Hit@K / latency
-~~~
+| Cesta | Současný tok | Rozhraní / výstup |
+| --- | --- | --- |
+| HTTP odpovědi | Chroma retrieval → výběr kontextu a reranking → OSPF pravidla / modelový fallback | `POST /ask`; odpověď, kontext a metadata zdrojů |
+| Offline evaluace | `legacy` / `vector` / `bm25` → porovnání s golden evidence | CLI; MRR, Hit@K, latence retrievalu a JSONL historie |
+| Průzkum PDF | Lokální PDF stránky → samostatné BM25 vyhledávání stránek | CLI `search_pdf`; podklad pro ruční ověření evidence |
 
 **Hranice integrace:** BM25 je implementované a volitelné v **offline evaluačním CLI** společně s `legacy` a `vector`. HTTP `/ask` API nebylo přepnuto na BM25 ani hybridní režim. Hybridní RRF je rozpracované, nikoli zavedená vydaná funkce.
 
@@ -144,7 +138,7 @@ python -m uvicorn app.main:app --reload
 Interaktivní OpenAPI dokumentaci otevři na `http://127.0.0.1:8000/docs`.
 
 - `GET /` a `GET /health` — životnost služby a informace o prostředí.
-- `GET /ready` — ověření dostupnosti RAG služby; vyžaduje funkční korpus/konfiguraci.
+- `GET /ready` — inicializuje retrieval službu a vrací počet chunků v kolekci. Neprovádí otázku ani neověřuje načtení generovacího modelu; nejde o úplný smoke test `/ask`.
 - `GET /stats` — informace o kolekci.
 - `POST /ask` — přijme JSON otázku a vrátí odpověď s podpůrným kontextem a náhledy zdrojů.
 
@@ -171,7 +165,7 @@ Z `rag_api_project/`:
 python -m pytest -q tests
 ~~~
 
-Historický **lokálně hlášený** úplný běh po integraci BM25 ve fázi 3.3: **210 úspěšných testů, 1 přeskočený**. Přeskočení způsobila nedostupná oprávnění symlinků ve Windows; hlášena byla deprekační varování externích závislostí. Datované ověřené výsledky jsou v [deníku učení](LEARNING_LOG.md#cz-ověřený-stav-projektu); nové běhy ověř samostatně na [GitHub Actions](https://github.com/jyenten/AI_roadmap/actions).
+Ověřený běh pro **commit `28c7450`, 28. 10. 2026**: **223 testů prošlo za 7,51 s** na Ubuntu / Python 3.11 ([běh GitHub Actions](https://github.com/jyenten/AI_roadmap/actions/runs/40770029069)). Jde o datovaný výsledek testů, oddělený od evaluace retrievalu na skutečném korpusu. Historické lokální běhy zůstávají v [deníku učení](LEARNING_LOG.md).
 
 BM25 testy používají syntetické Chroma fixtures a pokrývají stránkování, řazení, deterministické rozhodování při shodě skóre, soulad metadat, neplatné dotazy a záznamy i vadné dávky.
 
@@ -180,7 +174,7 @@ BM25 testy používají syntetické Chroma fixtures a pokrývají stránkování
 
 ## Offline evaluace retrievalu
 
-Framework hlásí MRR, Hit@1/3/5/8 a latenci retrievalu mean/p50/p95. Metadata běhu obsahují hash datasetu, Git commit a stav necommitnutých změn. Běhové výsledky pod `eval/results/` jsou vyloučené z verzování.
+Framework hlásí MRR, Hit@1/3/5/8 a latenci retrievalu mean/p50/p95. Metadata běhu obsahují hash datasetu, Git commit a stav necommitnutých změn. Běhové výsledky pod `eval/results/` jsou vyloučené z verzování. Zopakování historického výsledku vyžaduje stejné zdrojové PDF, index, konfiguraci retrievalu a verze modelů a závislostí. Veřejný snapshot neobsahuje původní korpus, index ani JSONL historie běhů.
 
 Podporované příkazy ve zveřejněném evaluačním CLI:
 
@@ -228,7 +222,7 @@ Compose mapuje hostitelský port `8001` na kontejnerový `8000` a připojuje lok
 
 ## Současná omezení a další kroky
 
-- Zachovat naměřený baseline fáze 3.4 BM25 oproti Vector na DEV/RANDOM (DEV MRR: 0.7171 oproti 0.8321; RANDOM MRR: 0.8133 oproti 0.6050).
+- Zachovat [baseline BM25 oproti Vector na DEV/RANDOM zaznamenaný 20. 10. 2026](EVALUATION.md#cz-8-historický-baseline-phase-34-2026-10-20).
 - Experimentovat s hybridním lexikálním + sémantickým retrievalem (RRF) podle měření bez ladění na odděleném TEST.
 - Zlepšit pinování závislostí, úplnost Docker balíčku a provozní observabilitu.
 - Pokračovat ve zlepšování robustnosti extrakce, hlášení chyb a evaluace na dosud neviděných otázkách.
@@ -238,13 +232,9 @@ Compose mapuje hostitelský port `8001` na kontejnerový `8000` a připojuje lok
 
 ## Vývoj s pomocí AI a hranice spolupráce
 
-Tento výukový projekt používá ChatGPT a Codex pro vysvětlování, návrh, implementační pomoc, diagnostiku, testy a revize; ne každou komponentu vlastník repozitáře samostatně vymyslel nebo napsal.
+Projekt vzniká s výraznou pomocí ChatGPT a Codexu, včetně generování kódu a testů, diagnostiky a revizí. [Deník učení](LEARNING_LOG.md) zaznamenává spolupráci, původ BM25 testů a doklady učení; dokončené funkce rozlišuje od samostatně prokázaných dovedností. Podrobnou historii worktrees a soukromého zrcadla zachovává tento deník.
 
-[Globální AGENTS.md](AGENTS.md#cz) popisuje režimy LEARN, IMPLEMENT a REVIEW a vyžaduje lidské schválení integrace. [Projektový AGENTS.md](PROJECT_AGENTS.md#cz) přidává konkrétní pravidla kurátorství evaluačních datasetů včetně lidského schválení povýšení kandidátů. Důkazy dovedností a pokrok jsou v [LEARNING_LOG.md](LEARNING_LOG.md#cz).
-
-Pro BM25 funkci napsal Codex syntetické regresní testy v izolovaném **lokálním** worktree (`agent/bm25-tests`); zkontrolované testy byly integrovány do veřejné vývojové větve spolu s implementací BM25.
-
-Průběžné experimenty Codexu používají samostatné **soukromé GitHub zrcadlo** (`jyenten/AI_roadmap_codex_mirror`). Jeho `main` uchovává schválený veřejný snapshot a `agent/bm25-tests` je izolovaná vzdálená větev pro práci agenta. Původní lokální worktree je od této nové vzdálené větve oddělený. Synchronizace a integrace jsou ruční a podléhají schvalovacím pravidlům v `AGENTS.md`.
+Před změnou souborů načti [globální pravidla](AGENTS.md) a [projektová pravidla](PROJECT_AGENTS.md). Vývojové a revizní postupy popisuje [vývojová příručka](DEVELOPMENT_GUIDE.md).
 
 
 <a id="cz-rozcestník"></a>

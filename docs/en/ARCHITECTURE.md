@@ -1810,19 +1810,21 @@ rag_api_project/
 │   ├── random/
 │   └── test_questions.json
 │
-├── docs/
-│   ├── ROADMAP.md
-│   ├── ARCHITECTURE.md
-│   └── DEVELOPMENT_GUIDE.md
-│
 ├── Dockerfile
 ├── compose.yaml
 ├── requirements.txt
-├── README.md
 └── .env.example
 ```
 
-This is a target structure.
+This is a target application-module structure. Documentation remains centralized at the repository root; this diagram does not plan a move back into `rag_api_project/`.
+
+| Documentation | Repository path |
+| --- | --- |
+| Portfolio entry | [README.md](../../README.md) |
+| Documentation index | [docs/README.md](../README.md) |
+| English project overview | [docs/en/PROJECT.md](PROJECT.md) |
+| Czech project overview | [docs/cs/PROJECT.md](../cs/PROJECT.md) |
+| Language guides and rules | `docs/en/` and `docs/cs/` |
 
 Directories should be created only when their corresponding development
 phase begins.
