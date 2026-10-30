@@ -167,7 +167,7 @@ Z `rag_api_project/`:
 python -m pytest -q tests
 ~~~
 
-Ověřený běh pro **commit `28c7450`, 28. 10. 2026**: **223 testů prošlo za 7,51 s** na Ubuntu / Python 3.11 ([běh GitHub Actions](https://github.com/jyenten/local_rag_api/actions/runs/40770029069)). Jde o datovaný výsledek testů, oddělený od evaluace retrievalu na skutečném korpusu. Historické lokální běhy zůstávají v [deníku učení](LEARNING_LOG.md).
+Ověřený běh pro **commit `82d5889`, 29. 10. 2026**: **223 testů prošlo za 7,29 s** na Ubuntu / Python 3.11 ([běh GitHub Actions](https://github.com/jyenten/local_rag_api/actions/runs/40865587005)). Jde o datovaný výsledek testů, oddělený od evaluace retrievalu na skutečném korpusu. Historické lokální běhy zůstávají v [deníku učení](LEARNING_LOG.md).
 
 BM25 testy používají syntetické Chroma fixtures a pokrývají stránkování, řazení, deterministické rozhodování při shodě skóre, soulad metadat, neplatné dotazy a záznamy i vadné dávky.
 

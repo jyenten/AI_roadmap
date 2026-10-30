@@ -77,20 +77,22 @@ mean the corresponding skill is mastered.
 
 ## Current project checkpoint
 
-Date: 2026-10-28
+Date: 2026-10-29
 Default branch: main
-Reviewed project commit: bfb1d85 (before this log update)
+Reviewed project commit: 82d5889 (before this log update)
 
-- PR #3 is merged: bilingual runbooks, evidence-validator fixes and regressions.
-- Latest verified GitHub CI on `main`: **223 passed in 4.99s**
-  ([run 40744368854](https://github.com/jyenten/local_rag_api/actions/runs/40744368854)).
-- Gitleaks and CodeQL passed on that revision. Dependency Audit remains failing
-  with open ChromaDB findings; it has not been disabled or given an exception.
+- PRs #6–#8 are merged: portfolio evidence, the Local RAG API name and canonical
+  `jyenten/local_rag_api` links are integrated. PR #2's `setup-python` update is
+  also merged; it does not integrate the separate dependency-lock proposal.
+- Latest verified GitHub CI on `main`: **223 passed in 7.29s**
+  ([run 40865587005](https://github.com/jyenten/local_rag_api/actions/runs/40865587005)).
+- Gitleaks and CodeQL passed on that revision. Dependency Audit still fails with
+  the same known ChromaDB advisory set; it remains enabled without an exception.
 - BM25 and Vector DEV/RANDOM baselines are preserved. They were not rerun for
   this log update; held-out TEST remains unchanged.
 - Hybrid RRF and retriever-ID interface work remain local and uncommitted.
-- The Linux dependency-lock proposal (PR #1), Dependabot proposal (PR #2) and
-  local FAISS/storage experiment are separate from the integrated `main` state.
+- The Linux dependency-lock proposal (PR #1) remains open; the local FAISS/storage
+  experiment is also separate from the integrated `main` state.
 
 Project completion and human skill assessment remain separate. The existing
 GUIDED assessments below are preserved; this history review assigns no new
